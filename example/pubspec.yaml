@@ -1,0 +1,22 @@
+name: example
+description: Gauge indicator example project.
+publish_to: "none"
+version: 1.0.0
+
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+
+dependencies:
+  flutter_colorpicker: ^1.0.3
+  flutter:
+    sdk: flutter
+  gauge_indicator:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.0
+
+flutter:
+  uses-material-design: true
