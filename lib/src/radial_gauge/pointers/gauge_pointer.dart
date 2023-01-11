@@ -1,6 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
+import 'needle_pointer.dart';
+import 'circle_pointer.dart';
+import 'triangle_pointer.dart';
+
 /// Describes the position (anchor) of the gauge pointer.
 ///
 /// Used by [GaugePointerPosition] and [GaugePointer].
@@ -69,15 +73,38 @@ class GaugePointerBorder extends Equatable {
 }
 
 @immutable
-abstract class GaugePointer extends Equatable {
+abstract class GaugePointer {
   Path get path;
   Size get size;
   GaugePointerPosition get position;
-  Color get backgroundColor;
+  Color get color;
 
   /// When null, the pointer border will not be rendered.
   GaugePointerBorder? get border;
 
-  @override
-  List<Object?> get props => [size, backgroundColor, border, position];
+  /// Draws a needle pointer.
+  factory GaugePointer.needle({
+    required Size size,
+    required Color color,
+    GaugePointerPosition position,
+    GaugePointerBorder? border,
+    double? borderRadius,
+  }) = NeedlePointer;
+
+  /// Draws a circle pointer.
+  factory GaugePointer.circle({
+    required double radius,
+    required Color color,
+    GaugePointerPosition position,
+    GaugePointerBorder? border,
+  }) = CirclePointer;
+
+  /// Draws a triangle pointer.
+  factory GaugePointer.triangle({
+    required double size,
+    required Color color,
+    GaugePointerPosition position,
+    GaugePointerBorder? border,
+    double borderRadius,
+  }) = TrianglePointer;
 }

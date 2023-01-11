@@ -328,7 +328,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     final path = pointer.path.transform(transformation.storage);
 
     final fillPaint = Paint()
-      ..color = pointer.backgroundColor
+      ..color = pointer.color
       ..style = PaintingStyle.fill;
 
     canvas.drawPath(path, fillPaint);

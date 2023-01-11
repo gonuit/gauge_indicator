@@ -21,6 +21,8 @@ const colors = [
 
 enum PointerType { needle, triangle, circle }
 
+enum ProgressBarType { rounded, basic }
+
 class RadialGaugeExamplePage extends StatefulWidget {
   const RadialGaugeExamplePage({Key? key}) : super(key: key);
 
@@ -44,7 +46,9 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
   double _spacing = 4;
   double _fontSize = 46;
   double _pointerSize = 26;
-  PointerType _pointerType = PointerType.needle;
+  var _pointerType = PointerType.needle;
+  var _progressBarPlacement = GaugeProgressPlacement.over;
+  var _progressBarType = ProgressBarType.rounded;
 
   var _segments = <GaugeSegment>[
     const GaugeSegment(
@@ -96,19 +100,18 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
   GaugePointer getPointer(PointerType pointerType) {
     switch (pointerType) {
       case PointerType.needle:
-        return NeedlePointer(
+        return GaugePointer.needle(
           size: Size(_pointerSize * 0.625, _pointerSize * 4),
-          backgroundColor: _pointerColor,
-          borderRadius: _pointerSize * 0.3125,
+          color: _pointerColor,
           position: GaugePointerPosition.center(
             offset: Offset(0, _pointerSize * 0.3125),
           ),
         );
       case PointerType.triangle:
-        return RoundedTrianglePointer(
+        return GaugePointer.triangle(
           size: _pointerSize,
           borderRadius: _pointerSize * 0.125,
-          backgroundColor: _pointerColor,
+          color: _pointerColor,
           position: GaugePointerPosition.surface(
             offset: Offset(0, _thickness * 0.6),
           ),
@@ -118,11 +121,11 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
           ),
         );
       case PointerType.circle:
-        return CirclePointer(
+        return GaugePointer.circle(
           radius: _pointerSize * 0.5,
-          backgroundColor: Colors.transparent,
+          color: _pointerColor,
           border: GaugePointerBorder(
-            color: _pointerColor,
+            color: Colors.white,
             width: _pointerSize * 0.125,
           ),
         );
@@ -282,6 +285,46 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
                               }
                             }),
                         if (_hasProgressBar)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                            child: DropdownButton<GaugeProgressPlacement>(
+                              items: [
+                                for (final val in GaugeProgressPlacement.values)
+                                  DropdownMenuItem(
+                                    child: Text("Placement: ${val.name}"),
+                                    value: val,
+                                  )
+                              ],
+                              value: _progressBarPlacement,
+                              onChanged: (val) {
+                                if (val == null) return;
+                                setState(() {
+                                  _progressBarPlacement = val;
+                                });
+                              },
+                            ),
+                          ),
+                        if (_hasProgressBar)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                            child: DropdownButton<ProgressBarType>(
+                              items: [
+                                for (final val in ProgressBarType.values)
+                                  DropdownMenuItem(
+                                    child: Text("Type: ${val.name}"),
+                                    value: val,
+                                  )
+                              ],
+                              value: _progressBarType,
+                              onChanged: (val) {
+                                if (val == null) return;
+                                setState(() {
+                                  _progressBarType = val;
+                                });
+                              },
+                            ),
+                          ),
+                        if (_hasProgressBar)
                           ColorField(
                             title: "Select progress bar color",
                             color: _progressBarColor,
@@ -307,7 +350,7 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
                               items: [
                                 for (final val in PointerType.values)
                                   DropdownMenuItem(
-                                    child: Text(val.name),
+                                    child: Text("Type: ${val.name}"),
                                     value: val,
                                   )
                               ],
@@ -384,10 +427,7 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
                       curve: Curves.elasticOut,
                       value: value,
                       progressBar: _hasProgressBar
-                          ? GaugeRoundedProgressBar(
-                              color: _progressBarColor,
-                              placement: GaugeProgressPlacement.over,
-                            )
+                          ? _getProgressBar(_progressBarType)
                           : null,
                       axis: GaugeAxis(
                         degrees: _degree,
@@ -413,5 +453,20 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
         ),
       ),
     );
+  }
+
+  GaugeProgressBar _getProgressBar(ProgressBarType progressBarType) {
+    switch (progressBarType) {
+      case ProgressBarType.rounded:
+        return GaugeProgressBar.rounded(
+          color: _progressBarColor,
+          placement: _progressBarPlacement,
+        );
+      case ProgressBarType.basic:
+        return GaugeProgressBar.basic(
+          color: _progressBarColor,
+          placement: _progressBarPlacement,
+        );
+    }
   }
 }

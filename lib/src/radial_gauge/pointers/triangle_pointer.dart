@@ -1,23 +1,24 @@
 import 'dart:ui';
 
+import 'package:equatable/equatable.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 
-class RoundedTrianglePointer extends GaugePointer {
+class TrianglePointer extends Equatable implements GaugePointer {
   @override
   final Size size;
   @override
   final Path path;
   @override
-  final Color backgroundColor;
+  final Color color;
   @override
   final GaugePointerPosition position;
   @override
   final GaugePointerBorder? border;
   final double borderRadius;
 
-  RoundedTrianglePointer({
+  TrianglePointer({
     required double size,
-    required this.backgroundColor,
+    required this.color,
     this.position = const GaugePointerPosition.surface(),
     this.borderRadius = 2,
     this.border,
@@ -29,6 +30,5 @@ class RoundedTrianglePointer extends GaugePointer {
         size = Size.square(size);
 
   @override
-  List<Object?> get props =>
-      [size, backgroundColor, border, borderRadius, position];
+  List<Object?> get props => [size, color, border, borderRadius, position];
 }

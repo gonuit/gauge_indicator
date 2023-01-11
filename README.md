@@ -51,7 +51,7 @@ Widget build(BuildContext context) {
     ),
 
     /// Define the pointer that will indicate the progress.
-    pointer: NeedlePointer(
+    pointer: GaugePointer.needle(
       size: Size(16, 100),
       borderRadius: 16,
       backgroundColor: Color(0xFF193663),

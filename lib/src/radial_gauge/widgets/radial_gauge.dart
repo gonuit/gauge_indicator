@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-import '../data/data.dart';
-import 'radial_gauge_render_box.dart';
+import 'package:gauge_indicator/gauge_indicator.dart';
 
 /// Renders a radial gauge.
 class RadialGauge extends SingleChildRenderObjectWidget {

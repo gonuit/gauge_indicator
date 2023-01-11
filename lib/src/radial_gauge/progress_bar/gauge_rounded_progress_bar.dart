@@ -1,9 +1,10 @@
 import 'dart:ui' as ui;
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 
-class GaugeRoundedProgressBar extends GaugeProgressBar {
+class GaugeRoundedProgressBar extends Equatable implements GaugeProgressBar {
   final Color? color;
   final GaugeAxisGradient? gradient;
   final Shader? shader;
@@ -60,5 +61,5 @@ class GaugeRoundedProgressBar extends GaugeProgressBar {
   }
 
   @override
-  List<Object?> get props => [color, gradient, shader];
+  List<Object?> get props => [color, gradient, shader, placement];
 }
