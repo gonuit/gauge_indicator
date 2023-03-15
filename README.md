@@ -9,7 +9,7 @@
 
 |            Progress bar and shader support             |                   Multiple segments style                   |                  Gradient support                   |
 | :----------------------------------------------------: | :---------------------------------------------------------: | :-------------------------------------------------: |
-| ![AnimatedRadialgauge](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/shader_progress_bar.gif) | ![AnimatedRadialgauge](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/multiple_segments_styles.gif) | ![AnimatedRadialgauge](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/gradient_support.gif) |
+| ![AnimatedRadialGauge](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/shader_progress_bar.gif) | ![AnimatedRadialGauge](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/multiple_segments_styles.gif) | ![AnimatedRadialGauge](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/gradient_support.gif) |
 
 ## Usage
 
