@@ -108,31 +108,14 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
   void performLayout() {
     final ratios = RadialGaugeSizeRatios.fromDegrees(axis.degrees);
 
-    final radiusBasedSize = radius != null ? ratios.getSize(radius!) : null;
+    _computedLayout = RadialGaugeLayout.calculate(
+      constraints,
+      ratios,
+      alignment: alignment,
+      preferredRadius: radius,
+    );
+    size = _computedLayout.sourceRect.size;
 
-    if (constraints.isTight) {
-      size = constraints.smallest;
-    } else if (constraints.hasTightHeight) {
-      final height = constraints.minHeight;
-      size = constraints.constrain(radiusBasedSize ??
-          Size(
-            ratios.getWidth(height),
-            height,
-          ));
-    } else if (constraints.hasTightWidth) {
-      final width = constraints.minWidth;
-      size = constraints.constrain(radiusBasedSize ??
-          Size(
-            width,
-            ratios.getHeight(width),
-          ));
-    } else {
-      /// For infinite dimensions the [radius] needs to be specified
-      size = constraints.constrain(radiusBasedSize ?? Size.zero);
-    }
-
-    _computedLayout =
-        RadialGaugeLayout.calculate(size, ratios, alignment: alignment);
     _axisDefinition =
         RadialGaugeAxisDefinition.calculate(_computedLayout, axis);
 
