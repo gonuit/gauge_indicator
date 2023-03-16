@@ -52,6 +52,7 @@ class _AnimatedRadialGaugeState
   bool _isInitialAnimation = true;
 
   Tween<double>? _valueTween;
+  Tween<double>? _radiusTween;
   GaugeAxisTween? _axisTween;
 
   @override
@@ -82,6 +83,14 @@ class _AnimatedRadialGaugeState
         end: widget.value,
       ),
     ) as Tween<double>;
+    _radiusTween = visitor(
+      _radiusTween,
+      widget.radius,
+      (dynamic value) => Tween<double>(
+        begin: value,
+        end: value,
+      ),
+    ) as Tween<double>;
   }
 
   @override
@@ -93,6 +102,7 @@ class _AnimatedRadialGaugeState
                 widget.axis.min,
                 widget.axis.max,
               );
+          final radius = _radiusTween!.evaluate(animation);
           final computedAxis = _axisTween!.evaluate(animation)!.flatten();
 
           final axis = computedAxis.transform(
@@ -105,7 +115,7 @@ class _AnimatedRadialGaugeState
           return RadialGauge(
             debug: widget.debug,
             value: value,
-            radius: widget.radius,
+            radius: radius,
             alignment: widget.alignment,
             progressBar: widget.progressBar,
             axis: axis,

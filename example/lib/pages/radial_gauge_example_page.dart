@@ -42,6 +42,7 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
   Color _pointerColor = const Color(0xFF002E5F);
   double _parentWidth = 270;
   double _parentHeight = 270;
+  double _gaugeRadius = 250;
   double _thickness = 20;
   double _spacing = 4;
   double _fontSize = 46;
@@ -211,6 +212,18 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
                           onChanged: (val) {
                             setState(() {
                               _fontSize = double.parse(val.toStringAsFixed(2));
+                            });
+                          },
+                        ),
+                        ValueSlider(
+                          label: "Gauge radius",
+                          min: 50,
+                          max: 250,
+                          value: _gaugeRadius,
+                          onChanged: (val) {
+                            setState(() {
+                              _gaugeRadius =
+                                  double.parse(val.toStringAsFixed(2));
                             });
                           },
                         ),
@@ -413,6 +426,7 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
                     width: _parentWidth,
                     height: _parentHeight,
                     child: AnimatedRadialGauge(
+                      radius: _gaugeRadius,
                       builder: _hasPointer && _pointerType == PointerType.needle
                           ? null
                           : (context, _, value) => RadialGaugeLabel(
