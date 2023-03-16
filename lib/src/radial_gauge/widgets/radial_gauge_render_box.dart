@@ -11,12 +11,12 @@ import '../internal/radial_gauge_size_ratios.dart';
 /// into two phases: size-related and paint-related.
 /// Layout-related can be made only on layout change and there is no need
 /// to redo them on each paint.
-/// Paint-related are callculations that are required to paint the gauge,
+/// Paint-related are calculations that are required to paint the gauge,
 /// For it to work the offset (provided to the paint method) needs to be
 /// provided.
 
 class RadialGaugeRenderBox extends RenderShiftedBox {
-  /// Raial gauge current value
+  /// Current value of the radial gauge
   double _value;
   double get value => _value;
   set value(double value) {
@@ -192,28 +192,11 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
 
     if (hasProgressBarInside) {
       final segmentsPath = Path();
-      final pathRadius = axisDefinition.thickness * 0.5;
-      final pathInsets = EdgeInsets.all(pathRadius);
-      final internalRect = pathInsets.deflateRect(axisDefinition.rect);
-      final externalRect = pathInsets.inflateRect(axisDefinition.rect);
 
       for (int i = 0; i < axisDefinition.segments.length; i++) {
         final segment = axisDefinition.segments[i];
-        segmentsPath
-          ..arcTo(
-            internalRect,
-            segment.startAngle,
-            segment.sweepAngle,
-            true,
-          )
-          ..arcTo(
-            externalRect,
-            segment.startAngle + segment.sweepAngle,
-            -segment.sweepAngle,
-            false,
-          );
+        segmentsPath.addPath(segment.path, offset);
       }
-
       canvas.clipPath(segmentsPath);
     }
 
@@ -223,7 +206,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
       final segment = axisDefinition.segments[i];
       final paint = Paint()
         ..strokeWidth = axisDefinition.thickness
-        ..style = PaintingStyle.stroke;
+        ..style = PaintingStyle.fill;
 
       if (segment.shader != null) {
         paint.shader = segment.shader!;
@@ -244,13 +227,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
         paint.color = segment.color!;
       }
 
-      canvas.drawArc(
-        axisDefinition.rect,
-        segment.startAngle,
-        segment.sweepAngle,
-        false,
-        paint,
-      );
+      canvas.drawPath(segment.path, paint);
     }
 
     // drawing progress

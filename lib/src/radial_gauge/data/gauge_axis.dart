@@ -8,6 +8,9 @@ import 'package:gauge_indicator/gauge_indicator.dart';
 class GaugeAxisStyle extends Equatable {
   final double thickness;
   final double segmentSpacing;
+
+  /// Corner radius of the axis core segment
+  final Radius cornerRadius;
   final Color? background;
 
   /// Whether to blend the colors of the segments.
@@ -16,6 +19,7 @@ class GaugeAxisStyle extends Equatable {
   const GaugeAxisStyle({
     this.thickness = 10,
     this.background,
+    this.cornerRadius = Radius.zero,
     this.segmentSpacing = 0,
     this.blendColors = true,
   });
@@ -30,6 +34,7 @@ class GaugeAxisStyle extends Equatable {
         background: Color.lerp(begin.background, end.background, t),
         blendColors: end.blendColors,
         segmentSpacing: lerpDouble(begin.segmentSpacing, end.segmentSpacing, t),
+        cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t)!,
       );
 
   @override

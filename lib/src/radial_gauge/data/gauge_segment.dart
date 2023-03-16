@@ -9,6 +9,7 @@ class GaugeSegment extends Equatable {
   final Color color;
   final GaugeAxisGradient? gradient;
   final Shader? shader;
+  final Radius cornerRadius;
 
   const GaugeSegment({
     required this.from,
@@ -16,6 +17,7 @@ class GaugeSegment extends Equatable {
     this.color = const Color(0x00000000),
     this.gradient,
     this.shader,
+    this.cornerRadius = Radius.zero,
   });
 
   GaugeSegment copyWith({
@@ -24,6 +26,7 @@ class GaugeSegment extends Equatable {
     final Color? color,
     GaugeAxisGradient? gradient,
     Shader? shader,
+    Radius? cornerRadius,
   }) =>
       GaugeSegment(
         from: from ?? this.from,
@@ -31,6 +34,7 @@ class GaugeSegment extends Equatable {
         color: color ?? this.color,
         gradient: gradient ?? this.gradient,
         shader: shader ?? this.shader,
+        cornerRadius: cornerRadius ?? this.cornerRadius,
       );
 
   static GaugeSegment lerp(GaugeSegment begin, GaugeSegment end, double t) =>
@@ -40,6 +44,7 @@ class GaugeSegment extends Equatable {
         color: Color.lerp(begin.color, end.color, t)!,
         gradient: end.gradient,
         shader: end.shader,
+        cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t)!,
       );
 
   @override

@@ -1,5 +1,8 @@
+import 'dart:math' as math;
+
 import 'package:flutter/widgets.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:gauge_indicator/src/utils/calculate_radius_path.dart';
 
 class GaugeSegmentDefinition {
   final double startAngle;
@@ -7,10 +10,12 @@ class GaugeSegmentDefinition {
   final Color? color;
   final GaugeAxisGradient? gradient;
   final Shader? shader;
+  final Path path;
 
   GaugeSegmentDefinition({
     required this.startAngle,
     required this.sweepAngle,
+    required this.path,
     this.color,
     this.gradient,
     this.shader,
@@ -18,7 +23,7 @@ class GaugeSegmentDefinition {
 }
 
 class RadialGaugeAxisDefinition {
-  /// Describes a cricle placed in the axis center.
+  /// Describes a circle placed in the axis center.
   final Rect rect;
   final Path surface;
   final double thickness;
@@ -48,12 +53,41 @@ class RadialGaugeAxisDefinition {
       );
 
   factory RadialGaugeAxisDefinition.calculate(
-      RadialGaugeLayout layout, GaugeAxis axis) {
-    final axisSurface = calculateRoundedArcPath(
-      layout.circleRect,
-      degrees: axis.degrees,
-      thickness: axis.style.thickness,
+    RadialGaugeLayout layout,
+    GaugeAxis axis,
+  ) {
+    final thickness = axis.style.thickness;
+    final halfThickness = thickness / 2;
+
+    final cornerRadius = axis.style.cornerRadius.clampValues(
+      minimumX: 0,
+      minimumY: 0,
+      maximumX: halfThickness,
+      maximumY: halfThickness,
     );
+
+    final Path axisSurface;
+    if (cornerRadius == Radius.zero) {
+      axisSurface = calculateAxisPath(
+        layout.circleRect,
+        degrees: axis.degrees,
+        thickness: axis.style.thickness,
+      );
+    } else if (cornerRadius.x == cornerRadius.y &&
+        cornerRadius.x == halfThickness) {
+      axisSurface = calculateRoundedArcPath(
+        layout.circleRect,
+        degrees: axis.degrees,
+        thickness: axis.style.thickness,
+      );
+    } else {
+      axisSurface = calculateRadiusArcPath(
+        layout.circleRect,
+        cornerRadius: cornerRadius,
+        degrees: axis.degrees,
+        thickness: axis.style.thickness,
+      );
+    }
 
     final clampedRadius = layout.radius;
     final degrees = axis.degrees.clamp(10.0, 360.0);
@@ -64,9 +98,6 @@ class RadialGaugeAxisDefinition {
       begin: -180.0 - angleShift,
       end: 0.0 + angleShift,
     );
-
-    final thickness = axis.style.thickness;
-    final halfThickness = thickness / 2;
 
     final centerRadius = clampedRadius - halfThickness;
 
@@ -80,6 +111,7 @@ class RadialGaugeAxisDefinition {
       rect: axisRect,
       thickness: thickness,
       segments: _calculateAxisSegments(
+        axisRect,
         axis,
         gaugeDegreesTween,
         centerRadius,
@@ -88,11 +120,20 @@ class RadialGaugeAxisDefinition {
   }
 
   static Iterable<GaugeSegmentDefinition> _calculateAxisSegments(
+    Rect axisRect,
     GaugeAxis axis,
     Tween<double> gaugeDegreesTween,
     double radius,
   ) sync* {
-    final separator = getArcAngle(axis.style.segmentSpacing, radius) / 2;
+    const pi2 = math.pi * 2;
+    final spacingAngle = getArcAngle(axis.style.segmentSpacing, radius);
+    // Each segment has a half separator added / removed from its path.
+    final separatorAngle = spacingAngle / 2;
+    final separator = separatorAngle / pi2;
+
+    final pathRadius = axis.style.thickness * 0.5;
+    final pathInsets = EdgeInsets.all(pathRadius);
+    final externalRect = pathInsets.inflateRect(axisRect);
 
     for (var i = 0; i < axis.segments.length; i++) {
       final segment = axis.segments[i];
@@ -113,12 +154,33 @@ class RadialGaugeAxisDefinition {
               ? separator
               : separator * 2;
 
+      final thickness = axis.style.thickness;
+      final halfThickness = thickness / 2;
+
+      final clampedFrom = (from - trimStart).clamp(0.0, 1.0);
+      final clampedTo = (to - trimEnd).clamp(0.0, 1.0);
+
+      final path = calculateRadiusArcPath(
+        externalRect,
+        cornerRadius: segment.cornerRadius.clampValues(
+          minimumX: 0,
+          minimumY: 0,
+          maximumX: halfThickness,
+          maximumY: halfThickness,
+        ),
+        degrees: axis.degrees,
+        from: math.min(clampedFrom, clampedTo),
+        to: math.max(clampedFrom, clampedTo),
+        thickness: thickness,
+      );
+
       yield GaugeSegmentDefinition(
         startAngle: toRadians(startAngle) - trimStart,
         sweepAngle: toRadians(sweepAngle) - trimEnd,
         color: segment.color,
         gradient: segment.gradient,
         shader: segment.shader,
+        path: path,
       );
     }
   }

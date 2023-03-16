@@ -30,6 +30,8 @@ class RadialGaugeExamplePage extends StatefulWidget {
   State<RadialGaugeExamplePage> createState() => _RadialGaugeExamplePageState();
 }
 
+const _radius = Radius.circular(8);
+
 class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
     with AutomaticKeepAliveClientMixin {
   double value = 65;
@@ -37,35 +39,38 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
   double _degree = 260;
   bool _hasPointer = true;
   bool _hasProgressBar = true;
-  Color _progressBarColor = Colors.red;
+  Color _progressBarColor = Colors.purple;
   Color _backgroundColor = Colors.transparent;
   Color _pointerColor = const Color(0xFF002E5F);
   double _parentWidth = 270;
   double _parentHeight = 270;
   double _gaugeRadius = 250;
-  double _thickness = 20;
-  double _spacing = 4;
+  double _thickness = 35;
+  double _spacing = 8;
   double _fontSize = 46;
   double _pointerSize = 26;
   var _pointerType = PointerType.needle;
-  var _progressBarPlacement = GaugeProgressPlacement.over;
-  var _progressBarType = ProgressBarType.rounded;
+  var _progressBarPlacement = GaugeProgressPlacement.inside;
+  var _progressBarType = ProgressBarType.basic;
 
   var _segments = <GaugeSegment>[
     const GaugeSegment(
       from: 0,
       to: 60.0,
       color: Color(0xFFD9DEEB),
+      cornerRadius: _radius,
     ),
     const GaugeSegment(
       from: 60.0,
       to: 85.0,
       color: Color(0xFFD9DEEB),
+      cornerRadius: _radius,
     ),
     const GaugeSegment(
       from: 85.0,
       to: 100,
       color: Color(0xFFD9DEEB),
+      cornerRadius: _radius,
     ),
   ];
 
@@ -83,16 +88,19 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
           from: 0,
           to: stops[0],
           color: colors[random.nextInt(colors.length)],
+          cornerRadius: _radius,
         ),
         GaugeSegment(
           from: stops[0],
           to: stops[1],
           color: colors[random.nextInt(colors.length)],
+          cornerRadius: _radius,
         ),
         GaugeSegment(
           from: stops[1],
           to: 100,
           color: colors[random.nextInt(colors.length)],
+          cornerRadius: _radius,
         ),
       ];
     });
@@ -455,6 +463,7 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
                           background: _backgroundColor,
                           segmentSpacing: _spacing,
                           blendColors: false,
+                          cornerRadius: _radius,
                         ),
                         segments: _segments,
                       ),
