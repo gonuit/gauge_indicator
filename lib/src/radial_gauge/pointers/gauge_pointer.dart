@@ -101,7 +101,8 @@ abstract class GaugePointer {
 
   /// Draws a triangle pointer.
   factory GaugePointer.triangle({
-    required double size,
+    required double width,
+    required double height,
     required Color color,
     GaugePointerPosition position,
     GaugePointerBorder? border,

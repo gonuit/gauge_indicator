@@ -118,7 +118,8 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
         );
       case PointerType.triangle:
         return GaugePointer.triangle(
-          size: _pointerSize,
+          width: _pointerSize,
+          height: _pointerSize,
           borderRadius: _pointerSize * 0.125,
           color: _pointerColor,
           position: GaugePointerPosition.surface(
