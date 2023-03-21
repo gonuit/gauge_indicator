@@ -12,9 +12,9 @@ Path calculateRoundedArcPath(
 
   final radius = rect.longestSide / 2;
 
-  degrees = (degrees).clamp(10.0, 360.0);
+  degrees = (degrees).clamp(10.0, 359.99);
   final part = to - from;
-  final useDegrees = (degrees * part).clamp(10.0, 360.0);
+  final useDegrees = (degrees * part).clamp(10.0, 359.99);
 
   /// We are shifting arc angles to center it horizontally.
   final angleShift = (degrees - 180) / 2;
@@ -24,7 +24,6 @@ Path calculateRoundedArcPath(
   );
 
   final circleCenter = rect.center;
-
   final halfThickness = thickness / 2;
 
   /// Can be helpful for multiple axes support.
@@ -49,6 +48,7 @@ Path calculateRoundedArcPath(
       getPointOnCircle(circleCenter, axisEndAngle, innerRadius);
   final startInnerPoint =
       getPointOnCircle(circleCenter, axisStartAngle, innerRadius);
+
   final axisSurface = Path()
     ..moveTo(startOuterPoint.dx, startOuterPoint.dy)
     ..arcToPoint(

@@ -147,17 +147,13 @@ class RadialGaugeAxisDefinition {
 
       final isLast = (i + 1) == axis.segments.length;
       final isFirst = i == 0;
-      final trimStart = isFirst ? 0 : -separator;
-      final trimEnd = isFirst && isLast
-          ? 0
-          : isFirst || isLast
-              ? separator
-              : separator * 2;
+      final trimStart = isFirst ? 0 : separator;
+      final trimEnd = isFirst && isLast || isLast ? 0 : separator;
 
       final thickness = axis.style.thickness;
       final halfThickness = thickness / 2;
 
-      final clampedFrom = (from - trimStart).clamp(0.0, 1.0);
+      final clampedFrom = (from + trimStart).clamp(0.0, 1.0);
       final clampedTo = (to - trimEnd).clamp(0.0, 1.0);
 
       final path = calculateRadiusArcPath(
@@ -175,7 +171,7 @@ class RadialGaugeAxisDefinition {
       );
 
       yield GaugeSegmentDefinition(
-        startAngle: toRadians(startAngle) - trimStart,
+        startAngle: toRadians(startAngle) + trimStart,
         sweepAngle: toRadians(sweepAngle) - trimEnd,
         color: segment.color,
         gradient: segment.gradient,
