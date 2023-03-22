@@ -48,5 +48,5 @@ class GaugeSegment extends Equatable {
       );
 
   @override
-  List<Object?> get props => [from, to, color, gradient, shader];
+  List<Object?> get props => [from, to, color, gradient, shader, cornerRadius];
 }

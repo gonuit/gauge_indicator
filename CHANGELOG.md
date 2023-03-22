@@ -1,4 +1,4 @@
-## 0.4.0-dev.4
+## 0.4.0-dev.5
 - Added factory constructors _GaugeProgressBar_ and _GaugePointer_ classes.
 - Fixed the `radius` property of *RadialGauge* and *AnimatedRadialGauge* widgets.
 - Added implicit `radius` animation for the *AnimatedRadialGauge* widget.
