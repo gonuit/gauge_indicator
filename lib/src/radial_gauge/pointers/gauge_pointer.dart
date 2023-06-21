@@ -77,7 +77,13 @@ abstract class GaugePointer {
   Path get path;
   Size get size;
   GaugePointerPosition get position;
-  Color get color;
+
+  /// Either color or gradient must be provided.
+  Color? get color;
+  Gradient? get gradient;
+
+  /// When null, the pointer shadow will not be rendered.
+  Shadow? get shadow;
 
   /// When null, the pointer border will not be rendered.
   GaugePointerBorder? get border;
@@ -89,23 +95,29 @@ abstract class GaugePointer {
     GaugePointerPosition position,
     GaugePointerBorder? border,
     double? borderRadius,
+    Gradient? gradient,
+    Shadow? shadow,
   }) = NeedlePointer;
 
   /// Draws a circle pointer.
   factory GaugePointer.circle({
     required double radius,
-    required Color color,
+    Color? color,
     GaugePointerPosition position,
     GaugePointerBorder? border,
+    Gradient? gradient,
+    Shadow? shadow,
   }) = CirclePointer;
 
   /// Draws a triangle pointer.
   factory GaugePointer.triangle({
     required double width,
     required double height,
-    required Color color,
+    Color? color,
     GaugePointerPosition position,
     GaugePointerBorder? border,
     double borderRadius,
+    Gradient? gradient,
+    Shadow? shadow,
   }) = TrianglePointer;
 }
