@@ -17,3 +17,17 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+funding:
+- https://www.paypal.com/donate/?hosted_button_id=Z82R98MAR4URE
+- https://www.buymeacoffee.com/kamilklyta
+
+topics:
+ - widgets
+ - animation
+ - gauge
+ - gauge-indicator
+ - gauges
+
+screenshots:
+  - description: The gauge_indicator package thumbnail.
+    path: readme/animated.gif

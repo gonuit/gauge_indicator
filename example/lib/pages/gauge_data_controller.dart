@@ -196,7 +196,8 @@ class GaugeDataController extends ChangeNotifier {
     switch (pointerType) {
       case PointerType.needle:
         return GaugePointer.needle(
-          size: Size(pointerSize * 0.625, pointerSize * 4),
+          width: pointerSize * 0.625,
+          height: pointerSize * 4,
           color: pointerColor,
           position: GaugePointerPosition.center(
             offset: Offset(0, pointerSize * 0.3125),

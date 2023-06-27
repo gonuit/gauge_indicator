@@ -7,13 +7,13 @@
 
 ---
 
-|            Progress bar and shader support             |                   Multiple segments style                   |                  Gradient support                   |
-| :----------------------------------------------------: | :---------------------------------------------------------: | :-------------------------------------------------: |
+|                                           Progress bar and shader support                                            |                                                  Multiple segments style                                                  |                                                 Gradient support                                                  |
+| :------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: |
 | ![AnimatedRadialGauge](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/shader_progress_bar.gif) | ![AnimatedRadialGauge](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/multiple_segments_styles.gif) | ![AnimatedRadialGauge](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/gradient_support.gif) |
 
 ## Usage
 
-It is as simple as defining a `RadialGauge` or an `AnimatedRadialGauge` widget in your widget tree.
+Just define the `RadialGauge` or `AnimatedRadialGauge` widget in the widget tree.
 
 ## Code
 
@@ -30,10 +30,6 @@ Widget build(BuildContext context) {
 
   /// Gauge value.
   value: value,
-
-  progressBar: const GaugeRoundedProgressBar(
-    color: Color(0xFFB4C2F8),
-  ),
 
   /// Optionally, you can configure your gauge, providing additional
   /// styles and transformers.
@@ -56,6 +52,11 @@ Widget build(BuildContext context) {
       borderRadius: 16,
       backgroundColor: Color(0xFF193663),
     ),
+    
+    /// Define the progress bar.
+    progressBar: const GaugeProgressBar.rounded(
+      color: Color(0xFFB4C2F8),
+    ),
     /// You can also, define the child builder.
     /// You will build a value label in the following way, but you can use the widget of your choice.
     ///
@@ -77,3 +78,9 @@ Widget build(BuildContext context) {
 ## Output
 
 ![example](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/example.gif)
+
+
+___
+   
+
+![footer](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/header.gif)

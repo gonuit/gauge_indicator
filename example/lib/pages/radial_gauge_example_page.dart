@@ -50,13 +50,13 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
                 duration: const Duration(milliseconds: 2000),
                 curve: Curves.elasticOut,
                 value: _controller.value,
-                progressBar: _controller.hasProgressBar
-                    ? _controller.getProgressBar(_controller.progressBarType)
-                    : null,
                 axis: GaugeAxis(
                   degrees: _controller.degree,
                   pointer: _controller.hasPointer
                       ? _controller.getPointer(_controller.pointerType)
+                      : null,
+                  progressBar: _controller.hasProgressBar
+                      ? _controller.getProgressBar(_controller.progressBarType)
                       : null,
                   transformer: const GaugeAxisTransformer.colorFadeIn(
                     interval: Interval(0.0, 0.3),
