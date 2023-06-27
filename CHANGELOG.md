@@ -1,3 +1,5 @@
+## 0.4.2
+- Updated package thumbnail image
 ## 0.4.1
 - Fixed the gauge indicator not responding to the progress bar change.
 ## 0.4.0
