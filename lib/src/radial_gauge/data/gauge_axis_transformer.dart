@@ -15,6 +15,7 @@ abstract class GaugeAxisTransformer {
 
   /// No transformation
   const factory GaugeAxisTransformer.noTransform() = _NoTransform;
+
   /// Gradually displays the colors of the segments.
   const factory GaugeAxisTransformer.colorFadeIn({
     required Interval interval,
