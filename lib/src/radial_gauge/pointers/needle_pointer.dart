@@ -20,19 +20,21 @@ class NeedlePointer extends Equatable implements GaugePointer {
   final Shadow? shadow;
 
   NeedlePointer({
-    required this.size,
+    required double width,
+    required double height,
     this.color,
     this.position = const GaugePointerPosition.center(),
     this.border,
     double? borderRadius,
     this.gradient,
     this.shadow,
-  })  : borderRadius = borderRadius ?? size.width / 2,
+  })  : borderRadius = borderRadius ?? width / 2,
+        size = Size(width, height),
         path = roundedPoly([
-          VertexDefinition(0, size.height), // bottom left
-          VertexDefinition(size.width, size.height), // bottom right
-          VertexDefinition(size.width / 2, 0, radius: 0), // top center
-        ], borderRadius ?? size.width / 2),
+          VertexDefinition(0, height), // bottom left
+          VertexDefinition(width, height), // bottom right
+          VertexDefinition(width / 2, 0, radius: 0), // top center
+        ], borderRadius ?? width / 2),
         assert(
             (color != null && gradient == null) ||
                 (gradient != null && color == null),

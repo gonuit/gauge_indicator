@@ -17,9 +17,9 @@ class GaugeAxisStyle extends Equatable {
   final bool blendColors;
 
   const GaugeAxisStyle({
-    this.thickness = 10,
-    this.background,
-    this.cornerRadius = Radius.zero,
+    this.thickness = 20,
+    this.background = const Color(0xFFf0f0f0),
+    this.cornerRadius = const Radius.circular(10),
     this.segmentSpacing = 0,
     this.blendColors = true,
   });
@@ -52,22 +52,65 @@ class GaugeAxisTween extends Tween<GaugeAxis?> {
 
 @immutable
 class GaugeAxis extends Equatable {
+  /// If specified, the defined indicator will be used to display
+  /// the current value of the gauge.
+  ///
+  /// Defaults to [defaultPointer].
+  /// ```
   final GaugePointer? pointer;
+
+  /// The minimum value the gauge can display.
+  ///
+  /// Defaults to 0.0. Must be less than [max].
   final double min;
+
+  /// The maximum value the gauge can display.
+  ///
+  /// Defaults to 1.0. Must be greater than [min].
   final double max;
-  final GaugeAxisStyle style;
+
+  /// Determines the degree of arc of the gauge axis.
+  ///
+  /// Defaults to 180.
   final double degrees;
+
+  /// Specifies the style of the indicator axis.
+  final GaugeAxisStyle style;
+
+  /// Transformer is responsible for modifying segments.
+  ///
+  /// Implementations:
+  /// - [GaugeAxisTransformer.noTransform] - default, no transformation.
+  /// - [GaugeAxisTransformer.progress] - Uses segments to display gauge value.
+  ///  Can be used as a progress bar.
+  /// - [GaugeAxisTransformer.colorFadeIn] - Gradually displays the colors of
+  /// the segments.
   final GaugeAxisTransformer transformer;
 
+  /// Segments to be drawn on the gauge axis.
   final List<GaugeSegment> segments;
+
+  static const defaultPointer = GaugePointer.triangle(
+    width: 24,
+    height: 24,
+    border: GaugePointerBorder(
+      color: Color(0xFFf0f0f0),
+      width: 2,
+    ),
+    borderRadius: 3,
+    position: GaugePointerPosition.surface(
+      offset: Offset(0, 8),
+    ),
+    color: Colors.black,
+  );
 
   const GaugeAxis({
     this.min = 0.0,
-    this.max = 100.0,
+    this.max = 1.0,
     this.transformer = const GaugeAxisTransformer.noTransform(),
     this.segments = const [],
     this.degrees = 180,
-    this.pointer,
+    this.pointer = defaultPointer,
     this.style = const GaugeAxisStyle(),
   }) : assert(
           degrees >= 10 && degrees <= 360,

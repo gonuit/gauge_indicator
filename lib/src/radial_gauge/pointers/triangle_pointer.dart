@@ -7,9 +7,14 @@ class TrianglePointer extends Equatable implements GaugePointer {
   final double height;
 
   @override
-  final Size size;
+  Size get size => Size(width, height);
   @override
-  final Path path;
+  Path get path => roundedPoly([
+        VertexDefinition(0, height), // bottom left
+        VertexDefinition(width, height), // bottom right
+        VertexDefinition(width / 2, 0), // top center
+      ], borderRadius);
+
   @override
   final Color? color;
   @override
@@ -22,7 +27,7 @@ class TrianglePointer extends Equatable implements GaugePointer {
   @override
   final Shadow? shadow;
 
-  TrianglePointer({
+  const TrianglePointer({
     required this.width,
     required this.height,
     this.color,
@@ -31,13 +36,7 @@ class TrianglePointer extends Equatable implements GaugePointer {
     this.border,
     this.gradient,
     this.shadow,
-  })  : path = roundedPoly([
-          VertexDefinition(0, height), // bottom left
-          VertexDefinition(width, height), // bottom right
-          VertexDefinition(width / 2, 0), // top center
-        ], borderRadius),
-        size = Size(width, height),
-        assert(
+  }) : assert(
           (color != null && gradient == null) ||
               (gradient != null && color == null),
           'Either color or gradient must be provided.',

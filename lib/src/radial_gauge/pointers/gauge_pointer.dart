@@ -90,7 +90,8 @@ abstract class GaugePointer {
 
   /// Draws a needle pointer.
   factory GaugePointer.needle({
-    required Size size,
+    required double width,
+    required double height,
     required Color color,
     GaugePointerPosition position,
     GaugePointerBorder? border,
@@ -110,7 +111,7 @@ abstract class GaugePointer {
   }) = CirclePointer;
 
   /// Draws a triangle pointer.
-  factory GaugePointer.triangle({
+  const factory GaugePointer.triangle({
     required double width,
     required double height,
     Color? color,

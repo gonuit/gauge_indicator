@@ -13,12 +13,16 @@ class GaugeRange {
 abstract class GaugeAxisTransformer {
   const GaugeAxisTransformer();
 
+  /// No transformation
   const factory GaugeAxisTransformer.noTransform() = _NoTransform;
+  /// Gradually displays the colors of the segments.
   const factory GaugeAxisTransformer.colorFadeIn({
     required Interval interval,
     Color background,
   }) = _ColorFadeIn;
 
+  /// Uses segments to display gauge value.
+  /// Can be used as a progress bar.
   const factory GaugeAxisTransformer.progress({
     required Color color,
     bool blendColors,

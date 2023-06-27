@@ -14,10 +14,13 @@ class RadialGauge extends SingleChildRenderObjectWidget {
   final Alignment alignment;
   final bool debug;
 
+  static const defaultProgressBar =
+      GaugeProgressBar.basic(color: Color(0xFF9fec6d));
+
   const RadialGauge({
     required this.value,
     required this.axis,
-    this.progressBar,
+    this.progressBar = defaultProgressBar,
     this.radius,
     this.alignment = Alignment.center,
     this.debug = false,

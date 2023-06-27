@@ -27,7 +27,7 @@ class AnimatedRadialGauge extends ImplicitlyAnimatedWidget {
     required Duration duration,
     required this.value,
     this.builder,
-    this.progressBar,
+    this.progressBar = RadialGauge.defaultProgressBar,
     this.axis = const GaugeAxis(),
     Curve curve = Curves.linear,
     this.alignment = Alignment.center,
@@ -52,7 +52,7 @@ class _AnimatedRadialGaugeState
   bool _isInitialAnimation = true;
 
   Tween<double>? _valueTween;
-  Tween<double>? _radiusTween;
+  Tween<double?>? _radiusTween;
   GaugeAxisTween? _axisTween;
 
   @override
@@ -83,14 +83,18 @@ class _AnimatedRadialGaugeState
         end: widget.value,
       ),
     ) as Tween<double>;
-    _radiusTween = visitor(
-      _radiusTween,
-      widget.radius,
-      (dynamic value) => Tween<double>(
-        begin: value,
-        end: value,
-      ),
-    ) as Tween<double>;
+
+    _radiusTween = widget.radius == null
+        // If the radius is not specified, its animation is disabled.
+        ? NullTween()
+        : visitor(
+            _radiusTween,
+            widget.radius,
+            (dynamic value) => Tween<double?>(
+              begin: value,
+              end: value,
+            ),
+          ) as Tween<double?>;
   }
 
   @override
@@ -102,6 +106,7 @@ class _AnimatedRadialGaugeState
                 widget.axis.min,
                 widget.axis.max,
               );
+
           final radius = _radiusTween!.evaluate(animation);
           final computedAxis = _axisTween!.evaluate(animation)!.flatten();
 
