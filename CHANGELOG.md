@@ -1,3 +1,5 @@
+## 0.4.1
+- Fixed the gauge indicator not responding to the progress bar change.
 ## 0.4.0
 - Added factory constructors _GaugeProgressBar_ and _GaugePointer_ classes.
 - Fixed the `radius` property of *RadialGauge* and *AnimatedRadialGauge* widgets.

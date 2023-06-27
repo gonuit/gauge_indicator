@@ -160,7 +160,7 @@ class GaugeAxis extends Equatable {
       );
 
   @override
-  List<Object?> get props => [pointer, style, segments, degrees];
+  List<Object?> get props => [pointer, style, segments, degrees, progressBar];
 
   static GaugeAxis? lerp(GaugeAxis? begin, GaugeAxis? end, double t) {
     if (begin == null && end == null) {

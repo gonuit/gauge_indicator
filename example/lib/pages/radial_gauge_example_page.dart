@@ -4,6 +4,8 @@ import 'package:example/widgets/value_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 
+import 'dart:math' as math;
+
 import 'gauge_data_controller.dart';
 
 class RadialGaugeExamplePage extends StatefulWidget {
@@ -51,6 +53,8 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
                 curve: Curves.elasticOut,
                 value: _controller.value,
                 axis: GaugeAxis(
+                  min: 0,
+                  max: 100,
                   degrees: _controller.degree,
                   pointer: _controller.hasPointer
                       ? _controller.getPointer(_controller.pointerType)
@@ -88,11 +92,10 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
             children: [
               const PageTitle(title: 'gauge_indicator', isSmall: true),
               Expanded(
-                flex: 3,
                 child: gaugeWidget,
               ),
-              Expanded(
-                flex: 2,
+              SizedBox(
+                height: math.min(viewSize.height * 0.6, 400),
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,

@@ -3,6 +3,9 @@ description: Gauge indicator example project.
 publish_to: "none"
 version: 1.0.0
 
+scripts:
+  release: flutter build web --web-renderer canvaskit --release
+
 environment:
   sdk: ">=2.16.2 <3.0.0"
 
