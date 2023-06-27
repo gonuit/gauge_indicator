@@ -10,17 +10,12 @@ class RadialGauge extends SingleChildRenderObjectWidget {
 
   /// For now we are only supporting single axis.
   final GaugeAxis axis;
-  final GaugeProgressBar? progressBar;
   final Alignment alignment;
   final bool debug;
-
-  static const defaultProgressBar =
-      GaugeProgressBar.basic(color: Color(0xFF9fec6d));
 
   const RadialGauge({
     required this.value,
     required this.axis,
-    this.progressBar = defaultProgressBar,
     this.radius,
     this.alignment = Alignment.center,
     this.debug = false,
@@ -32,7 +27,6 @@ class RadialGauge extends SingleChildRenderObjectWidget {
   RenderObject createRenderObject(BuildContext context) {
     return RadialGaugeRenderBox(
       alignment: alignment,
-      progressBar: progressBar,
       axis: axis,
       value: value,
       radius: radius,
@@ -48,7 +42,6 @@ class RadialGauge extends SingleChildRenderObjectWidget {
     renderObject
       ..alignment = alignment
       ..axis = axis
-      ..progressBar = progressBar
       ..value = value
       ..radius = radius
       ..debug = debug;

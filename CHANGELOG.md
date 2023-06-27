@@ -7,6 +7,8 @@
 - Fixed the basic progress bar for the 360-degree axis.
 - Fixed errors that occur when using the *AnimatedRadialGauge* widget without the *radius* property provided.
 - Added default style for *RadialGauge* and *AnimatedRadialGauge* widgets to make it easier to get started with the widget.
+- Moved *progressBar* property from the widget to the *GaugeAxis* class.
+- Made *GaugeProgressBar* constructors constant.
 - Minor bug fixes.
 
 ## 0.3.3

@@ -87,6 +87,8 @@ class GaugeAxis extends Equatable {
   /// the segments.
   final GaugeAxisTransformer transformer;
 
+  final GaugeProgressBar? progressBar;
+
   /// Segments to be drawn on the gauge axis.
   final List<GaugeSegment> segments;
 
@@ -104,6 +106,9 @@ class GaugeAxis extends Equatable {
     color: Colors.black,
   );
 
+  static const defaultProgressBar =
+      GaugeProgressBar.basic(color: Color(0xFF9fec6d));
+
   const GaugeAxis({
     this.min = 0.0,
     this.max = 1.0,
@@ -111,6 +116,7 @@ class GaugeAxis extends Equatable {
     this.segments = const [],
     this.degrees = 180,
     this.pointer = defaultPointer,
+    this.progressBar = defaultProgressBar,
     this.style = const GaugeAxisStyle(),
   }) : assert(
           degrees >= 10 && degrees <= 360,
@@ -129,11 +135,11 @@ class GaugeAxis extends Equatable {
     final GaugeAxisStyle? style,
     final List<GaugeSegment>? segments,
     final GaugePointer? pointer,
+    final GaugeProgressBar? progressBar,
     final GaugeAxisTransformer? transformer,
     final double? degrees,
     final double? min,
     final double? max,
-    final double? value,
   }) =>
       GaugeAxis(
         min: min ?? this.min,
@@ -143,6 +149,7 @@ class GaugeAxis extends Equatable {
         style: style ?? this.style,
         pointer: pointer ?? this.pointer,
         transformer: transformer ?? this.transformer,
+        progressBar: progressBar ?? this.progressBar,
       );
 
   GaugeAxis flatten() => copyWith(
@@ -190,6 +197,7 @@ class GaugeAxis extends Equatable {
         degrees: lerpDouble(begin.degrees, end.degrees, t).clamp(10.0, 360.0),
         style: GaugeAxisStyle.lerp(begin.style, end.style, t),
         pointer: end.pointer,
+        progressBar: end.progressBar,
         transformer: end.transformer,
         segments: transformedSegments,
       );

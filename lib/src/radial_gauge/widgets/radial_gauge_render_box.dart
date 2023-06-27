@@ -70,15 +70,6 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     }
   }
 
-  GaugeProgressBar? _progressBar;
-  GaugeProgressBar? get progressBar => _progressBar;
-  set progressBar(GaugeProgressBar? progress) {
-    if (_progressBar != progress) {
-      _progressBar = progress;
-      markNeedsPaint();
-    }
-  }
-
   late RadialGaugeLayout _computedLayout;
   late RadialGaugeAxisDefinition _axisDefinition;
 
@@ -88,11 +79,9 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     required final GaugeAxis axis,
     required final Alignment alignment,
     required final bool debug,
-    required final GaugeProgressBar? progressBar,
     required final double? radius,
     RenderBox? child,
-  })  : _progressBar = progressBar,
-        _value = value,
+  })  : _value = value,
         _axis = axis,
         _alignment = alignment,
         _radius = radius,
@@ -187,8 +176,10 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
       canvas.drawRect(layout.targetRect, paint);
     }
 
+    final progressBar = axis.progressBar;
+
     final hasProgressBarInside = progressBar != null &&
-        progressBar!.placement == GaugeProgressPlacement.inside;
+        progressBar.placement == GaugeProgressPlacement.inside;
 
     if (hasProgressBarInside) {
       final segmentsPath = Path();
@@ -233,7 +224,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     // drawing progress
 
     if (progressBar != null) {
-      progressBar!.paint(axis, layout, canvas, _valueProgress);
+      progressBar.paint(axis, layout, canvas, _valueProgress);
     }
 
     if (hasProgressBarInside) {

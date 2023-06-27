@@ -18,7 +18,6 @@ class AnimatedRadialGauge extends ImplicitlyAnimatedWidget {
   final bool debug;
   final double? radius;
   final Widget? child;
-  final GaugeProgressBar? progressBar;
   final GaugeLabelBuilder? builder;
 
   const AnimatedRadialGauge({
@@ -27,7 +26,6 @@ class AnimatedRadialGauge extends ImplicitlyAnimatedWidget {
     required Duration duration,
     required this.value,
     this.builder,
-    this.progressBar = RadialGauge.defaultProgressBar,
     this.axis = const GaugeAxis(),
     Curve curve = Curves.linear,
     this.alignment = Alignment.center,
@@ -122,7 +120,6 @@ class _AnimatedRadialGaugeState
             value: value,
             radius: radius,
             alignment: widget.alignment,
-            progressBar: widget.progressBar,
             axis: axis,
             child: widget.builder?.call(context, widget.child, value),
           );
