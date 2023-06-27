@@ -32,7 +32,8 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
   GaugeAxis _axis;
   set axis(GaugeAxis axis) {
     if (_axis != axis) {
-      if (_axis.degrees != axis.degrees || _axis.style.thickness != axis.style.thickness) {
+      if (_axis.degrees != axis.degrees ||
+          _axis.style.thickness != axis.style.thickness) {
         markNeedsLayout();
       } else {
         _axisDefinition.markNeedsRecalculation();
@@ -115,10 +116,12 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     );
     size = _computedLayout.sourceRect.size;
 
-    _axisDefinition = RadialGaugeAxisDefinition.calculate(_computedLayout, axis);
+    _axisDefinition =
+        RadialGaugeAxisDefinition.calculate(_computedLayout, axis);
 
     if (child != null) {
-      final innerCircleRadius = (_computedLayout.radius - axis.style.thickness) / 2 * math.sqrt2;
+      final innerCircleRadius =
+          (_computedLayout.radius - axis.style.thickness) / 2 * math.sqrt2;
       final circleRect = Rect.fromCircle(
         center: _computedLayout.circleRect.center,
         radius: innerCircleRadius,
@@ -184,7 +187,8 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
       canvas.drawRect(layout.targetRect, paint);
     }
 
-    final hasProgressBarInside = progressBar != null && progressBar!.placement == GaugeProgressPlacement.inside;
+    final hasProgressBarInside = progressBar != null &&
+        progressBar!.placement == GaugeProgressPlacement.inside;
 
     if (hasProgressBarInside) {
       final segmentsPath = Path();
@@ -215,7 +219,9 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
           gradient.tileMode,
           0.0,
           segment.sweepAngle,
-          GradientRotation(segment.startAngle).transform(layout.circleRect).storage,
+          GradientRotation(segment.startAngle)
+              .transform(layout.circleRect)
+              .storage,
         );
       } else if (segment.color != null) {
         paint.color = segment.color!;

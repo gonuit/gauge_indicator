@@ -33,7 +33,9 @@ class NeedlePointer extends Equatable implements GaugePointer {
           VertexDefinition(size.width, size.height), // bottom right
           VertexDefinition(size.width / 2, 0, radius: 0), // top center
         ], borderRadius ?? size.width / 2),
-        assert((color != null && gradient == null) || (gradient != null && color == null),
+        assert(
+            (color != null && gradient == null) ||
+                (gradient != null && color == null),
             'Either color or gradient must be provided.');
 
   @override

@@ -31,9 +31,11 @@ class CirclePointer extends Equatable implements GaugePointer {
             radius: radius,
           )),
         size = Size.fromRadius(radius),
-        assert((color != null && gradient == null) ||
-         (gradient != null && color == null),
-            'Either color or gradient must be provided.',);
+        assert(
+          (color != null && gradient == null) ||
+              (gradient != null && color == null),
+          'Either color or gradient must be provided.',
+        );
 
   @override
   List<Object?> get props => [size, color, border, position, gradient, shadow];

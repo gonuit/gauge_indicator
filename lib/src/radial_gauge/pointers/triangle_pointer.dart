@@ -38,7 +38,8 @@ class TrianglePointer extends Equatable implements GaugePointer {
         ], borderRadius),
         size = Size(width, height),
         assert(
-          (color != null && gradient == null) || (gradient != null && color == null),
+          (color != null && gradient == null) ||
+              (gradient != null && color == null),
           'Either color or gradient must be provided.',
         );
 
