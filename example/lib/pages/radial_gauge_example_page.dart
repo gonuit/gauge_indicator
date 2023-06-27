@@ -1,27 +1,10 @@
-import 'dart:math';
-
 import 'package:example/widgets/color_picker.dart';
 import 'package:example/widgets/package_title.dart';
 import 'package:example/widgets/value_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 
-const colors = [
-  Colors.green,
-  Color(0xFF34C759),
-  Colors.amber,
-  Colors.red,
-  Colors.blue,
-  Colors.blueAccent,
-  Colors.lightBlue,
-  Colors.grey,
-  Colors.black,
-  Color(0xFFD9DEEB),
-];
-
-enum PointerType { needle, triangle, circle }
-
-enum ProgressBarType { rounded, basic }
+import 'gauge_data_controller.dart';
 
 class RadialGaugeExamplePage extends StatefulWidget {
   const RadialGaugeExamplePage({Key? key}) : super(key: key);
@@ -30,481 +13,361 @@ class RadialGaugeExamplePage extends StatefulWidget {
   State<RadialGaugeExamplePage> createState() => _RadialGaugeExamplePageState();
 }
 
-class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage>
-    with AutomaticKeepAliveClientMixin {
-  double value = 65;
-  double _sliderValue = 65;
-  double _degree = 260;
-  bool _hasPointer = true;
-  bool _hasProgressBar = true;
-  double _segmentsRadius = 8;
-  Color _progressBarColor = Colors.purple;
-  Color _backgroundColor = Colors.transparent;
-  Color _pointerColor = const Color(0xFF002E5F);
-  double _parentWidth = 500;
-  double _parentHeight = 500;
-  double _gaugeRadius = 150;
-  double _thickness = 35;
-  double _spacing = 8;
-  double _fontSize = 46;
-  double _pointerSize = 26;
-  var _pointerType = PointerType.needle;
-  var _progressBarPlacement = GaugeProgressPlacement.inside;
-  var _progressBarType = ProgressBarType.basic;
-
-  var _segments = <GaugeSegment>[
-    const GaugeSegment(
-      from: 0,
-      to: 60.0,
-      color: Color(0xFFD9DEEB),
-      cornerRadius: Radius.zero,
-    ),
-    const GaugeSegment(
-      from: 60.0,
-      to: 85.0,
-      color: Color(0xFFD9DEEB),
-      cornerRadius: Radius.zero,
-    ),
-    const GaugeSegment(
-      from: 85.0,
-      to: 100,
-      color: Color(0xFFD9DEEB),
-      cornerRadius: Radius.zero,
-    ),
-  ];
-
-  @override
-  bool get wantKeepAlive => true;
-
-  void _randomizeSegments() {
-    final random = Random();
-    final a = random.nextDouble() * 100;
-    final b = random.nextDouble() * 100;
-    final stops = a > b ? [b, a] : [a, b];
-    setState(() {
-      _segments = <GaugeSegment>[
-        GaugeSegment(
-          from: 0,
-          to: stops[0],
-          color: colors[random.nextInt(colors.length)],
-          cornerRadius: Radius.zero,
-        ),
-        GaugeSegment(
-          from: stops[0],
-          to: stops[1],
-          color: colors[random.nextInt(colors.length)],
-          cornerRadius: Radius.zero,
-        ),
-        GaugeSegment(
-          from: stops[1],
-          to: 100,
-          color: colors[random.nextInt(colors.length)],
-          cornerRadius: Radius.zero,
-        ),
-      ];
-    });
-  }
-
-  GaugePointer getPointer(PointerType pointerType) {
-    switch (pointerType) {
-      case PointerType.needle:
-        return GaugePointer.needle(
-          size: Size(_pointerSize * 0.625, _pointerSize * 4),
-          color: _pointerColor,
-          position: GaugePointerPosition.center(
-            offset: Offset(0, _pointerSize * 0.3125),
-          ),
-        );
-      case PointerType.triangle:
-        return GaugePointer.triangle(
-          width: _pointerSize,
-          height: _pointerSize,
-          borderRadius: _pointerSize * 0.125,
-          color: _pointerColor,
-          position: GaugePointerPosition.surface(
-            offset: Offset(0, _thickness * 0.6),
-          ),
-          border: GaugePointerBorder(
-            color: Colors.white,
-            width: _pointerSize * 0.125,
-          ),
-        );
-      case PointerType.circle:
-        return GaugePointer.circle(
-          radius: _pointerSize * 0.5,
-          color: _pointerColor,
-          border: GaugePointerBorder(
-            color: Colors.white,
-            width: _pointerSize * 0.125,
-          ),
-        );
-    }
-  }
+class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
+  final _controller = GaugeDataController();
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    final viewSize = MediaQuery.sizeOf(context);
+    final isMobile = viewSize.width < 700;
+
     return Scaffold(
-      body: Center(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                border: Border(right: BorderSide(color: Color(0xFFDDDDDD))),
+      body: Builder(builder: (context) {
+        final gaugeWidget = Center(
+          child: AnimatedBuilder(
+            animation: _controller,
+            builder: (context, _) => Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: const Color(0xFFEFEFEF),
+                ),
               ),
-              width: 350,
-              child: Column(
-                children: [
-                  const PageTitle(title: 'gauge_indicator'),
-                  Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(vertical: 24),
-                      children: [
-                        ValueSlider(
-                          label: "Value",
-                          min: 0,
-                          max: 100,
-                          value: _sliderValue,
-                          onChanged: (val) {
-                            setState(() {
-                              _sliderValue =
-                                  double.parse(val.toStringAsFixed(2));
-                            });
-                          },
-                          onChangeEnd: (newVal) {
-                            setState(() {
-                              value = newVal;
-                            });
-                          },
-                        ),
-                        ValueSlider(
-                          label: "Degrees",
-                          min: 30,
-                          max: 360,
-                          value: _degree,
-                          onChanged: (val) {
-                            setState(() {
-                              _degree = double.parse(val.toStringAsFixed(2));
-                            });
-                          },
-                        ),
-                        ValueSlider(
-                          label: "Segments radius",
-                          min: 0,
-                          max: 20,
-                          value: _segmentsRadius,
-                          onChanged: (val) {
-                            setState(() {
-                              _segmentsRadius =
-                                  double.parse(val.toStringAsFixed(2));
-                            });
-                          },
-                        ),
-                        ValueSlider(
-                          label: "Thickness",
-                          min: 5,
-                          max: 40,
-                          value: _thickness,
-                          onChanged: (val) {
-                            setState(() {
-                              _thickness = double.parse(val.toStringAsFixed(2));
-                            });
-                          },
-                        ),
-                        ValueSlider(
-                          label: "Spacing",
-                          min: 0,
-                          max: 20,
-                          value: _spacing,
-                          onChanged: (val) {
-                            setState(() {
-                              _spacing = double.parse(val.toStringAsFixed(2));
-                            });
-                          },
-                        ),
-                        ValueSlider(
-                          label: "Font size",
-                          min: 8,
-                          max: 48,
-                          value: _fontSize,
-                          onChanged: (val) {
-                            setState(() {
-                              _fontSize = double.parse(val.toStringAsFixed(2));
-                            });
-                          },
-                        ),
-                        ValueSlider(
-                          label: "Gauge radius",
-                          min: 50,
-                          max: 250,
-                          value: _gaugeRadius,
-                          onChanged: (val) {
-                            setState(() {
-                              _gaugeRadius =
-                                  double.parse(val.toStringAsFixed(2));
-                            });
-                          },
-                        ),
-                        ValueSlider(
-                          label: "Parent height",
-                          min: 150,
-                          max: 500,
-                          value: _parentHeight,
-                          onChanged: (val) {
-                            setState(() {
-                              _parentHeight =
-                                  double.parse(val.toStringAsFixed(2));
-                            });
-                          },
-                        ),
-                        ValueSlider(
-                          label: "Parent width",
-                          min: 150,
-                          max: 500,
-                          value: _parentWidth,
-                          onChanged: (val) {
-                            setState(() {
-                              _parentWidth =
-                                  double.parse(val.toStringAsFixed(2));
-                            });
-                          },
-                        ),
-                        const Divider(),
-                        ColorField(
-                          title: "Background color",
-                          color: _backgroundColor,
-                          onColorChanged: (c) => setState(() {
-                            _backgroundColor = c;
-                          }),
-                        ),
-                        ColorField(
-                          title: "Segment 1 color",
-                          color: _segments[0].color,
-                          onColorChanged: (c) => setState(() {
-                            _segments[0] = _segments[0].copyWith(
-                              color: c,
-                            );
-                          }),
-                        ),
-                        ColorField(
-                          title: "Segment 2 color",
-                          color: _segments[1].color,
-                          onColorChanged: (c) => setState(() {
-                            _segments[1] = _segments[1].copyWith(
-                              color: c,
-                            );
-                          }),
-                        ),
-                        ColorField(
-                          title: "Segment 3 color",
-                          color: _segments[2].color,
-                          onColorChanged: (c) => setState(() {
-                            _segments[2] = _segments[2].copyWith(
-                              color: c,
-                            );
-                          }),
-                        ),
-                        const Divider(),
-                        CheckboxListTile(
-                            title: const Text("Has progress bar"),
-                            value: _hasProgressBar,
-                            onChanged: (selected) {
-                              if (selected != null) {
-                                setState(() {
-                                  _hasProgressBar = selected;
-                                });
-                              }
-                            }),
-                        if (_hasProgressBar)
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                            child: DropdownButton<GaugeProgressPlacement>(
-                              items: [
-                                for (final val in GaugeProgressPlacement.values)
-                                  DropdownMenuItem(
-                                    child: Text("Placement: ${val.name}"),
-                                    value: val,
-                                  )
-                              ],
-                              value: _progressBarPlacement,
-                              onChanged: (val) {
-                                if (val == null) return;
-                                setState(() {
-                                  _progressBarPlacement = val;
-                                });
-                              },
-                            ),
+              width: _controller.parentWidth,
+              height: _controller.parentHeight,
+              child: AnimatedRadialGauge(
+                radius: _controller.gaugeRadius,
+                builder: _controller.hasPointer &&
+                        _controller.pointerType == PointerType.needle
+                    ? null
+                    : (context, _, value) => RadialGaugeLabel(
+                          style: TextStyle(
+                            color: const Color(0xFF002E5F),
+                            fontSize: _controller.fontSize,
+                            fontWeight: FontWeight.bold,
                           ),
-                        if (_hasProgressBar)
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                            child: DropdownButton<ProgressBarType>(
-                              items: [
-                                for (final val in ProgressBarType.values)
-                                  DropdownMenuItem(
-                                    child: Text("Type: ${val.name}"),
-                                    value: val,
-                                  )
-                              ],
-                              value: _progressBarType,
-                              onChanged: (val) {
-                                if (val == null) return;
-                                setState(() {
-                                  _progressBarType = val;
-                                });
-                              },
-                            ),
-                          ),
-                        if (_hasProgressBar)
-                          ColorField(
-                            title: "Select progress bar color",
-                            color: _progressBarColor,
-                            onColorChanged: (c) => setState(() {
-                              _progressBarColor = c;
-                            }),
-                          ),
-                        const Divider(),
-                        CheckboxListTile(
-                            title: const Text("Has pointer"),
-                            value: _hasPointer,
-                            onChanged: (selected) async {
-                              if (selected != null) {
-                                setState(() {
-                                  _hasPointer = selected;
-                                });
-                              }
-                            }),
-                        if (_hasPointer)
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                            child: DropdownButton<PointerType>(
-                              items: [
-                                for (final val in PointerType.values)
-                                  DropdownMenuItem(
-                                    child: Text("Type: ${val.name}"),
-                                    value: val,
-                                  )
-                              ],
-                              value: _pointerType,
-                              onChanged: (val) {
-                                if (val == null) return;
-                                setState(() {
-                                  _pointerType = val;
-                                });
-                              },
-                            ),
-                          ),
-                        if (_hasPointer)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: ValueSlider(
-                              label: "Pointer size",
-                              min: 16,
-                              max: 36,
-                              value: _pointerSize,
-                              onChanged: (val) {
-                                setState(() {
-                                  _pointerSize = val;
-                                });
-                              },
-                            ),
-                          ),
-                        if (_hasPointer)
-                          ColorField(
-                            title: "Pointer color",
-                            color: _pointerColor,
-                            onColorChanged: (c) => setState(() {
-                              _pointerColor = c;
-                            }),
-                          ),
-                        const Divider(),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: _randomizeSegments,
-                            child: const Text("Randomize segments"),
-                          ),
+                          value: value,
                         ),
-                      ],
-                    ),
+                duration: const Duration(milliseconds: 2000),
+                curve: Curves.elasticOut,
+                value: _controller.value,
+                progressBar: _controller.hasProgressBar
+                    ? _controller.getProgressBar(_controller.progressBarType)
+                    : null,
+                axis: GaugeAxis(
+                  degrees: _controller.degree,
+                  pointer: _controller.hasPointer
+                      ? _controller.getPointer(_controller.pointerType)
+                      : null,
+                  transformer: const GaugeAxisTransformer.colorFadeIn(
+                    interval: Interval(0.0, 0.3),
+                    background: Color(0xFFD9DEEB),
                   ),
-                ],
+                  style: GaugeAxisStyle(
+                    thickness: _controller.thickness,
+                    background: _controller.backgroundColor,
+                    segmentSpacing: _controller.spacing,
+                    blendColors: false,
+                    cornerRadius: Radius.circular(_controller.segmentsRadius),
+                  ),
+                  segments: _controller.segments
+                      .map((e) => e.copyWith(
+                          cornerRadius:
+                              Radius.circular(_controller.segmentsRadius)))
+                      .toList(),
+                ),
               ),
             ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0xFFEFEFEF),
-                      ),
-                    ),
-                    width: _parentWidth,
-                    height: _parentHeight,
-                    child: AnimatedRadialGauge(
-                      radius: _gaugeRadius,
-                      builder: _hasPointer && _pointerType == PointerType.needle
-                          ? null
-                          : (context, _, value) => RadialGaugeLabel(
-                                style: TextStyle(
-                                  color: const Color(0xFF002E5F),
-                                  fontSize: _fontSize,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                value: value,
-                              ),
-                      duration: const Duration(milliseconds: 2000),
-                      curve: Curves.elasticOut,
-                      value: value,
-                      progressBar: _hasProgressBar
-                          ? _getProgressBar(_progressBarType)
-                          : null,
-                      axis: GaugeAxis(
-                        degrees: _degree,
-                        pointer: _hasPointer ? getPointer(_pointerType) : null,
-                        transformer: const GaugeAxisTransformer.colorFadeIn(
-                          interval: Interval(0.0, 0.3),
-                          background: Color(0xFFD9DEEB),
-                        ),
-                        style: GaugeAxisStyle(
-                          thickness: _thickness,
-                          background: _backgroundColor,
-                          segmentSpacing: _spacing,
-                          blendColors: false,
-                          cornerRadius: Radius.circular(_segmentsRadius),
-                        ),
-                        segments: _segments
-                            .map((e) => e.copyWith(
-                                cornerRadius: Radius.circular(_segmentsRadius)))
-                            .toList(),
-                      ),
-                    ),
-                  ),
-                ],
+          ),
+        );
+
+        if (isMobile) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const PageTitle(title: 'gauge_indicator', isSmall: true),
+              Expanded(
+                flex: 3,
+                child: gaugeWidget,
               ),
-            ),
-          ],
-        ),
-      ),
+              Expanded(
+                flex: 2,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    border:
+                        const Border(top: BorderSide(color: Color(0xFFDDDDDD))),
+                  ),
+                  child: GaugeConfigPanel(controller: _controller),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  border: Border(right: BorderSide(color: Color(0xFFDDDDDD))),
+                ),
+                width: 350,
+                child: Column(
+                  children: [
+                    const PageTitle(title: 'gauge_indicator'),
+                    Expanded(
+                      child: GaugeConfigPanel(controller: _controller),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(child: gaugeWidget),
+            ],
+          );
+        }
+      }),
     );
   }
+}
 
-  GaugeProgressBar _getProgressBar(ProgressBarType progressBarType) {
-    switch (progressBarType) {
-      case ProgressBarType.rounded:
-        return GaugeProgressBar.rounded(
-          color: _progressBarColor,
-          placement: _progressBarPlacement,
-        );
-      case ProgressBarType.basic:
-        return GaugeProgressBar.basic(
-          color: _progressBarColor,
-          placement: _progressBarPlacement,
-        );
-    }
+class GaugeConfigPanel extends StatelessWidget {
+  final GaugeDataController _controller;
+
+  const GaugeConfigPanel({
+    Key? key,
+    required GaugeDataController controller,
+  })  : _controller = controller,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, _) => ListView(
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        children: [
+          ValueSlider(
+            label: "Value",
+            min: 0,
+            max: 100,
+            value: _controller.sliderValue,
+            onChanged: (val) {
+              _controller.sliderValue = double.parse(val.toStringAsFixed(2));
+            },
+            onChangeEnd: (newVal) {
+              _controller.value = newVal;
+            },
+          ),
+          ValueSlider(
+            label: "Degrees",
+            min: 30,
+            max: 360,
+            value: _controller.degree,
+            onChanged: (val) {
+              _controller.degree = double.parse(val.toStringAsFixed(2));
+            },
+          ),
+          ValueSlider(
+            label: "Segments radius",
+            min: 0,
+            max: 20,
+            value: _controller.segmentsRadius,
+            onChanged: (val) {
+              _controller.segmentsRadius = double.parse(val.toStringAsFixed(2));
+            },
+          ),
+          ValueSlider(
+            label: "Thickness",
+            min: 5,
+            max: 40,
+            value: _controller.thickness,
+            onChanged: (val) {
+              _controller.thickness = double.parse(val.toStringAsFixed(2));
+            },
+          ),
+          ValueSlider(
+            label: "Spacing",
+            min: 0,
+            max: 20,
+            value: _controller.spacing,
+            onChanged: (val) {
+              _controller.spacing = double.parse(val.toStringAsFixed(2));
+            },
+          ),
+          ValueSlider(
+            label: "Font size",
+            min: 8,
+            max: 48,
+            value: _controller.fontSize,
+            onChanged: (val) {
+              _controller.fontSize = double.parse(val.toStringAsFixed(2));
+            },
+          ),
+          ValueSlider(
+            label: "Gauge radius",
+            min: 50,
+            max: 250,
+            value: _controller.gaugeRadius,
+            onChanged: (val) {
+              _controller.gaugeRadius = double.parse(val.toStringAsFixed(2));
+            },
+          ),
+          ValueSlider(
+            label: "Parent height",
+            min: 150,
+            max: 500,
+            value: _controller.parentHeight,
+            onChanged: (val) {
+              _controller.parentHeight = double.parse(val.toStringAsFixed(2));
+            },
+          ),
+          ValueSlider(
+            label: "Parent width",
+            min: 150,
+            max: 500,
+            value: _controller.parentWidth,
+            onChanged: (val) {
+              _controller.parentWidth = double.parse(val.toStringAsFixed(2));
+            },
+          ),
+          const Divider(),
+          ColorField(
+            title: "Background color",
+            color: _controller.backgroundColor,
+            onColorChanged: (c) => _controller.backgroundColor = c,
+          ),
+          ColorField(
+            title: "Segment 1 color",
+            color: _controller.segments[0].color,
+            onColorChanged: (c) =>
+                _controller.segments[0] = _controller.segments[0].copyWith(
+              color: c,
+            ),
+          ),
+          ColorField(
+            title: "Segment 2 color",
+            color: _controller.segments[1].color,
+            onColorChanged: (c) =>
+                _controller.segments[1] = _controller.segments[1].copyWith(
+              color: c,
+            ),
+          ),
+          ColorField(
+              title: "Segment 3 color",
+              color: _controller.segments[2].color,
+              onColorChanged: (c) =>
+                  _controller.segments[2] = _controller.segments[2].copyWith(
+                    color: c,
+                  )),
+          const Divider(),
+          CheckboxListTile(
+              title: const Text("Has progress bar"),
+              value: _controller.hasProgressBar,
+              onChanged: (selected) {
+                if (selected != null) {
+                  _controller.hasProgressBar = selected;
+                }
+              }),
+          if (_controller.hasProgressBar)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: DropdownButton<GaugeProgressPlacement>(
+                items: [
+                  for (final val in GaugeProgressPlacement.values)
+                    DropdownMenuItem(
+                      child: Text("Placement: ${val.name}"),
+                      value: val,
+                    )
+                ],
+                value: _controller.progressBarPlacement,
+                onChanged: (val) {
+                  if (val == null) return;
+                  _controller.progressBarPlacement = val;
+                },
+              ),
+            ),
+          if (_controller.hasProgressBar)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: DropdownButton<ProgressBarType>(
+                items: [
+                  for (final val in ProgressBarType.values)
+                    DropdownMenuItem(
+                      child: Text("Type: ${val.name}"),
+                      value: val,
+                    )
+                ],
+                value: _controller.progressBarType,
+                onChanged: (val) {
+                  if (val == null) return;
+                  _controller.progressBarType = val;
+                },
+              ),
+            ),
+          if (_controller.hasProgressBar)
+            ColorField(
+              title: "Select progress bar color",
+              color: _controller.progressBarColor,
+              onColorChanged: (c) => _controller.progressBarColor = c,
+            ),
+          const Divider(),
+          CheckboxListTile(
+              title: const Text("Has pointer"),
+              value: _controller.hasPointer,
+              onChanged: (selected) async {
+                if (selected != null) {
+                  _controller.hasPointer = selected;
+                }
+              }),
+          if (_controller.hasPointer)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: DropdownButton<PointerType>(
+                items: [
+                  for (final val in PointerType.values)
+                    DropdownMenuItem(
+                      child: Text("Type: ${val.name}"),
+                      value: val,
+                    )
+                ],
+                value: _controller.pointerType,
+                onChanged: (val) {
+                  if (val == null) return;
+
+                  _controller.pointerType = val;
+                },
+              ),
+            ),
+          if (_controller.hasPointer)
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: ValueSlider(
+                label: "Pointer size",
+                min: 16,
+                max: 36,
+                value: _controller.pointerSize,
+                onChanged: (val) {
+                  _controller.pointerSize = val;
+                },
+              ),
+            ),
+          if (_controller.hasPointer)
+            ColorField(
+              title: "Pointer color",
+              color: _controller.pointerColor,
+              onColorChanged: (c) => _controller.pointerColor = c,
+            ),
+          const Divider(),
+          Center(
+            child: ElevatedButton(
+              onPressed: _controller.randomizeSegments,
+              child: const Text("Randomize segments"),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

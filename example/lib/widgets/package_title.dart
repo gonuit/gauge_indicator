@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class PageTitle extends StatelessWidget {
   final String title;
+  final bool isSmall;
 
   const PageTitle({
     Key? key,
     required this.title,
+    this.isSmall = false,
   }) : super(key: key);
 
   @override
@@ -13,7 +15,7 @@ class PageTitle extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: isSmall ? const EdgeInsets.all(4) : const EdgeInsets.all(16),
       decoration: const BoxDecoration(
           border: Border(
         bottom: BorderSide(
@@ -22,8 +24,8 @@ class PageTitle extends StatelessWidget {
       )),
       child: Text(
         title,
-        style: const TextStyle(
-          fontSize: 24,
+        style: TextStyle(
+          fontSize: isSmall ? 14 : 24,
         ),
       ),
     );
