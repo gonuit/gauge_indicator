@@ -15,7 +15,7 @@
 
 Just define the `RadialGauge` or `AnimatedRadialGauge` widget in the widget tree.
 
-## Code
+### Code
 
 ````dart
 /// Build method of your widget.
@@ -44,19 +44,43 @@ Widget build(BuildContext context) {
     style: const GaugeAxisStyle(
       thickness: 20,
       background: Color(0xFFDFE2EC),
+      segmentSpacing: 4,
     ),
 
-    /// Define the pointer that will indicate the progress.
+    /// Define the pointer that will indicate the progress (optional).
     pointer: GaugePointer.needle(
       size: Size(16, 100),
       borderRadius: 16,
       backgroundColor: Color(0xFF193663),
     ),
     
-    /// Define the progress bar.
+    /// Define the progress bar (optional).
     progressBar: const GaugeProgressBar.rounded(
       color: Color(0xFFB4C2F8),
     ),
+
+    /// Define axis segments (optional).
+    segments: [
+      const GaugeSegment(
+        from: 0,
+        to: 33.3,
+        color: Color(0xFFD9DEEB),
+        cornerRadius: Radius.zero,
+      ),
+      const GaugeSegment(
+        from: 33.3,
+        to: 66.6,
+        color: Color(0xFFD9DEEB),
+        cornerRadius: Radius.zero,
+      ),
+      const GaugeSegment(
+        from: 66.6,
+        to: 100,
+        color: Color(0xFFD9DEEB),
+        cornerRadius: Radius.zero,
+      ),
+    ];
+
     /// You can also, define the child builder.
     /// You will build a value label in the following way, but you can use the widget of your choice.
     ///
@@ -75,12 +99,8 @@ Widget build(BuildContext context) {
 }
 ````
 
-## Output
+### Output
 
-![example](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/example.gif)
-
-
-___
-   
-
-![footer](https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/header.gif)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/example.gif" />
+</div>
