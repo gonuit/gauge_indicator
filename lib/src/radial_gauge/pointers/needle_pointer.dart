@@ -3,10 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 
 class NeedlePointer extends Equatable implements GaugePointer {
-  @override
-  final Size size;
-  @override
-  final Path path;
+  final double width;
+  final double height;
+
   @override
   final GaugePointerPosition position;
   @override
@@ -19,9 +18,18 @@ class NeedlePointer extends Equatable implements GaugePointer {
   @override
   final Shadow? shadow;
 
-  NeedlePointer({
-    required double width,
-    required double height,
+  @override
+  Size get size => Size(width, height);
+  @override
+  Path get path => roundedPoly([
+        VertexDefinition(0, height), // bottom left
+        VertexDefinition(width, height), // bottom right
+        VertexDefinition(width / 2, 0, radius: 0), // top center
+      ], borderRadius);
+
+  const NeedlePointer({
+    required this.width,
+    required this.height,
     this.color,
     this.position = const GaugePointerPosition.center(),
     this.border,
@@ -29,12 +37,6 @@ class NeedlePointer extends Equatable implements GaugePointer {
     this.gradient,
     this.shadow,
   })  : borderRadius = borderRadius ?? width / 2,
-        size = Size(width, height),
-        path = roundedPoly([
-          VertexDefinition(0, height), // bottom left
-          VertexDefinition(width, height), // bottom right
-          VertexDefinition(width / 2, 0, radius: 0), // top center
-        ], borderRadius ?? width / 2),
         assert(
             (color != null && gradient == null) ||
                 (gradient != null && color == null),

@@ -3,10 +3,8 @@ import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:flutter/widgets.dart';
 
 class CirclePointer extends Equatable implements GaugePointer {
-  @override
-  final Size size;
-  @override
-  final Path path;
+  final double radius;
+
   @override
   final GaugePointerPosition position;
   @override
@@ -18,20 +16,23 @@ class CirclePointer extends Equatable implements GaugePointer {
   @override
   final Shadow? shadow;
 
-  CirclePointer({
-    required double radius,
+  @override
+  Size get size => Size.fromRadius(radius);
+  @override
+  Path get path => Path()
+    ..addOval(Rect.fromCircle(
+      center: Offset(radius, radius),
+      radius: radius,
+    ));
+
+  const CirclePointer({
+    required this.radius,
     this.color,
     this.position = const GaugePointerPosition.surface(),
     this.border,
     this.gradient,
     this.shadow,
-  })  : path = Path()
-          ..addOval(Rect.fromCircle(
-            center: Offset(radius, radius),
-            radius: radius,
-          )),
-        size = Size.fromRadius(radius),
-        assert(
+  }) : assert(
           (color != null && gradient == null) ||
               (gradient != null && color == null),
           'Either color or gradient must be provided.',
