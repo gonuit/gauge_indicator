@@ -1,6 +1,6 @@
 name: gauge_indicator
 description: An animated, highly customizable, open source, Flutter gauge widget.
-version: 0.4.0-dev.5
+version: 0.4.0-dev.6
 homepage: https://github.com/gonuit/gauge_indicator
 
 environment:
@@ -10,9 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
   equatable: ^2.0.5
-  collection: ^1.16.0
+  collection: ^1.17.0
 
 dev_dependencies:
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+
