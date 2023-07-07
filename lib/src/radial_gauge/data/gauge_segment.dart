@@ -8,6 +8,7 @@ class GaugeSegment extends Equatable {
   final double to;
   final Color color;
   final GaugeAxisGradient? gradient;
+  final GaugeBorder? border;
   final Shader? shader;
   final Radius cornerRadius;
 
@@ -16,6 +17,7 @@ class GaugeSegment extends Equatable {
     required this.to,
     this.color = const Color(0x00000000),
     this.gradient,
+    this.border,
     this.shader,
     this.cornerRadius = Radius.zero,
   });
@@ -26,6 +28,7 @@ class GaugeSegment extends Equatable {
     final Color? color,
     GaugeAxisGradient? gradient,
     Shader? shader,
+    GaugeBorder? border,
     Radius? cornerRadius,
   }) =>
       GaugeSegment(
@@ -34,6 +37,7 @@ class GaugeSegment extends Equatable {
         color: color ?? this.color,
         gradient: gradient ?? this.gradient,
         shader: shader ?? this.shader,
+        border: border ?? this.border,
         cornerRadius: cornerRadius ?? this.cornerRadius,
       );
 
@@ -44,9 +48,11 @@ class GaugeSegment extends Equatable {
         color: Color.lerp(begin.color, end.color, t)!,
         gradient: end.gradient,
         shader: end.shader,
+        border: GaugeBorder.lerp(begin.border, end.border, t),
         cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t)!,
       );
 
   @override
-  List<Object?> get props => [from, to, color, gradient, shader, cornerRadius];
+  List<Object?> get props =>
+      [from, to, color, gradient, shader, cornerRadius, border];
 }

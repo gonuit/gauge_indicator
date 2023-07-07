@@ -1,3 +1,5 @@
+## 0.4.3-dev.1
+- Added gauge segments border
 ## 0.4.2
 - Updated package thumbnail image
 ## 0.4.1

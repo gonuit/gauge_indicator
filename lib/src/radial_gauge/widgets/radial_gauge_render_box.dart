@@ -223,7 +223,25 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
 
     // drawing progress
 
-    if (progressBar != null) {
+    if (progressBar != null &&
+        progressBar.placement == GaugeProgressPlacement.inside) {
+      progressBar.paint(axis, layout, canvas, _valueProgress);
+    }
+
+    for (var i = 0; i < axisDefinition.segments.length; i++) {
+      final segment = axisDefinition.segments[i];
+      final border = segment.border;
+      if (border == null) continue;
+
+      final borderPaint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = border.width
+        ..color = border.color;
+      canvas.drawPath(segment.path, borderPaint);
+    }
+
+    if (progressBar != null &&
+        progressBar.placement == GaugeProgressPlacement.over) {
       progressBar.paint(axis, layout, canvas, _valueProgress);
     }
 

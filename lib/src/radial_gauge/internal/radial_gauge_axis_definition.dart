@@ -2,12 +2,14 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:gauge_indicator/src/radial_gauge/data/gauge_border.dart';
 
 class GaugeSegmentDefinition {
   final double startAngle;
   final double sweepAngle;
   final Color? color;
   final GaugeAxisGradient? gradient;
+  final GaugeBorder? border;
   final Shader? shader;
   final Path path;
 
@@ -15,9 +17,10 @@ class GaugeSegmentDefinition {
     required this.startAngle,
     required this.sweepAngle,
     required this.path,
-    this.color,
-    this.gradient,
-    this.shader,
+    required this.color,
+    required this.gradient,
+    required this.border,
+    required this.shader,
   });
 }
 
@@ -174,6 +177,7 @@ class RadialGaugeAxisDefinition {
         sweepAngle: toRadians(sweepAngle) - trimEnd,
         color: segment.color,
         gradient: segment.gradient,
+        border: segment.border,
         shader: segment.shader,
         path: path,
       );
