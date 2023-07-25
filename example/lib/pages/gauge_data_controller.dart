@@ -299,4 +299,14 @@ class GaugeDataController extends ChangeNotifier {
         );
     }
   }
+
+  void setSegmentColor(int index, Color color) {
+    RangeError.checkValidIndex(index, segments);
+
+    segments[index] = segments[index].copyWith(
+      color: color,
+    );
+
+    notifyListeners();
+  }
 }

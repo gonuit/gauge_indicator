@@ -1,5 +1,8 @@
-## 0.4.3-dev.1
-- Added gauge segments border
+## 0.4.3
+- Support negative values [#7](https://github.com/gonuit/gauge_indicator/pull/7) by [dino-keskic](https://github.com/dino-keskic)
+- Added gauge segments border.
+- Corrected the readme example. Added *radius* parameter that is required for parent widgets that do not have a constrained size.
+- Fixed segment color changes in the example application
 ## 0.4.2
 - Updated package thumbnail image
 ## 0.4.1

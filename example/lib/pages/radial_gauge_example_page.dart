@@ -244,26 +244,18 @@ class GaugeConfigPanel extends StatelessWidget {
           ColorField(
             title: "Segment 1 color",
             color: _controller.segments[0].color,
-            onColorChanged: (c) =>
-                _controller.segments[0] = _controller.segments[0].copyWith(
-              color: c,
-            ),
+            onColorChanged: (c) => _controller.setSegmentColor(0, c),
           ),
           ColorField(
             title: "Segment 2 color",
             color: _controller.segments[1].color,
-            onColorChanged: (c) =>
-                _controller.segments[1] = _controller.segments[1].copyWith(
-              color: c,
-            ),
+            onColorChanged: (c) => _controller.setSegmentColor(1, c),
           ),
           ColorField(
-              title: "Segment 3 color",
-              color: _controller.segments[2].color,
-              onColorChanged: (c) =>
-                  _controller.segments[2] = _controller.segments[2].copyWith(
-                    color: c,
-                  )),
+            title: "Segment 3 color",
+            color: _controller.segments[2].color,
+            onColorChanged: (c) => _controller.setSegmentColor(2, c),
+          ),
           const Divider(),
           CheckboxListTile(
               title: const Text("Has progress bar"),

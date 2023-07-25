@@ -27,6 +27,10 @@ Widget build(BuildContext context) {
   /// The animation duration.
   duration: const Duration(seconds: 1),
   curve: Curves.elasticOut,
+  
+  /// Define the radius.
+  /// If you omit this value, the parent size will be used, if possible.
+  radius: 100,
 
   /// Gauge value.
   value: value,

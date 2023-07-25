@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
-import 'package:gauge_indicator/src/radial_gauge/data/gauge_border.dart';
 
 class GaugeSegmentDefinition {
   final double startAngle;
