@@ -238,13 +238,18 @@ class GaugeDataController extends ChangeNotifier {
   }
 
   List<GaugeSegment> _segments = <GaugeSegment>[
-    const GaugeSegment(
+    GaugeSegment(
       from: 0,
       to: 60.0,
       style: GaugeSegmentStyle(
-        color: Color(0xFFD9DEEB),
-        cornerRadius: Radius.zero,
-      ),
+          color: const Color(0xFFD9DEEB),
+          cornerRadius: Radius.zero,
+          shadow: BoxShadow(
+            color: Colors.red.withOpacity(0.5),
+            blurRadius: 15.0,
+            spreadRadius: 15.0,
+            offset: const Offset(0.0, 0.0),
+          )),
     ),
     const GaugeSegment(
       from: 60.0,
@@ -303,11 +308,23 @@ class GaugeDataController extends ChangeNotifier {
         return GaugeProgressBar.rounded(
           color: progressBarColor,
           placement: progressBarPlacement,
+          shadow: BoxShadow(
+            color: Colors.red.withOpacity(0.5),
+            blurRadius: 15.0,
+            spreadRadius: 15.0,
+            offset: const Offset(0.0, 0.0),
+          ),
         );
       case ProgressBarType.basic:
         return GaugeProgressBar.basic(
           color: progressBarColor,
           placement: progressBarPlacement,
+          shadow: BoxShadow(
+            color: Colors.red.withOpacity(0.5),
+            blurRadius: 15.0,
+            spreadRadius: 15.0,
+            offset: const Offset(0.0, 0.0),
+          ),
         );
     }
   }

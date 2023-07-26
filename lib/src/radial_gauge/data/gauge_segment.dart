@@ -48,6 +48,7 @@ class GaugeSegmentStyle {
   final Shader? shader;
   final Radius? cornerRadius;
   final double? thickness;
+  final BoxShadow? shadow;
 
   const GaugeSegmentStyle({
     this.color,
@@ -56,6 +57,7 @@ class GaugeSegmentStyle {
     this.shader,
     this.cornerRadius,
     this.thickness,
+    this.shadow,
   });
 
   // copyWith
@@ -72,6 +74,7 @@ class GaugeSegmentStyle {
         border: GaugeBorder.lerp(begin.border, end.border, t),
         cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t),
         thickness: end.thickness,
+        shadow: end.shadow,
       );
 
   @override
@@ -89,7 +92,8 @@ class GaugeSegmentStyle {
           border == other.border &&
           shader == other.shader &&
           cornerRadius == other.cornerRadius &&
-          thickness == other.thickness;
+          thickness == other.thickness &&
+          shadow == other.shadow;
 
   @override
   int get hashCode =>
@@ -98,7 +102,8 @@ class GaugeSegmentStyle {
       border.hashCode ^
       shader.hashCode ^
       cornerRadius.hashCode ^
-      thickness.hashCode;
+      thickness.hashCode ^
+      shadow.hashCode;
 
   GaugeSegmentStyle copyWith({
     Color? color,
@@ -107,6 +112,7 @@ class GaugeSegmentStyle {
     Shader? shader,
     Radius? cornerRadius,
     double? thickness,
+    BoxShadow? shadow,
   }) =>
       GaugeSegmentStyle(
         color: color ?? this.color,
@@ -115,5 +121,6 @@ class GaugeSegmentStyle {
         shader: shader ?? this.shader,
         cornerRadius: cornerRadius ?? this.cornerRadius,
         thickness: thickness ?? this.thickness,
+        shadow: shadow ?? this.shadow,
       );
 }

@@ -49,6 +49,7 @@ Iterable<GaugeSegment> flattenSegments(
         cornerRadius: lastSegment.style.cornerRadius,
         thickness: lastSegment.style.thickness,
         shader: lastSegment.style.shader,
+        shadow: lastSegment.style.shadow,
       ),
     );
   }

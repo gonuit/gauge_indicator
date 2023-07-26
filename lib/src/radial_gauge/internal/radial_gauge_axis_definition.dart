@@ -10,6 +10,7 @@ class GaugeSegmentDefinition {
   final GaugeAxisGradient? gradient;
   final GaugeBorder? border;
   final Shader? shader;
+  final BoxShadow? shadow;
   final Path path;
 
   GaugeSegmentDefinition({
@@ -20,6 +21,7 @@ class GaugeSegmentDefinition {
     required this.gradient,
     required this.border,
     required this.shader,
+    required this.shadow,
   });
 }
 
@@ -180,6 +182,7 @@ class RadialGaugeAxisDefinition {
         border: segment.style.border,
         shader: segment.style.shader,
         path: path,
+        shadow: segment.style.shadow,
       );
     }
   }
