@@ -123,12 +123,12 @@ class _ZonePainterState extends State<ZonePainter> {
                       ),
                     ))
                 .toList(),
-            style: GaugeAxisStyle(
+            style: const GaugeAxisStyle(
               // if zone target value is equal getSegment index, then set thickness with 0 else 6
-              thickness: getSegments.asMap().containsKey(zoneTarget) ? 0 : 6,
+              thickness: 5,
               segmentSpacing: 6,
               blendColors: false,
-              cornerRadius: const Radius.circular(20),
+              cornerRadius: Radius.circular(20),
               background: Colors.transparent,
             ),
           ),

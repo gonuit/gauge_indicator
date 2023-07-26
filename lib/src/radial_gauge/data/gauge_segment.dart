@@ -55,7 +55,7 @@ class GaugeSegmentStyle {
     this.border,
     this.shader,
     this.cornerRadius,
-    this.thickness = 6.0,
+    this.thickness,
   });
 
   // copyWith
@@ -71,7 +71,7 @@ class GaugeSegmentStyle {
         shader: end.shader,
         border: GaugeBorder.lerp(begin.border, end.border, t),
         cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t),
-        thickness: lerpDouble(begin.thickness!, end.thickness!, t),
+        thickness: end.thickness,
       );
 
   @override

@@ -27,7 +27,7 @@ Widget build(BuildContext context) {
   /// The animation duration.
   duration: const Duration(seconds: 1),
   curve: Curves.elasticOut,
-  
+
   /// Define the radius.
   /// If you omit this value, the parent size will be used, if possible.
   radius: 100,
@@ -57,19 +57,20 @@ Widget build(BuildContext context) {
       borderRadius: 16,
       backgroundColor: Color(0xFF193663),
     ),
-    
+
     /// Define the progress bar (optional).
     progressBar: const GaugeProgressBar.rounded(
       color: Color(0xFFB4C2F8),
     ),
 
-    /// Define axis segments (optional).
+    /// Define axis segments (optional). 
     segments: [
       const GaugeSegment(
         from: 0,
         to: 33.3,
         color: Color(0xFFD9DEEB),
         cornerRadius: Radius.zero,
+        thickness : 15
       ),
       const GaugeSegment(
         from: 33.3,

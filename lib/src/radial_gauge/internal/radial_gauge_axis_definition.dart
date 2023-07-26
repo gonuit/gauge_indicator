@@ -151,7 +151,8 @@ class RadialGaugeAxisDefinition {
       final trimStart = isFirst ? 0 : separator;
       final trimEnd = isFirst && isLast || isLast ? 0 : separator;
 
-      final thickness = axis.segments[i].style.thickness!;
+      final thickness =
+          axis.segments[i].style.thickness ?? axis.style.thickness;
       final halfThickness = thickness / 2;
 
       final clampedFrom = (from + trimStart).clamp(0.0, 1.0);
