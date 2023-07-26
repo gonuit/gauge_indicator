@@ -74,10 +74,14 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
                     cornerRadius: Radius.circular(_controller.segmentsRadius),
                   ),
                   segments: _controller.segments
-                      .map((e) => e
-                        ..style.copyWith(
-                            cornerRadius:
-                                Radius.circular(_controller.segmentsRadius)))
+                      .map((e) => e.copyWith(
+                            style: e.style.copyWith(
+                              thickness: _controller.thickness,
+                              cornerRadius: Radius.circular(
+                                _controller.segmentsRadius,
+                              ),
+                            ),
+                          ))
                       .toList(),
                 ),
               ),

@@ -238,27 +238,27 @@ class GaugeDataController extends ChangeNotifier {
   }
 
   List<GaugeSegment> _segments = <GaugeSegment>[
-    GaugeSegment(
+    const GaugeSegment(
       from: 0,
       to: 60.0,
       style: GaugeSegmentStyle(
-        color: const Color(0xFFD9DEEB),
+        color: Color(0xFFD9DEEB),
         cornerRadius: Radius.zero,
       ),
     ),
-    GaugeSegment(
+    const GaugeSegment(
       from: 60.0,
       to: 85.0,
       style: GaugeSegmentStyle(
-        color: const Color(0xFFD9DEEB),
+        color: Color(0xFFD9DEEB),
         cornerRadius: Radius.zero,
       ),
     ),
-    GaugeSegment(
+    const GaugeSegment(
       from: 85.0,
       to: 100,
       style: GaugeSegmentStyle(
-        color: const Color(0xFFD9DEEB),
+        color: Color(0xFFD9DEEB),
         cornerRadius: Radius.zero,
       ),
     ),
