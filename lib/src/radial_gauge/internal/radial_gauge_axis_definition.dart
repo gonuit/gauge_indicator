@@ -10,6 +10,7 @@ class GaugeSegmentDefinition {
   final GaugeAxisGradient? gradient;
   final GaugeBorder? border;
   final Shader? shader;
+  final BoxShadow? shadow;
   final Path path;
 
   GaugeSegmentDefinition({
@@ -20,6 +21,7 @@ class GaugeSegmentDefinition {
     required this.gradient,
     required this.border,
     required this.shader,
+    required this.shadow,
   });
 }
 
@@ -151,7 +153,8 @@ class RadialGaugeAxisDefinition {
       final trimStart = isFirst ? 0 : separator;
       final trimEnd = isFirst && isLast || isLast ? 0 : separator;
 
-      final thickness = axis.style.thickness;
+      final thickness =
+          axis.segments[i].style.thickness ?? axis.style.thickness;
       final halfThickness = thickness / 2;
 
       final clampedFrom = (from + trimStart).clamp(0.0, 1.0);
@@ -159,7 +162,7 @@ class RadialGaugeAxisDefinition {
 
       final path = calculateRadiusArcPath(
         externalRect,
-        cornerRadius: segment.cornerRadius.clampValues(
+        cornerRadius: segment.style.cornerRadius!.clampValues(
           minimumX: 0,
           minimumY: 0,
           maximumX: halfThickness,
@@ -174,11 +177,12 @@ class RadialGaugeAxisDefinition {
       yield GaugeSegmentDefinition(
         startAngle: toRadians(startAngle) + trimStart,
         sweepAngle: toRadians(sweepAngle) - trimEnd,
-        color: segment.color,
-        gradient: segment.gradient,
-        border: segment.border,
-        shader: segment.shader,
+        color: segment.style.color,
+        gradient: segment.style.gradient,
+        border: segment.style.border,
+        shader: segment.style.shader,
         path: path,
+        shadow: segment.style.shadow,
       );
     }
   }

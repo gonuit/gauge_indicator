@@ -8,6 +8,7 @@ class GaugeRoundedProgressBar extends Equatable implements GaugeProgressBar {
   final Color? color;
   final GaugeAxisGradient? gradient;
   final Shader? shader;
+  final BoxShadow? shadow;
   @override
   final GaugeProgressPlacement placement;
 
@@ -15,9 +16,10 @@ class GaugeRoundedProgressBar extends Equatable implements GaugeProgressBar {
     this.color,
     this.gradient,
     this.shader,
+    this.shadow,
     this.placement = GaugeProgressPlacement.over,
   }) : assert(
-          color != null || gradient != null || shader != null,
+          color != null || gradient != null || shader != null || shadow != null,
           'color, gradient or shader is required',
         );
 
@@ -37,6 +39,9 @@ class GaugeRoundedProgressBar extends Equatable implements GaugeProgressBar {
 
     final paint = Paint()..style = PaintingStyle.fill;
 
+    if (shadow != null) {
+      canvas.drawPath(progressBar, shadow!.toPaint());
+    }
     if (shader != null) {
       paint.shader = shader!;
     } else if (gradient != null) {

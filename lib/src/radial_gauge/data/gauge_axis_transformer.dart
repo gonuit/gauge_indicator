@@ -80,7 +80,7 @@ class _ColorFadeIn extends GaugeAxisTransformer {
       final updatedSegments = axis.segments
           .map((s) => s.copyWith(
                 color: Color.alphaBlend(
-                  s.color.withOpacity(value),
+                  s.style.color!.withOpacity(value),
                   background,
                 ),
               ))
@@ -117,15 +117,22 @@ class _ProgressTransformer extends GaugeAxisTransformer {
         ...axis.segments,
         if (reversed)
           GaugeSegment(
-            from: value,
-            to: range.max,
-            color: color,
-          )
+              from: value,
+              to: range.max,
+              style: GaugeSegmentStyle(
+                color: color,
+                cornerRadius: axis.style.cornerRadius,
+                thickness: axis.style.thickness,
+              ))
         else
           GaugeSegment(
             from: range.min,
             to: value,
-            color: color,
+            style: GaugeSegmentStyle(
+              color: color,
+              cornerRadius: axis.style.cornerRadius,
+              thickness: axis.style.thickness,
+            ),
           ),
       ],
       colorBlending: blendColors,

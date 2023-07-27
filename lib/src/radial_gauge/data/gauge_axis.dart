@@ -8,6 +8,7 @@ import 'package:gauge_indicator/gauge_indicator.dart';
 class GaugeAxisStyle extends Equatable {
   final double thickness;
   final double segmentSpacing;
+  final double? thicknessFactor;
 
   /// Corner radius of the axis core segment
   final Radius cornerRadius;
@@ -18,6 +19,7 @@ class GaugeAxisStyle extends Equatable {
 
   const GaugeAxisStyle({
     this.thickness = 20,
+    this.thicknessFactor,
     this.background = const Color(0xFFf0f0f0),
     this.cornerRadius = const Radius.circular(10),
     this.segmentSpacing = 0,
@@ -39,7 +41,7 @@ class GaugeAxisStyle extends Equatable {
 
   @override
   List<Object?> get props =>
-      [thickness, segmentSpacing, background, blendColors];
+      [thickness, segmentSpacing, background, blendColors, thicknessFactor];
 }
 
 class GaugeAxisTween extends Tween<GaugeAxis?> {

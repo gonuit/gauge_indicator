@@ -33,20 +33,24 @@ Iterable<GaugeSegment> flattenSegments(
         ? includedSegments
             .skip(1)
             .fold<HSVColor>(
-                HSVColor.fromColor(includedSegments.first.color),
-                (val, next) =>
-                    HSVColor.lerp(val, HSVColor.fromColor(next.color), 0.5)!)
+                HSVColor.fromColor(includedSegments.first.style.color!),
+                (val, next) => HSVColor.lerp(
+                    val, HSVColor.fromColor(next.style.color!), 0.5)!)
             .toColor()
-        : lastSegment.color;
+        : lastSegment.style.color;
 
     yield GaugeSegment(
       from: start,
       to: end,
-      color: color,
-      gradient: lastSegment.gradient,
-      shader: lastSegment.shader,
-      border: lastSegment.border,
-      cornerRadius: lastSegment.cornerRadius,
+      style: lastSegment.style.copyWith(
+        color: color,
+        border: lastSegment.style.border,
+        gradient: lastSegment.style.gradient,
+        cornerRadius: lastSegment.style.cornerRadius,
+        thickness: lastSegment.style.thickness,
+        shader: lastSegment.style.shader,
+        shadow: lastSegment.style.shadow,
+      ),
     );
   }
 }
