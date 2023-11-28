@@ -26,10 +26,12 @@ class GaugeRoundedProgressBar extends Equatable implements GaugeProgressBar {
     GaugeAxis axis,
     RadialGaugeLayout layout,
     Canvas canvas,
+    double from,
     double progress,
   ) {
     final progressBar = calculateRoundedArcPath(
       layout.circleRect,
+      from: from,
       to: progress,
       degrees: axis.degrees,
       thickness: axis.style.thickness,
