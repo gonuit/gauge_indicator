@@ -22,6 +22,7 @@ abstract class GaugeProgressBar {
     GaugeAxis axis,
     RadialGaugeLayout layout,
     Canvas canvas,
+    double from,
     double progress,
   );
 

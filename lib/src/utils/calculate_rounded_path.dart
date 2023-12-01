@@ -8,8 +8,6 @@ Path calculateRoundedArcPath(
   double degrees = 180.0,
   double thickness = 10.0,
 }) {
-  assert(from <= to, 'Cannot draw inverted arc.');
-
   final radius = rect.longestSide / 2;
 
   degrees = (degrees).clamp(10.0, 359.99);
@@ -37,8 +35,10 @@ Path calculateRoundedArcPath(
   final cornerAngle = getArcAngle(halfThickness, centerRadius);
   final largeArcMinAngle = 180.0 + toDegrees(cornerAngle * 2);
 
-  final axisStartAngle = toRadians(startAngle) + cornerAngle;
-  final axisEndAngle = toRadians(endAngle) - cornerAngle;
+  final axisStartAngle =
+      toRadians(startAngle) + (from > to ? -cornerAngle : cornerAngle);
+  final axisEndAngle =
+      toRadians(endAngle) - (from > to ? -cornerAngle : cornerAngle);
 
   final startOuterPoint =
       getPointOnCircle(circleCenter, axisStartAngle, outerRadius);
@@ -50,25 +50,31 @@ Path calculateRoundedArcPath(
       getPointOnCircle(circleCenter, axisStartAngle, innerRadius);
 
   final axisSurface = Path()
-    ..moveTo(startOuterPoint.dx, startOuterPoint.dy)
+    ..moveTo(
+      startOuterPoint.dx,
+      startOuterPoint.dy,
+    )
     ..arcToPoint(
       endOuterPoint,
       largeArc: useDegrees > largeArcMinAngle,
       radius: Radius.circular(outerRadius),
+      clockwise: from < to,
     )
     ..arcToPoint(
       endInnerPoint,
       radius: Radius.circular(halfThickness),
+      clockwise: from < to,
     )
     ..arcToPoint(
       startInnerPoint,
       largeArc: useDegrees > largeArcMinAngle,
       radius: Radius.circular(innerRadius),
-      clockwise: false,
+      clockwise: from > to,
     )
     ..arcToPoint(
       startOuterPoint,
       radius: Radius.circular(halfThickness),
+      clockwise: from < to,
     );
 
   return axisSurface;

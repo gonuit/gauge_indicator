@@ -8,8 +8,6 @@ Path calculateAxisPath(
   double degrees = 180.0,
   double thickness = 10.0,
 }) {
-  assert(from <= to, 'Cannot draw inverted arc.');
-
   final radius = rect.longestSide / 2;
 
   degrees = (degrees).clamp(10.0, 359.99);
@@ -55,6 +53,7 @@ Path calculateAxisPath(
       endOuterPoint,
       largeArc: useDegrees > largeArcMinAngle,
       radius: Radius.circular(outerRadius),
+      clockwise: from < to,
     )
     ..lineTo(
       endInnerPoint.dx,
@@ -64,7 +63,7 @@ Path calculateAxisPath(
       startInnerPoint,
       largeArc: useDegrees > largeArcMinAngle,
       radius: Radius.circular(innerRadius),
-      clockwise: false,
+      clockwise: from > to,
     )
     ..lineTo(
       startOuterPoint.dx,

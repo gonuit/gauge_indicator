@@ -69,6 +69,11 @@ class GaugeAxis extends Equatable {
   /// Defaults to 1.0. Must be greater than [min].
   final double max;
 
+  /// The zero value the gauge can display.
+  ///
+  /// Defaults to 0.0. Must be greater or equal to [min].
+  final double zero;
+
   /// Determines the degree of arc of the gauge axis.
   ///
   /// Defaults to 180.
@@ -112,6 +117,7 @@ class GaugeAxis extends Equatable {
   const GaugeAxis({
     this.min = 0.0,
     this.max = 1.0,
+    this.zero = 0.0,
     this.transformer = const GaugeAxisTransformer.noTransform(),
     this.segments = const [],
     this.degrees = 180,
@@ -140,10 +146,12 @@ class GaugeAxis extends Equatable {
     final double? degrees,
     final double? min,
     final double? max,
+    final double? zero,
   }) =>
       GaugeAxis(
         min: min ?? this.min,
         max: max ?? this.max,
+        zero: zero ?? this.zero,
         degrees: degrees ?? this.degrees,
         segments: segments ?? this.segments,
         style: style ?? this.style,

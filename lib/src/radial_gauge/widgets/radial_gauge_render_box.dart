@@ -18,7 +18,9 @@ import '../internal/radial_gauge_size_ratios.dart';
 class RadialGaugeRenderBox extends RenderShiftedBox {
   /// Current value of the radial gauge
   double _value;
+
   double get value => _value;
+
   set value(double value) {
     if (_value != value) {
       _value = value;
@@ -30,6 +32,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
   /// Only a single axis is supported
   GaugeAxis get axis => _axis;
   GaugeAxis _axis;
+
   set axis(GaugeAxis axis) {
     if (_axis != axis) {
       if (_axis.degrees != axis.degrees ||
@@ -44,7 +47,9 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
   }
 
   Alignment _alignment;
+
   Alignment get alignment => _alignment;
+
   set alignment(Alignment alignment) {
     if (_alignment != alignment) {
       _alignment = alignment;
@@ -53,7 +58,9 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
   }
 
   double? _radius;
+
   double? get radius => _radius;
+
   set radius(double? radius) {
     if (_radius != radius) {
       _radius = radius;
@@ -62,7 +69,9 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
   }
 
   bool _debug;
+
   bool get debug => _debug;
+
   set debug(bool debug) {
     if (_debug != debug) {
       _debug = debug;
@@ -92,6 +101,8 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
   bool get sizedByParent => false;
 
   double get _valueProgress => (value - axis.min) / (axis.max - axis.min);
+
+  double get _from => (axis.zero - axis.min) / (axis.max - axis.min);
 
   @override
   void performLayout() {
@@ -220,7 +231,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
 
     if (progressBar != null &&
         progressBar.placement == GaugeProgressPlacement.inside) {
-      progressBar.paint(axis, layout, canvas, _valueProgress);
+      progressBar.paint(axis, layout, canvas, _from, _valueProgress);
     }
 
     for (var i = 0; i < axisDefinition.segments.length; i++) {
@@ -237,7 +248,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
 
     if (progressBar != null &&
         progressBar.placement == GaugeProgressPlacement.over) {
-      progressBar.paint(axis, layout, canvas, _valueProgress);
+      progressBar.paint(axis, layout, canvas, _from, _valueProgress);
     }
 
     canvas.restore();
