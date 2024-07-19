@@ -75,8 +75,13 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
                   ),
                   segments: _controller.segments
                       .map((e) => e.copyWith(
-                          cornerRadius:
-                              Radius.circular(_controller.segmentsRadius)))
+                            style: e.style.copyWith(
+                              thickness: _controller.thickness,
+                              cornerRadius: Radius.circular(
+                                _controller.segmentsRadius,
+                              ),
+                            ),
+                          ))
                       .toList(),
                 ),
               ),
@@ -243,17 +248,17 @@ class GaugeConfigPanel extends StatelessWidget {
           ),
           ColorField(
             title: "Segment 1 color",
-            color: _controller.segments[0].color,
+            color: _controller.segments[0].style.color!,
             onColorChanged: (c) => _controller.setSegmentColor(0, c),
           ),
           ColorField(
             title: "Segment 2 color",
-            color: _controller.segments[1].color,
+            color: _controller.segments[1].style.color!,
             onColorChanged: (c) => _controller.setSegmentColor(1, c),
           ),
           ColorField(
             title: "Segment 3 color",
-            color: _controller.segments[2].color,
+            color: _controller.segments[2].style.color!,
             onColorChanged: (c) => _controller.setSegmentColor(2, c),
           ),
           const Divider(),

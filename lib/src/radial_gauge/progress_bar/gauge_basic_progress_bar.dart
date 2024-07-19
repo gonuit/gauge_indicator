@@ -8,6 +8,7 @@ class GaugeBasicProgressBar extends Equatable implements GaugeProgressBar {
   final Color? color;
   final GaugeAxisGradient? gradient;
   final Shader? shader;
+  final BoxShadow? shadow;
   @override
   final GaugeProgressPlacement placement;
 
@@ -15,9 +16,10 @@ class GaugeBasicProgressBar extends Equatable implements GaugeProgressBar {
     this.color,
     this.gradient,
     this.shader,
+    this.shadow,
     this.placement = GaugeProgressPlacement.over,
   }) : assert(
-          color != null || gradient != null || shader != null,
+          color != null || gradient != null || shader != null || shadow != null,
           'color, gradient or shader is required',
         );
 
@@ -38,6 +40,10 @@ class GaugeBasicProgressBar extends Equatable implements GaugeProgressBar {
     );
 
     final paint = Paint()..style = PaintingStyle.fill;
+
+    if (shadow != null) {
+      canvas.drawPath(progressBar, shadow!.toPaint());
+    }
 
     if (shader != null) {
       paint.shader = shader!;
@@ -63,5 +69,5 @@ class GaugeBasicProgressBar extends Equatable implements GaugeProgressBar {
   }
 
   @override
-  List<Object?> get props => [color, gradient, shader, placement];
+  List<Object?> get props => [color, gradient, shader, placement, shadow];
 }

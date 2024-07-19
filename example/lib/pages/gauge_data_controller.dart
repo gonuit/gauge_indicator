@@ -238,23 +238,34 @@ class GaugeDataController extends ChangeNotifier {
   }
 
   List<GaugeSegment> _segments = <GaugeSegment>[
-    const GaugeSegment(
+    GaugeSegment(
       from: 0,
       to: 60.0,
-      color: Color(0xFFD9DEEB),
-      cornerRadius: Radius.zero,
+      style: GaugeSegmentStyle(
+          color: const Color(0xFFD9DEEB),
+          cornerRadius: Radius.zero,
+          shadow: BoxShadow(
+            color: Colors.red.withOpacity(0.5),
+            blurRadius: 15.0,
+            spreadRadius: 15.0,
+            offset: const Offset(0.0, 0.0),
+          )),
     ),
     const GaugeSegment(
       from: 60.0,
       to: 85.0,
-      color: Color(0xFFD9DEEB),
-      cornerRadius: Radius.zero,
+      style: GaugeSegmentStyle(
+        color: Color(0xFFD9DEEB),
+        cornerRadius: Radius.zero,
+      ),
     ),
     const GaugeSegment(
       from: 85.0,
       to: 100,
-      color: Color(0xFFD9DEEB),
-      cornerRadius: Radius.zero,
+      style: GaugeSegmentStyle(
+        color: Color(0xFFD9DEEB),
+        cornerRadius: Radius.zero,
+      ),
     ),
   ];
 
@@ -267,20 +278,26 @@ class GaugeDataController extends ChangeNotifier {
       GaugeSegment(
         from: 0,
         to: stops[0],
-        color: colors[random.nextInt(colors.length)],
-        cornerRadius: Radius.zero,
+        style: GaugeSegmentStyle(
+          color: colors[random.nextInt(colors.length)],
+          cornerRadius: Radius.zero,
+        ),
       ),
       GaugeSegment(
         from: stops[0],
         to: stops[1],
-        color: colors[random.nextInt(colors.length)],
-        cornerRadius: Radius.zero,
+        style: GaugeSegmentStyle(
+          color: colors[random.nextInt(colors.length)],
+          cornerRadius: Radius.zero,
+        ),
       ),
       GaugeSegment(
         from: stops[1],
         to: 100,
-        color: colors[random.nextInt(colors.length)],
-        cornerRadius: Radius.zero,
+        style: GaugeSegmentStyle(
+          color: colors[random.nextInt(colors.length)],
+          cornerRadius: Radius.zero,
+        ),
       ),
     ];
   }
@@ -291,11 +308,23 @@ class GaugeDataController extends ChangeNotifier {
         return GaugeProgressBar.rounded(
           color: progressBarColor,
           placement: progressBarPlacement,
+          shadow: BoxShadow(
+            color: Colors.red.withOpacity(0.5),
+            blurRadius: 15.0,
+            spreadRadius: 15.0,
+            offset: const Offset(0.0, 0.0),
+          ),
         );
       case ProgressBarType.basic:
         return GaugeProgressBar.basic(
           color: progressBarColor,
           placement: progressBarPlacement,
+          shadow: BoxShadow(
+            color: Colors.red.withOpacity(0.5),
+            blurRadius: 15.0,
+            spreadRadius: 15.0,
+            offset: const Offset(0.0, 0.0),
+          ),
         );
     }
   }

@@ -31,6 +31,7 @@ abstract class GaugeProgressBar {
     Color? color,
     GaugeAxisGradient? gradient,
     Shader? shader,
+    BoxShadow? shadow,
     GaugeProgressPlacement placement,
   }) = GaugeRoundedProgressBar;
 
@@ -39,6 +40,7 @@ abstract class GaugeProgressBar {
     Color? color,
     GaugeAxisGradient? gradient,
     Shader? shader,
+    BoxShadow? shadow,
     GaugeProgressPlacement placement,
   }) = GaugeBasicProgressBar;
 }

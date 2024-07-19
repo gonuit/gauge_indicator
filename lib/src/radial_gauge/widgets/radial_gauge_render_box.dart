@@ -204,6 +204,13 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     for (var i = 0; i < axisDefinition.segments.length; i++) {
       final segment = axisDefinition.segments[i];
       final paint = Paint()..style = PaintingStyle.fill;
+      // add shadow to the paint
+
+      // paint shadow with shadow
+
+      if (segment.shadow != null) {
+        canvas.drawPath(segment.path, segment.shadow!.toPaint());
+      }
 
       if (segment.shader != null) {
         paint.shader = segment.shader!;
