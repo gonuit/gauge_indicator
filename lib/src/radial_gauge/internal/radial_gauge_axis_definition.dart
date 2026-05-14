@@ -142,13 +142,17 @@ class RadialGaugeAxisDefinition {
     final pathInsets = EdgeInsets.all(pathRadius);
     final externalRect = pathInsets.inflateRect(axisRect);
 
+    final range = axis.max - axis.min;
+
     for (var i = 0; i < axis.segments.length; i++) {
       final segment = axis.segments[i];
 
-      final from = (segment.from - axis.min) / (axis.max - axis.min);
+      // Clamp to [0, 1] so animation overshoot (e.g. elastic curves) doesn't
+      // produce negative widths or push segments outside the visible axis.
+      final from = ((segment.from - axis.min) / range).clamp(0.0, 1.0);
       final startAngle = gaugeDegreesTween.transform(from);
 
-      final to = (segment.to - axis.min) / (axis.max - axis.min);
+      final to = ((segment.to - axis.min) / range).clamp(0.0, 1.0);
       final endAngle = gaugeDegreesTween.transform(to);
       final sweepAngle = endAngle - startAngle;
 
@@ -201,7 +205,11 @@ class RadialGaugeAxisDefinition {
     var maxSeparator = double.infinity;
     for (var i = 0; i < count; i++) {
       final seg = axis.segments[i];
-      final width = (seg.to - seg.from) / range;
+      // Same clamp as the render loop so animation overshoot doesn't collapse
+      // the spacing budget for a frame.
+      final from = ((seg.from - axis.min) / range).clamp(0.0, 1.0);
+      final to = ((seg.to - axis.min) / range).clamp(0.0, 1.0);
+      final width = to - from;
       final reservable = math.max(0.0, width - minWidth);
       maxSeparator = math.min(maxSeparator, reservable / 2);
     }
