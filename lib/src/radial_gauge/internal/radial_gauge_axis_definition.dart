@@ -166,11 +166,12 @@ class RadialGaugeAxisDefinition {
       final endAngle = gaugeDegreesTween.transform(to);
       final sweepAngle = endAngle - startAngle;
 
-      final isOnly = axis.segments.length == 1;
-      // Symmetric trim: every segment loses `separator` on both sides so
-      // relative widths are preserved when spacing eats into segments.
-      final trimStart = isOnly ? 0.0 : separator;
-      final trimEnd = isOnly ? 0.0 : separator;
+      final isFirst = i == 0;
+      final isLast = i == axis.segments.length - 1;
+      // Only trim where a neighbor segment exists; outer caps reach the
+      // axis ends.
+      final trimStart = isFirst ? 0.0 : separator;
+      final trimEnd = isLast ? 0.0 : separator;
 
       final thickness = axis.style.thickness;
       final halfThickness = thickness / 2;
@@ -178,14 +179,24 @@ class RadialGaugeAxisDefinition {
       final clampedFrom = (from + trimStart).clamp(0.0, 1.0);
       final clampedTo = (to - trimEnd).clamp(0.0, 1.0);
 
+      final segmentCornerRadius = segment.cornerRadius.clampValues(
+        minimumX: 0,
+        minimumY: 0,
+        maximumX: halfThickness,
+        maximumY: halfThickness,
+      );
+      final styleCornerRadius = axis.style.cornerRadius.clampValues(
+        minimumX: 0,
+        minimumY: 0,
+        maximumX: halfThickness,
+        maximumY: halfThickness,
+      );
+
       final path = calculateRadiusArcPath(
         externalRect,
-        cornerRadius: segment.cornerRadius.clampValues(
-          minimumX: 0,
-          minimumY: 0,
-          maximumX: halfThickness,
-          maximumY: halfThickness,
-        ),
+        cornerRadius: segmentCornerRadius,
+        startCornerRadius: isFirst ? styleCornerRadius : segmentCornerRadius,
+        endCornerRadius: isLast ? styleCornerRadius : segmentCornerRadius,
         degrees: axis.degrees,
         from: math.min(clampedFrom, clampedTo),
         to: math.max(clampedFrom, clampedTo),

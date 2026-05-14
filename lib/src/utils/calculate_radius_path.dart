@@ -9,6 +9,8 @@ import 'package:gauge_indicator/gauge_indicator.dart';
 Path calculateRadiusArcPath(
   Rect rect, {
   required Radius cornerRadius,
+  Radius? startCornerRadius,
+  Radius? endCornerRadius,
   double from = 0.0,
   double to = 1.0,
   double degrees = 180.0,
@@ -23,7 +25,6 @@ Path calculateRadiusArcPath(
   final part = to - from;
   final useDegrees = (degrees * part).clamp(10.0, 359.99);
 
-  /// We are shifting arc angles to center it horizontally.
   final angleShift = (degrees - 180) / 2;
   final gaugeDegreesTween = Tween<double>(
     begin: -180.0 - angleShift,
@@ -31,55 +32,60 @@ Path calculateRadiusArcPath(
   );
 
   final circleCenter = rect.center;
-
   final halfThickness = thickness / 2;
 
-  /// Can be helpful for multiple axes support.
   final startAngle = gaugeDegreesTween.transform(from);
   final endAngle = gaugeDegreesTween.transform(to);
 
   final centerRadius = radius - halfThickness;
 
-  /// Scale corner radius down proportionally to fit small segments.
+  Radius startCorner = startCornerRadius ?? cornerRadius;
+  Radius endCorner = endCornerRadius ?? cornerRadius;
+
+  /// Scale corner radii down proportionally so the two caps don't overlap.
   final segmentArcLength =
       centerRadius * toRadians((endAngle - startAngle).abs());
-  final maxCornerX = segmentArcLength / 2;
-  final scale = cornerRadius.x > maxCornerX && cornerRadius.x > 0
-      ? maxCornerX / cornerRadius.x
+  final totalCornerX = startCorner.x + endCorner.x;
+  final scale = totalCornerX > segmentArcLength && totalCornerX > 0
+      ? segmentArcLength / totalCornerX
       : 1.0;
-  cornerRadius = Radius.elliptical(
-    cornerRadius.x * scale,
-    (cornerRadius.y * scale).clamp(0.0, halfThickness),
+  startCorner = Radius.elliptical(
+    startCorner.x * scale,
+    (startCorner.y * scale).clamp(0.0, halfThickness),
+  );
+  endCorner = Radius.elliptical(
+    endCorner.x * scale,
+    (endCorner.y * scale).clamp(0.0, halfThickness),
   );
 
   final outerRadius = radius;
-  final centerOuterRadius = outerRadius - cornerRadius.y;
   final innerRadius = radius - thickness;
-  final centerInnerRadius = innerRadius + cornerRadius.y;
 
   final centerAxisStartAngle = toRadians(startAngle);
   final centerAxisEndAngle = toRadians(endAngle);
 
-  final horizontalCornerAngle = getArcAngle(cornerRadius.x, centerRadius);
-  final largeArcMinAngle = 180.0 + toDegrees(horizontalCornerAngle * 2);
+  final startCornerAngle = getArcAngle(startCorner.x, centerRadius);
+  final endCornerAngle = getArcAngle(endCorner.x, centerRadius);
+  final largeArcMinAngle =
+      180.0 + toDegrees(startCornerAngle + endCornerAngle);
 
-  final axisStartAngle = centerAxisStartAngle + horizontalCornerAngle;
-  final axisEndAngle = centerAxisEndAngle - horizontalCornerAngle;
+  final axisStartAngle = centerAxisStartAngle + startCornerAngle;
+  final axisEndAngle = centerAxisEndAngle - endCornerAngle;
 
   final startOuterPoint =
       getPointOnCircle(circleCenter, axisStartAngle, outerRadius);
   final endOuterPoint =
       getPointOnCircle(circleCenter, axisEndAngle, outerRadius);
-  final endOuterCenterPoint =
-      getPointOnCircle(circleCenter, centerAxisEndAngle, centerOuterRadius);
-  final endInnerCenterPoint =
-      getPointOnCircle(circleCenter, centerAxisEndAngle, centerInnerRadius);
+  final endOuterCenterPoint = getPointOnCircle(
+      circleCenter, centerAxisEndAngle, outerRadius - endCorner.y);
+  final endInnerCenterPoint = getPointOnCircle(
+      circleCenter, centerAxisEndAngle, innerRadius + endCorner.y);
   final endInnerPoint =
       getPointOnCircle(circleCenter, axisEndAngle, innerRadius);
-  final startOuterCenterPoint =
-      getPointOnCircle(circleCenter, centerAxisStartAngle, centerOuterRadius);
-  final startInnerCenterPoint =
-      getPointOnCircle(circleCenter, centerAxisStartAngle, centerInnerRadius);
+  final startOuterCenterPoint = getPointOnCircle(
+      circleCenter, centerAxisStartAngle, outerRadius - startCorner.y);
+  final startInnerCenterPoint = getPointOnCircle(
+      circleCenter, centerAxisStartAngle, innerRadius + startCorner.y);
   final startInnerPoint =
       getPointOnCircle(circleCenter, axisStartAngle, innerRadius);
 
@@ -107,11 +113,10 @@ Path calculateRadiusArcPath(
     'draw the debug arc vertices',
   );
 
-  // Rotate the arc radius to maintain proper aspect
   final endRotation = endAngle + 180 + 90;
   final startRotation = startAngle + 180 - 90;
 
-  final axisSurface = Path()
+  return Path()
     ..moveTo(startOuterPoint.dx, startOuterPoint.dy)
     ..arcToPoint(
       endOuterPoint,
@@ -120,13 +125,13 @@ Path calculateRadiusArcPath(
     )
     ..arcToPoint(
       endOuterCenterPoint,
-      radius: cornerRadius,
+      radius: endCorner,
       rotation: endRotation,
     )
     ..lineTo(endInnerCenterPoint.dx, endInnerCenterPoint.dy)
     ..arcToPoint(
       endInnerPoint,
-      radius: cornerRadius,
+      radius: endCorner,
       rotation: endRotation,
     )
     ..arcToPoint(
@@ -137,15 +142,13 @@ Path calculateRadiusArcPath(
     )
     ..arcToPoint(
       startInnerCenterPoint,
-      radius: cornerRadius,
+      radius: startCorner,
       rotation: startRotation,
     )
     ..lineTo(startOuterCenterPoint.dx, startOuterCenterPoint.dy)
     ..arcToPoint(
       startOuterPoint,
-      radius: cornerRadius,
+      radius: startCorner,
       rotation: startRotation,
     );
-
-  return axisSurface;
 }
