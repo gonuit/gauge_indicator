@@ -91,10 +91,26 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
           ),
         );
 
-        final examplesButton = IconButton(
-          icon: const Icon(Icons.collections_outlined),
-          tooltip: 'Examples',
-          onPressed: () => context.go('/examples'),
+        final examplesButton = Padding(
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+          child: SizedBox(
+            width: double.infinity,
+            height: 44,
+            child: FilledButton.tonalIcon(
+              icon: const Icon(Icons.collections_outlined, size: 18),
+              label: const Text('Browse examples'),
+              style: FilledButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                textStyle: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              onPressed: () => context.go('/examples'),
+            ),
+          ),
         );
 
         if (isMobile) {
@@ -103,10 +119,9 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SidebarHeader(
+              const SidebarHeader(
                 title: 'gauge_indicator',
                 isSmall: true,
-                trailing: examplesButton,
               ),
               Expanded(
                 child: gaugeWidget,
@@ -119,7 +134,10 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
                     border:
                         const Border(top: BorderSide(color: Color(0xFFDDDDDD))),
                   ),
-                  child: GaugeConfigPanel(controller: _controller),
+                  child: GaugeConfigPanel(
+                    controller: _controller,
+                    header: examplesButton,
+                  ),
                 ),
               ),
             ],
@@ -131,8 +149,10 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
             children: [
               ShowcaseSidebar(
                 title: 'gauge_indicator',
-                trailing: examplesButton,
-                child: GaugeConfigPanel(controller: _controller),
+                child: GaugeConfigPanel(
+                  controller: _controller,
+                  header: examplesButton,
+                ),
               ),
               Expanded(child: gaugeWidget),
             ],
@@ -145,10 +165,12 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
 
 class GaugeConfigPanel extends StatelessWidget {
   final GaugeDataController _controller;
+  final Widget? header;
 
   const GaugeConfigPanel({
     super.key,
     required GaugeDataController controller,
+    this.header,
   }) : _controller = controller;
 
   @override
@@ -158,6 +180,7 @@ class GaugeConfigPanel extends StatelessWidget {
       builder: (context, _) => ListView(
         padding: const EdgeInsets.only(top: 8, bottom: 24),
         children: [
+          ?header,
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
             child: Material(

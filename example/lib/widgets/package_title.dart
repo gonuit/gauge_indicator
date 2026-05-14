@@ -15,7 +15,7 @@ class PageTitle extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       width: double.infinity,
-      padding: isSmall ? const EdgeInsets.all(4) : const EdgeInsets.all(16),
+      padding: isSmall ? const EdgeInsets.all(10) : const EdgeInsets.all(16),
       decoration: const BoxDecoration(
           border: Border(
         bottom: BorderSide(
@@ -25,7 +25,7 @@ class PageTitle extends StatelessWidget {
       child: Text(
         title,
         style: TextStyle(
-          fontSize: isSmall ? 14 : 24,
+          fontSize: isSmall ? 18 : 24,
         ),
       ),
     );

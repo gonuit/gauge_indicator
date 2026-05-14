@@ -67,7 +67,7 @@ class ShowcaseSidebar extends StatelessWidget {
       decoration: const BoxDecoration(
         border: Border(right: BorderSide(color: Color(0xFFDDDDDD))),
       ),
-      width: 350,
+      width: 380,
       child: Column(
         children: [
           SidebarHeader(title: title, leading: leading, trailing: trailing),
