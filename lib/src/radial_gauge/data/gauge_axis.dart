@@ -4,6 +4,18 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
+/// How [GaugeAxisStyle.zoneSpacing] adapts when a zone is too narrow to
+/// reserve the full spacing on both sides.
+enum ZoneSpacingMode {
+  /// Shrink every gap to the same value so spacing stays visually uniform
+  /// across the gauge. A single narrow zone tightens the whole gauge.
+  uniform,
+
+  /// Shrink only the gaps adjacent to a narrow zone. Other boundaries keep
+  /// the full requested spacing. May produce uneven gap widths.
+  local,
+}
+
 /// Visual style for a [GaugeAxis] — controls thickness, corner radius,
 /// background, and zone spacing.
 @immutable
@@ -13,6 +25,10 @@ class GaugeAxisStyle extends Equatable {
 
   /// Gap between adjacent zones, in fractional axis units.
   final double zoneSpacing;
+
+  /// How [zoneSpacing] adapts when a zone is too narrow to reserve the full
+  /// gap on both sides. Defaults to [ZoneSpacingMode.uniform].
+  final ZoneSpacingMode zoneSpacingMode;
 
   /// Renamed to [zoneSpacing].
   @Deprecated('Renamed to zoneSpacing. Will be removed in 0.6.0.')
@@ -34,6 +50,7 @@ class GaugeAxisStyle extends Equatable {
     this.background = const Color(0xFFf0f0f0),
     this.cornerRadius = const Radius.circular(10),
     double zoneSpacing = 0,
+    this.zoneSpacingMode = ZoneSpacingMode.uniform,
     @Deprecated('Renamed to zoneSpacing. Will be removed in 0.6.0.')
     double? segmentSpacing,
     this.blendColors = true,
@@ -50,12 +67,19 @@ class GaugeAxisStyle extends Equatable {
         background: Color.lerp(begin.background, end.background, t),
         blendColors: end.blendColors,
         zoneSpacing: lerpDouble(begin.zoneSpacing, end.zoneSpacing, t),
+        zoneSpacingMode: end.zoneSpacingMode,
         cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t)!,
       );
 
   @override
-  List<Object?> get props =>
-      [thickness, zoneSpacing, background, blendColors, cornerRadius];
+  List<Object?> get props => [
+        thickness,
+        zoneSpacing,
+        zoneSpacingMode,
+        background,
+        blendColors,
+        cornerRadius,
+      ];
 }
 
 /// A [Tween] over [GaugeAxis] values used by [AnimatedRadialGauge] to
