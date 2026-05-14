@@ -1,3 +1,6 @@
+## 0.5.0-beta.8
+- Added `GaugeZone.shadow` (`BoxShadow`) for per-zone drop shadows. `offset` and `blurRadius` are honored; `spreadRadius` is not.
+
 ## 0.5.0-beta.7
 - Reorganized the README around the examples gallery and trimmed Usage to a minimal install + setup snippet.
 
