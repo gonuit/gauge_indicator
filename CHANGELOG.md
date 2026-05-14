@@ -4,6 +4,8 @@
 - Added `onAnimationFrame` callback on `AnimatedRadialGauge` for reading the interpolated value each frame.
 - Renamed `GaugeAxis.degrees` to `sweepDegrees` and `GaugeAxis.zero` to `origin` for clearer intent. Old names remain as deprecated aliases and will be removed in `0.6.0`.
 - Renamed `GaugeSegment` to `GaugeZone`, `GaugeAxis.segments` to `zones`, and `GaugeAxisStyle.segmentSpacing` to `zoneSpacing` so the API uses gauge-native vocabulary. Old names remain as deprecated aliases and will be removed in `0.6.0`.
+- Added `GaugeAxisStyle.zoneSpacingMode` (`uniform` or `local`) for choosing whether a narrow zone tightens every gap uniformly or only the gaps next to it.
+- `GaugeAxisTransformer.progress` now inherits the underlying zones' `cornerRadius` (and other properties) when recolouring, so the masked portion keeps the same shape as the zones it covers.
 - On 360° axes, the rounded cap radius now tapers as progress approaches a full revolution, so the end and start caps no longer collide at the seam.
 - Narrowed the public API to widgets and their configuration classes; internal utilities are no longer exported.
 - Documented all public classes, fields, and constructors.
