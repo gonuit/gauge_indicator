@@ -126,11 +126,17 @@ class RadialGaugeAxisDefinition {
     Tween<double> gaugeDegreesTween,
     double radius,
   ) sync* {
-    const pi2 = math.pi * 2;
     final spacingAngle = getArcAngle(axis.style.segmentSpacing, radius);
     // Each segment has a half separator added / removed from its path.
     final separatorAngle = spacingAngle / 2;
-    final separator = separatorAngle / pi2;
+    // Fraction of the axis span, so the gap stays consistent across degrees.
+    final desiredSeparator = separatorAngle / toRadians(axis.degrees);
+    // Reserve a minimum rendered width per segment so they don't disappear.
+    final axisArcLength = radius * toRadians(axis.degrees);
+    final minSegmentFraction =
+        axisArcLength > 0 ? _minSegmentPx / axisArcLength : 0.0;
+    final separator =
+        math.min(desiredSeparator, _maxSeparator(axis, minSegmentFraction));
 
     final pathRadius = axis.style.thickness * 0.5;
     final pathInsets = EdgeInsets.all(pathRadius);
@@ -146,10 +152,11 @@ class RadialGaugeAxisDefinition {
       final endAngle = gaugeDegreesTween.transform(to);
       final sweepAngle = endAngle - startAngle;
 
-      final isLast = (i + 1) == axis.segments.length;
-      final isFirst = i == 0;
-      final trimStart = isFirst ? 0 : separator;
-      final trimEnd = isFirst && isLast || isLast ? 0 : separator;
+      final isOnly = axis.segments.length == 1;
+      // Symmetric trim: every segment loses `separator` on both sides so
+      // relative widths are preserved when spacing eats into segments.
+      final trimStart = isOnly ? 0.0 : separator;
+      final trimEnd = isOnly ? 0.0 : separator;
 
       final thickness = axis.style.thickness;
       final halfThickness = thickness / 2;
@@ -181,5 +188,23 @@ class RadialGaugeAxisDefinition {
         path: path,
       );
     }
+  }
+
+  /// Minimum rendered segment width in logical pixels.
+  static const double _minSegmentPx = 1.0;
+
+  /// Largest separator that keeps every segment at least [minWidth] wide.
+  static double _maxSeparator(GaugeAxis axis, double minWidth) {
+    final count = axis.segments.length;
+    if (count < 2) return double.infinity;
+    final range = axis.max - axis.min;
+    var maxSeparator = double.infinity;
+    for (var i = 0; i < count; i++) {
+      final seg = axis.segments[i];
+      final width = (seg.to - seg.from) / range;
+      final reservable = math.max(0.0, width - minWidth);
+      maxSeparator = math.min(maxSeparator, reservable / 2);
+    }
+    return maxSeparator;
   }
 }
