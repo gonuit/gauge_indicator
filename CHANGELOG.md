@@ -1,3 +1,6 @@
+## 0.5.0-beta.3
+- Fixed pointer shadow ignoring `Shadow.offset`; the shadow is now drawn at the configured offset relative to the pointer ([#14](https://github.com/gonuit/gauge_indicator/issues/14)).
+
 ## 0.5.0-beta.2
 - Fixed `RadialGauge` segments painting at the parent canvas origin instead of the gauge's position when used without a `RepaintBoundary` (e.g. directly inside a `Padding`, `Row`, or any layout with a non-zero offset) ([#17](https://github.com/gonuit/gauge_indicator/issues/17)).
 

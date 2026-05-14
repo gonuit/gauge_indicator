@@ -302,7 +302,10 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     final fillPaint = Paint();
 
     if (pointer.shadow != null) {
-      canvas.drawPath(path, pointer.shadow!.toPaint());
+      canvas.drawPath(
+        path.shift(pointer.shadow!.offset),
+        pointer.shadow!.toPaint(),
+      );
     }
 
     if (pointer.color != null) {

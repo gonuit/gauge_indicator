@@ -11,12 +11,16 @@ void main() {
   testWidgets(
     'RadialGauge segments follow parent offset (Padding)',
     (tester) async {
+      await tester.binding.setSurfaceSize(const Size(408, 248));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
       await tester.pumpWidget(
         const MaterialApp(
+          debugShowCheckedModeBanner: false,
           home: Scaffold(
             backgroundColor: Color(0xFFFFFFFF),
             body: Padding(
-              padding: EdgeInsets.fromLTRB(120, 60, 0, 0),
+              padding: EdgeInsets.fromLTRB(144, 84, 24, 24),
               child: SizedBox(
                 width: 240,
                 height: 140,
@@ -52,11 +56,16 @@ void main() {
   testWidgets(
     'RadialGauge segments follow parent offset (Row of two gauges)',
     (tester) async {
+      await tester.binding.setSurfaceSize(const Size(508, 188));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
       await tester.pumpWidget(
         const MaterialApp(
+          debugShowCheckedModeBanner: false,
           home: Scaffold(
             backgroundColor: Color(0xFFFFFFFF),
-            body: Center(
+            body: Padding(
+              padding: EdgeInsets.all(24),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
