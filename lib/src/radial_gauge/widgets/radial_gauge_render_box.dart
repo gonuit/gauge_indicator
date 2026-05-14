@@ -190,13 +190,14 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
         progressBar.placement == GaugeProgressPlacement.inside;
 
     if (hasProgressBarInside) {
-      final segmentsPath = Path();
-
-      for (int i = 0; i < axisDefinition.segments.length; i++) {
-        final segment = axisDefinition.segments[i];
-        segmentsPath.addPath(segment.path, Offset.zero);
+      canvas.clipPath(axisDefinition.surface);
+      if (axisDefinition.segments.isNotEmpty) {
+        final segmentsPath = Path();
+        for (final segment in axisDefinition.segments) {
+          segmentsPath.addPath(segment.path, Offset.zero);
+        }
+        canvas.clipPath(segmentsPath);
       }
-      canvas.clipPath(segmentsPath);
     }
 
     // drawing segments

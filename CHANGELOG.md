@@ -1,3 +1,7 @@
+## 0.5.0-beta.4
+- Fixed rounded progress bar artifact at zero and near-zero values ([#13](https://github.com/gonuit/gauge_indicator/issues/13)).
+- `GaugeProgressBar` with `inside` placement now renders without explicit segments and respects the axis corner radius.
+
 ## 0.5.0-beta.3
 - Fixed pointer shadow ignoring `Shadow.offset`; the shadow is now drawn at the configured offset relative to the pointer ([#14](https://github.com/gonuit/gauge_indicator/issues/14)).
 
