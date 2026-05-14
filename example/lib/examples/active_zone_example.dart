@@ -87,7 +87,7 @@ class _Gauge extends StatelessWidget {
       width: 280,
       height: 240,
       child: AnimatedRadialGauge(
-        duration: const Duration(milliseconds: 800),
+        duration: const Duration(milliseconds: 1600),
         curve: Curves.easeOut,
         value: value,
         builder: (context, child, value) => RadialGaugeLabel(

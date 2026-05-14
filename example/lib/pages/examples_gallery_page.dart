@@ -1,7 +1,10 @@
 import 'dart:math' as math;
 
 import 'package:example/examples/active_zone_example.dart';
+import 'package:example/examples/activity_rings_example.dart';
 import 'package:example/examples/getting_started_example.dart';
+import 'package:example/examples/live_heart_rate_example.dart';
+import 'package:example/examples/rank_progression_example.dart';
 import 'package:example/examples/shader_gradient_example.dart';
 import 'package:example/examples/step_goal_example.dart';
 import 'package:example/examples/thermometer_example.dart';
@@ -15,6 +18,7 @@ import 'package:go_router/go_router.dart';
 class ExampleEntry {
   final String path;
   final String name;
+  final String subtitle;
   final IconData icon;
   final String sourcePath;
   final WidgetBuilder builder;
@@ -22,6 +26,7 @@ class ExampleEntry {
   const ExampleEntry({
     required this.path,
     required this.name,
+    required this.subtitle,
     required this.icon,
     required this.sourcePath,
     required this.builder,
@@ -32,6 +37,7 @@ final List<ExampleEntry> examples = [
   ExampleEntry(
     path: 'getting-started',
     name: 'Getting started',
+    subtitle: 'Needle pointer + rounded progress bar',
     icon: Icons.play_circle_outline,
     sourcePath: 'example/lib/examples/getting_started_example.dart',
     builder: (_) => const GettingStartedExample(),
@@ -39,6 +45,7 @@ final List<ExampleEntry> examples = [
   ExampleEntry(
     path: 'zones',
     name: 'Zones',
+    subtitle: 'Colored GaugeZones + triangle pointer',
     icon: Icons.donut_small_outlined,
     sourcePath: 'example/lib/examples/zones_example.dart',
     builder: (_) => const ZonesExample(),
@@ -46,6 +53,7 @@ final List<ExampleEntry> examples = [
   ExampleEntry(
     path: 'active-zone',
     name: 'Active zone',
+    subtitle: 'Custom GaugeAxisTransformer',
     icon: Icons.highlight_alt_outlined,
     sourcePath: 'example/lib/examples/active_zone_example.dart',
     builder: (_) => const ActiveZoneExample(),
@@ -53,6 +61,7 @@ final List<ExampleEntry> examples = [
   ExampleEntry(
     path: 'thermometer',
     name: 'Thermometer',
+    subtitle: 'Gradient zone over a negative axis',
     icon: Icons.thermostat_outlined,
     sourcePath: 'example/lib/examples/thermometer_example.dart',
     builder: (_) => const ThermometerExample(),
@@ -60,6 +69,7 @@ final List<ExampleEntry> examples = [
   ExampleEntry(
     path: 'step-goal',
     name: 'Step goal',
+    subtitle: 'Many zones, progress clipped inside',
     icon: Icons.directions_walk_outlined,
     sourcePath: 'example/lib/examples/step_goal_example.dart',
     builder: (_) => const StepGoalExample(),
@@ -67,13 +77,39 @@ final List<ExampleEntry> examples = [
   ExampleEntry(
     path: 'voltmeter',
     name: 'Voltmeter',
+    subtitle: 'Bidirectional fill via axis origin',
     icon: Icons.electric_bolt_outlined,
     sourcePath: 'example/lib/examples/voltmeter_example.dart',
     builder: (_) => const VoltmeterExample(),
   ),
   ExampleEntry(
+    path: 'activity-rings',
+    name: 'Activity rings',
+    subtitle: 'Stacked concentric gauges',
+    icon: Icons.track_changes,
+    sourcePath: 'example/lib/examples/activity_rings_example.dart',
+    builder: (_) => const ActivityRingsExample(),
+  ),
+  ExampleEntry(
+    path: 'live-heart-rate',
+    name: 'Live heart rate',
+    subtitle: 'Timer-driven self-animating value',
+    icon: Icons.monitor_heart_outlined,
+    sourcePath: 'example/lib/examples/live_heart_rate_example.dart',
+    builder: (_) => const LiveHeartRateExample(),
+  ),
+  ExampleEntry(
+    path: 'rank-progression',
+    name: 'Rank progression',
+    subtitle: 'Progress transformer + local zone spacing',
+    icon: Icons.workspace_premium_outlined,
+    sourcePath: 'example/lib/examples/rank_progression_example.dart',
+    builder: (_) => const RankProgressionExample(),
+  ),
+  ExampleEntry(
     path: 'shader-progress-bar',
     name: 'Progress bar shader',
+    subtitle: 'FragmentShader on progress + custom pointer',
     icon: Icons.auto_awesome_outlined,
     sourcePath: 'example/lib/examples/shader_gradient_example.dart',
     builder: (_) => const ShaderGradientExample(),
@@ -283,16 +319,34 @@ class _ExampleTile extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text(
-                    entry.name,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight:
-                          selected ? FontWeight.w600 : FontWeight.w500,
-                      color: _primaryText,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        entry.name,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight:
+                              selected ? FontWeight.w600 : FontWeight.w500,
+                          color: _primaryText,
+                          height: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        entry.subtitle,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          color: _primaryText.withValues(alpha: 0.6),
+                          height: 1.3,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                const SizedBox(width: 8),
                 Icon(
                   Icons.chevron_right,
                   size: 18,
