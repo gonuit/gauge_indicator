@@ -43,13 +43,28 @@ Path calculateRadiusArcPath(
   Radius startCorner = startCornerRadius ?? cornerRadius;
   Radius endCorner = endCornerRadius ?? cornerRadius;
 
-  /// Scale corner radii down proportionally so the two caps don't overlap.
+  /// Scale corner radii down so the two caps don't overlap inside the
+  /// rendered arc itself.
   final segmentArcLength =
       centerRadius * toRadians((endAngle - startAngle).abs());
   final totalCornerX = startCorner.x + endCorner.x;
-  final scale = totalCornerX > segmentArcLength && totalCornerX > 0
+  final inSegmentScale = totalCornerX > segmentArcLength && totalCornerX > 0
       ? segmentArcLength / totalCornerX
       : 1.0;
+
+  /// When the axis is a (nearly) closed ring, also taper the caps as the
+  /// empty portion of the ring shrinks below the cap diameter, so the start
+  /// and end caps don't collide at 360°.
+  final totalArcLength = centerRadius * toRadians(degrees);
+  final emptyArcLength = totalArcLength - segmentArcLength;
+  final isFullRing = degrees > 359.0;
+  final emptyScale =
+      isFullRing && totalCornerX > emptyArcLength && totalCornerX > 0
+          ? (emptyArcLength / totalCornerX).clamp(0.0, 1.0)
+          : 1.0;
+
+  final scale =
+      emptyScale < inSegmentScale ? emptyScale : inSegmentScale;
   startCorner = Radius.elliptical(
     startCorner.x * scale,
     (startCorner.y * scale).clamp(0.0, halfThickness),
