@@ -1,4 +1,5 @@
 ## 0.5.0-beta.6
+- `GaugeAxis.origin` now defaults to `min` instead of `0.0`, so progress bars on axes that don't include zero render correctly out of the box. An assertion catches origins outside `[min, max]`.
 - Added `repaint` parameter on `RadialGauge` / `AnimatedRadialGauge` for paint-only updates driven by an external listenable (e.g. shaders).
 - Added `onAnimationFrame` callback on `AnimatedRadialGauge` for reading the interpolated value each frame.
 - Renamed `GaugeAxis.degrees` to `sweepDegrees` and `GaugeAxis.zero` to `origin` for clearer intent. Old names remain as deprecated aliases and will be removed in `0.6.0`.

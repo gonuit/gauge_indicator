@@ -170,13 +170,18 @@ class GaugeAxis extends Equatable {
     this.pointer = defaultPointer,
     this.progressBar = defaultProgressBar,
     this.style = const GaugeAxisStyle(),
-  })  : origin = zero ?? origin,
+  })  : origin = zero ?? origin ?? min,
         zones = segments ?? zones,
         sweepDegrees = degrees ?? sweepDegrees,
         assert(
           (degrees ?? sweepDegrees) >= 10 &&
               (degrees ?? sweepDegrees) <= 360,
           'sweepDegrees must be between 10 and 360, inclusive.',
+        ),
+        assert(
+          (zero ?? origin ?? min) >= min &&
+              (zero ?? origin ?? min) <= max,
+          'origin must be within [min, max].',
         );
 
   /// Applies the [transformer] to produce a per-frame transformed axis.
