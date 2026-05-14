@@ -39,7 +39,7 @@ class GaugeAxisStyle extends Equatable {
 
   @override
   List<Object?> get props =>
-      [thickness, segmentSpacing, background, blendColors];
+      [thickness, segmentSpacing, background, blendColors, cornerRadius];
 }
 
 class GaugeAxisTween extends Tween<GaugeAxis?> {
