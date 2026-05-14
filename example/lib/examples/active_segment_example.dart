@@ -85,7 +85,7 @@ class _Gauge extends StatelessWidget {
         axis: const GaugeAxis(
           min: 0,
           max: 100,
-          degrees: 240,
+          sweepDegrees: 240,
           progressBar: null,
           transformer: _ActiveSegmentTransformer(
             inactiveColor: Color(0xFFD9DEEB),

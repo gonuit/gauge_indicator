@@ -55,7 +55,7 @@ class _Gauge extends StatelessWidget {
         axis: const GaugeAxis(
           min: 0,
           max: 100,
-          degrees: 180,
+          sweepDegrees: 180,
           style: GaugeAxisStyle(
             thickness: 20,
             background: Color(0xFFDFE2EC),

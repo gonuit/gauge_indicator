@@ -65,7 +65,7 @@ class GaugeAxisTween extends Tween<GaugeAxis?> {
 
 /// Configuration for the gauge's circular axis.
 ///
-/// Defines the value range ([min], [max]), the sweep angle ([degrees]),
+/// Defines the value range ([min], [max]), the sweep angle ([sweepDegrees]),
 /// visual [style], [segments], [pointer], [progressBar], and animation
 /// [transformer]. Pass to [RadialGauge.axis] or [AnimatedRadialGauge.axis].
 @immutable
@@ -87,15 +87,21 @@ class GaugeAxis extends Equatable {
   /// Defaults to 1.0. Must be greater than [min].
   final double max;
 
-  /// The zero value the gauge can display.
-  ///
-  /// Defaults to 0.0. Must be greater or equal to [min].
-  final double zero;
+  /// Value from which the progress bar is drawn. Defaults to 0.0.
+  final double origin;
 
-  /// Determines the degree of arc of the gauge axis.
+  /// Sweep angle of the axis in degrees. Defaults to 180.
   ///
-  /// Defaults to 180.
-  final double degrees;
+  /// Must be between 10 and 360 inclusive.
+  final double sweepDegrees;
+
+  /// Renamed to [origin].
+  @Deprecated('Renamed to origin. Will be removed in 0.6.0.')
+  double get zero => origin;
+
+  /// Renamed to [sweepDegrees].
+  @Deprecated('Renamed to sweepDegrees. Will be removed in 0.6.0.')
+  double get degrees => sweepDegrees;
 
   /// Specifies the style of the indicator axis.
   final GaugeAxisStyle style;
@@ -140,16 +146,23 @@ class GaugeAxis extends Equatable {
   const GaugeAxis({
     this.min = 0.0,
     this.max = 1.0,
-    this.zero = 0.0,
+    double origin = 0.0,
+    @Deprecated('Renamed to origin. Will be removed in 0.6.0.')
+    double? zero,
     this.transformer = const GaugeAxisTransformer.noTransform(),
     this.segments = const [],
-    this.degrees = 180,
+    double sweepDegrees = 180,
+    @Deprecated('Renamed to sweepDegrees. Will be removed in 0.6.0.')
+    double? degrees,
     this.pointer = defaultPointer,
     this.progressBar = defaultProgressBar,
     this.style = const GaugeAxisStyle(),
-  }) : assert(
-          degrees >= 10 && degrees <= 360,
-          'The axis degree value must be between 10 and 360, inclusive.',
+  })  : origin = zero ?? origin,
+        sweepDegrees = degrees ?? sweepDegrees,
+        assert(
+          (degrees ?? sweepDegrees) >= 10 &&
+              (degrees ?? sweepDegrees) <= 360,
+          'sweepDegrees must be between 10 and 360, inclusive.',
         );
 
   /// Applies the [transformer] to produce a per-frame transformed axis.
@@ -168,16 +181,20 @@ class GaugeAxis extends Equatable {
     final GaugePointer? pointer,
     final GaugeProgressBar? progressBar,
     final GaugeAxisTransformer? transformer,
+    final double? sweepDegrees,
+    @Deprecated('Renamed to sweepDegrees. Will be removed in 0.6.0.')
     final double? degrees,
     final double? min,
     final double? max,
+    final double? origin,
+    @Deprecated('Renamed to origin. Will be removed in 0.6.0.')
     final double? zero,
   }) =>
       GaugeAxis(
         min: min ?? this.min,
         max: max ?? this.max,
-        zero: zero ?? this.zero,
-        degrees: degrees ?? this.degrees,
+        origin: origin ?? zero ?? this.origin,
+        sweepDegrees: sweepDegrees ?? degrees ?? this.sweepDegrees,
         segments: segments ?? this.segments,
         style: style ?? this.style,
         pointer: pointer ?? this.pointer,
@@ -195,7 +212,8 @@ class GaugeAxis extends Equatable {
       );
 
   @override
-  List<Object?> get props => [pointer, style, segments, degrees, progressBar];
+  List<Object?> get props =>
+      [pointer, style, segments, sweepDegrees, progressBar];
 
   /// Linearly interpolates between two axes at fraction [t]. Returns null
   /// when both ends are null.
@@ -231,7 +249,8 @@ class GaugeAxis extends Equatable {
         );
       }
       return end.copyWith(
-        degrees: lerpDouble(begin.degrees, end.degrees, t).clamp(10.0, 360.0),
+        sweepDegrees: lerpDouble(begin.sweepDegrees, end.sweepDegrees, t)
+            .clamp(10.0, 360.0),
         style: GaugeAxisStyle.lerp(begin.style, end.style, t),
         pointer: end.pointer,
         progressBar: end.progressBar,

@@ -52,7 +52,7 @@ class GaugeRoundedProgressBar extends Equatable implements GaugeProgressBar {
       layout.circleRect,
       from: from,
       to: progress,
-      degrees: axis.degrees,
+      degrees: axis.sweepDegrees,
       thickness: axis.style.thickness,
     );
 
@@ -62,7 +62,7 @@ class GaugeRoundedProgressBar extends Equatable implements GaugeProgressBar {
       paint.shader = shader!;
     } else if (gradient != null) {
       const rotationDifference = 270;
-      final degrees = axis.degrees.clamp(10.0, 360.0);
+      final degrees = axis.sweepDegrees.clamp(10.0, 360.0);
       final rotationAngle = toRadians(rotationDifference - degrees / 2);
 
       paint.shader = ui.Gradient.sweep(
@@ -71,7 +71,7 @@ class GaugeRoundedProgressBar extends Equatable implements GaugeProgressBar {
         gradient!.colorStops,
         gradient!.tileMode,
         0.0,
-        toRadians(axis.degrees),
+        toRadians(axis.sweepDegrees),
         GradientRotation(rotationAngle).transform(layout.circleRect).storage,
       );
     } else if (color != null) {

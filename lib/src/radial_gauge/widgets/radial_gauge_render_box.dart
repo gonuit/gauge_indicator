@@ -37,7 +37,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
 
   set axis(GaugeAxis axis) {
     if (_axis != axis) {
-      if (_axis.degrees != axis.degrees ||
+      if (_axis.sweepDegrees != axis.sweepDegrees ||
           _axis.style.thickness != axis.style.thickness) {
         markNeedsLayout();
       } else {
@@ -129,11 +129,11 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
 
   double get _valueProgress => (value - axis.min) / (axis.max - axis.min);
 
-  double get _from => (axis.zero - axis.min) / (axis.max - axis.min);
+  double get _from => (axis.origin - axis.min) / (axis.max - axis.min);
 
   @override
   void performLayout() {
-    final ratios = RadialGaugeSizeRatios.fromDegrees(axis.degrees);
+    final ratios = RadialGaugeSizeRatios.fromDegrees(axis.sweepDegrees);
 
     _computedLayout = RadialGaugeLayout.calculate(
       constraints,
@@ -294,7 +294,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     RadialGaugeAxisDefinition axisDefinition,
     GaugePointer pointer,
   ) {
-    final degrees = axis.degrees;
+    final degrees = axis.sweepDegrees;
     final center = axisDefinition.center;
     final offset = pointer.position.offset;
     final size = pointer.size;

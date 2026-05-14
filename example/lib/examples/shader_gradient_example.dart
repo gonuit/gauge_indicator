@@ -116,7 +116,7 @@ class _AnimatedShaderGaugeState extends State<_AnimatedShaderGauge>
         axis: GaugeAxis(
           min: 0,
           max: 100,
-          degrees: 270,
+          sweepDegrees: 270,
           style: const GaugeAxisStyle(
             thickness: 48,
             background: Color(0xFF0B1024),

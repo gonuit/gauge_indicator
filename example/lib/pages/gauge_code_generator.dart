@@ -40,7 +40,7 @@ String generateGaugeCode(GaugeDataController c) {
       b.indent(() {
         b.line('min: 0,');
         b.line('max: 100,');
-        b.line('degrees: ${_d(c.degree)},');
+        b.line('sweepDegrees: ${_d(c.degree)},');
 
         if (c.hasPointer) {
           _writePointer(b, c);

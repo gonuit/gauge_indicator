@@ -61,7 +61,7 @@ class _Gauge extends StatelessWidget {
         axis: const GaugeAxis(
           min: 0,
           max: 100,
-          degrees: 240,
+          sweepDegrees: 240,
           progressBar: null,
           style: GaugeAxisStyle(
             background: Colors.transparent,

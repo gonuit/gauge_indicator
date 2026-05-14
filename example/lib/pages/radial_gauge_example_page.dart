@@ -60,7 +60,7 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
                 axis: GaugeAxis(
                   min: 0,
                   max: 100,
-                  degrees: _controller.degree,
+                  sweepDegrees: _controller.degree,
                   pointer: _controller.hasPointer
                       ? _controller.getPointer(_controller.pointerType)
                       : null,

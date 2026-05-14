@@ -82,27 +82,27 @@ class RadialGaugeAxisDefinition {
     if (cornerRadius == Radius.zero) {
       axisSurface = calculateAxisPath(
         layout.circleRect,
-        degrees: axis.degrees,
+        degrees: axis.sweepDegrees,
         thickness: axis.style.thickness,
       );
     } else if (cornerRadius.x == cornerRadius.y &&
         cornerRadius.x == halfThickness) {
       axisSurface = calculateRoundedArcPath(
         layout.circleRect,
-        degrees: axis.degrees,
+        degrees: axis.sweepDegrees,
         thickness: axis.style.thickness,
       );
     } else {
       axisSurface = calculateRadiusArcPath(
         layout.circleRect,
         cornerRadius: cornerRadius,
-        degrees: axis.degrees,
+        degrees: axis.sweepDegrees,
         thickness: axis.style.thickness,
       );
     }
 
     final clampedRadius = layout.radius;
-    final degrees = axis.degrees.clamp(10.0, 360.0);
+    final degrees = axis.sweepDegrees.clamp(10.0, 360.0);
 
     /// We are shifting arc angles to center it horizontally.
     final angleShift = (degrees - 180) / 2;
@@ -141,9 +141,9 @@ class RadialGaugeAxisDefinition {
     // Each segment has a half separator added / removed from its path.
     final separatorAngle = spacingAngle / 2;
     // Fraction of the axis span, so the gap stays consistent across degrees.
-    final desiredSeparator = separatorAngle / toRadians(axis.degrees);
+    final desiredSeparator = separatorAngle / toRadians(axis.sweepDegrees);
     // Reserve a minimum rendered width per segment so they don't disappear.
-    final axisArcLength = radius * toRadians(axis.degrees);
+    final axisArcLength = radius * toRadians(axis.sweepDegrees);
     final minSegmentFraction =
         axisArcLength > 0 ? _minSegmentPx / axisArcLength : 0.0;
     final separator =
@@ -198,7 +198,7 @@ class RadialGaugeAxisDefinition {
         cornerRadius: segmentCornerRadius,
         startCornerRadius: isFirst ? styleCornerRadius : segmentCornerRadius,
         endCornerRadius: isLast ? styleCornerRadius : segmentCornerRadius,
-        degrees: axis.degrees,
+        degrees: axis.sweepDegrees,
         from: math.min(clampedFrom, clampedTo),
         to: math.max(clampedFrom, clampedTo),
         thickness: thickness,
