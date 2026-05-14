@@ -50,6 +50,7 @@ Iterable<GaugeZone> flattenZones(
       cornerRadius: lastZone.cornerRadius,
       label: lastZone.label,
       shadow: lastZone.shadow,
+      thickness: lastZone.thickness,
     );
   }
 }

@@ -295,7 +295,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
         zonePath: zoneDef.path,
         center: axisDefinition.center,
         centerlineRadius: axisDefinition.radius,
-        thickness: axisDefinition.thickness,
+        thickness: zoneDef.thickness,
         axisMin: axis.min,
         axisMax: axis.max,
         sweepDegrees: axis.sweepDegrees,

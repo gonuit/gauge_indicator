@@ -13,6 +13,7 @@ class GaugeZoneDefinition {
   final Shader? shader;
   final BoxShadow? shadow;
   final GaugeZoneLabel? label;
+  final double thickness;
   final Path path;
 
   GaugeZoneDefinition({
@@ -25,6 +26,7 @@ class GaugeZoneDefinition {
     required this.shader,
     required this.shadow,
     required this.label,
+    required this.thickness,
   });
 
   GaugeZoneDefinition shift(Offset offset) => GaugeZoneDefinition(
@@ -37,6 +39,7 @@ class GaugeZoneDefinition {
         shader: shader,
         shadow: shadow,
         label: label,
+        thickness: thickness,
       );
 }
 
@@ -158,11 +161,8 @@ class RadialGaugeAxisDefinition {
       minZoneFraction,
     );
 
-    final pathRadius = axis.style.thickness * 0.5;
-    final pathInsets = EdgeInsets.all(pathRadius);
-    final externalRect = pathInsets.inflateRect(axisRect);
-
     final range = axis.max - axis.min;
+    final styleThickness = axis.style.thickness;
 
     for (var i = 0; i < axis.zones.length; i++) {
       final zone = axis.zones[i];
@@ -183,8 +183,12 @@ class RadialGaugeAxisDefinition {
       final trimStart = isFirst ? 0.0 : separators[i - 1];
       final trimEnd = isLast ? 0.0 : separators[i];
 
-      final thickness = axis.style.thickness;
-      final halfThickness = thickness / 2;
+      // Clamp so a zone never extends past the axis surface.
+      final zoneThickness =
+          (zone.thickness ?? styleThickness).clamp(0.0, styleThickness);
+      final zoneHalfThickness = zoneThickness / 2;
+      final zoneExternalRect =
+          EdgeInsets.all(zoneHalfThickness).inflateRect(axisRect);
 
       final clampedFrom = (from + trimStart).clamp(0.0, 1.0);
       final clampedTo = (to - trimEnd).clamp(0.0, 1.0);
@@ -192,25 +196,25 @@ class RadialGaugeAxisDefinition {
       final zoneCornerRadius = zone.cornerRadius.clampValues(
         minimumX: 0,
         minimumY: 0,
-        maximumX: halfThickness,
-        maximumY: halfThickness,
+        maximumX: zoneHalfThickness,
+        maximumY: zoneHalfThickness,
       );
       final styleCornerRadius = axis.style.cornerRadius.clampValues(
         minimumX: 0,
         minimumY: 0,
-        maximumX: halfThickness,
-        maximumY: halfThickness,
+        maximumX: zoneHalfThickness,
+        maximumY: zoneHalfThickness,
       );
 
       final path = calculateRadiusArcPath(
-        externalRect,
+        zoneExternalRect,
         cornerRadius: zoneCornerRadius,
         startCornerRadius: isFirst ? styleCornerRadius : zoneCornerRadius,
         endCornerRadius: isLast ? styleCornerRadius : zoneCornerRadius,
         degrees: axis.sweepDegrees,
         from: math.min(clampedFrom, clampedTo),
         to: math.max(clampedFrom, clampedTo),
-        thickness: thickness,
+        thickness: zoneThickness,
       );
 
       yield GaugeZoneDefinition(
@@ -222,6 +226,7 @@ class RadialGaugeAxisDefinition {
         shader: zone.shader,
         shadow: zone.shadow,
         label: zone.label,
+        thickness: zoneThickness,
         path: path,
       );
     }

@@ -36,6 +36,12 @@ class GaugeZone extends Equatable {
   /// ignored.
   final BoxShadow? shadow;
 
+  /// Band width for this zone, in logical pixels. When null, fills the axis
+  /// style thickness. Clamped to `[0, GaugeAxisStyle.thickness]` so the zone
+  /// always fits inside the axis surface; smaller values produce a thinner
+  /// zone centered within the band.
+  final double? thickness;
+
   /// Creates a gauge zone.
   const GaugeZone({
     required this.from,
@@ -47,6 +53,7 @@ class GaugeZone extends Equatable {
     this.cornerRadius = Radius.zero,
     this.label,
     this.shadow,
+    this.thickness,
   });
 
   /// Returns a copy of this zone with the given fields replaced.
@@ -60,6 +67,7 @@ class GaugeZone extends Equatable {
     Radius? cornerRadius,
     GaugeZoneLabel? label,
     BoxShadow? shadow,
+    double? thickness,
   }) =>
       GaugeZone(
         from: from ?? this.from,
@@ -71,6 +79,7 @@ class GaugeZone extends Equatable {
         cornerRadius: cornerRadius ?? this.cornerRadius,
         label: label ?? this.label,
         shadow: shadow ?? this.shadow,
+        thickness: thickness ?? this.thickness,
       );
 
   /// Linearly interpolates between two zones at fraction [t].
@@ -85,9 +94,26 @@ class GaugeZone extends Equatable {
         cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t)!,
         label: end.label,
         shadow: BoxShadow.lerp(begin.shadow, end.shadow, t),
+        thickness: begin.thickness == null && end.thickness == null
+            ? null
+            : lerpDouble(
+                begin.thickness ?? end.thickness!,
+                end.thickness ?? begin.thickness!,
+                t,
+              ),
       );
 
   @override
-  List<Object?> get props =>
-      [from, to, color, gradient, shader, cornerRadius, border, label, shadow];
+  List<Object?> get props => [
+        from,
+        to,
+        color,
+        gradient,
+        shader,
+        cornerRadius,
+        border,
+        label,
+        shadow,
+        thickness,
+      ];
 }

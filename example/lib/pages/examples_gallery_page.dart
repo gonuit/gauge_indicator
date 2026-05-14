@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:example/examples/active_zone_example.dart';
 import 'package:example/examples/activity_rings_example.dart';
+import 'package:example/examples/air_quality_example.dart';
 import 'package:example/examples/getting_started_example.dart';
 import 'package:example/examples/live_heart_rate_example.dart';
 import 'package:example/examples/rank_progression_example.dart';
@@ -10,6 +11,7 @@ import 'package:example/examples/step_goal_example.dart';
 import 'package:example/examples/thermometer_example.dart';
 import 'package:example/examples/voltmeter_example.dart';
 import 'package:example/examples/zone_labels_example.dart';
+import 'package:example/examples/zone_thickness_example.dart';
 import 'package:example/examples/zones_example.dart';
 import 'package:example/widgets/showcase_sidebar.dart';
 import 'package:example/widgets/source_code_dialog.dart';
@@ -68,6 +70,14 @@ final List<ExampleEntry> examples = [
     builder: (_) => const ZoneLabelsExample(),
   ),
   ExampleEntry(
+    path: 'zone-thickness',
+    name: 'Zone thickness',
+    subtitle: 'Per-zone band width clamped to the axis surface',
+    icon: Icons.line_weight_outlined,
+    sourcePath: 'example/lib/examples/zone_thickness_example.dart',
+    builder: (_) => const ZoneThicknessExample(),
+  ),
+  ExampleEntry(
     path: 'thermometer',
     name: 'Thermometer',
     subtitle: 'Gradient zone over a negative axis',
@@ -114,6 +124,14 @@ final List<ExampleEntry> examples = [
     icon: Icons.workspace_premium_outlined,
     sourcePath: 'example/lib/examples/rank_progression_example.dart',
     builder: (_) => const RankProgressionExample(),
+  ),
+  ExampleEntry(
+    path: 'air-quality',
+    name: 'Air quality',
+    subtitle: 'Per-zone colored glow shadows',
+    icon: Icons.air,
+    sourcePath: 'example/lib/examples/air_quality_example.dart',
+    builder: (_) => const AirQualityExample(),
   ),
   ExampleEntry(
     path: 'shader-progress-bar',
