@@ -64,3 +64,14 @@ For colored ranges, custom transformers, and a live playground, see the runnable
 <div align="center">
   <img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/getting_started.gif" />
 </div>
+
+## Examples
+
+Click any thumbnail to open it in the [hosted playground](https://gauge-indicator.klyta.it/).
+
+|  |  |  |
+| :---: | :---: | :---: |
+| [<img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/examples/getting-started.png" width="240" alt="Getting started"/>](https://gauge-indicator.klyta.it/examples/getting-started)<br/>**Getting started** | [<img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/examples/zones.png" width="240" alt="Zones"/>](https://gauge-indicator.klyta.it/examples/zones)<br/>**Zones** | [<img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/examples/active-zone.png" width="240" alt="Active zone"/>](https://gauge-indicator.klyta.it/examples/active-zone)<br/>**Active zone** |
+| [<img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/examples/zone-labels.png" width="240" alt="Zone labels"/>](https://gauge-indicator.klyta.it/examples/zone-labels)<br/>**Zone labels** | [<img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/examples/thermometer.png" width="240" alt="Thermometer"/>](https://gauge-indicator.klyta.it/examples/thermometer)<br/>**Thermometer** | [<img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/examples/step-goal.png" width="240" alt="Step goal"/>](https://gauge-indicator.klyta.it/examples/step-goal)<br/>**Step goal** |
+| [<img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/examples/voltmeter.png" width="240" alt="Voltmeter"/>](https://gauge-indicator.klyta.it/examples/voltmeter)<br/>**Voltmeter** | [<img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/examples/activity-rings.png" width="240" alt="Activity rings"/>](https://gauge-indicator.klyta.it/examples/activity-rings)<br/>**Activity rings** | [<img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/examples/live-heart-rate.png" width="240" alt="Live heart rate"/>](https://gauge-indicator.klyta.it/examples/live-heart-rate)<br/>**Live heart rate** |
+| [<img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/examples/rank-progression.png" width="240" alt="Rank progression"/>](https://gauge-indicator.klyta.it/examples/rank-progression)<br/>**Rank progression** | [<img src="https://raw.githubusercontent.com/gonuit/gauge_indicator/main/readme/examples/shader-progress-bar.png" width="240" alt="Progress bar shader"/>](https://gauge-indicator.klyta.it/examples/shader-progress-bar)<br/>**Progress bar shader** |  |

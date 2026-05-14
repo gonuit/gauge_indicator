@@ -6,8 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
-const _rawBase = 'https://raw.githubusercontent.com/gonuit/gauge_indicator/main/';
-const _blobBase = 'https://github.com/gonuit/gauge_indicator/blob/main/';
+const _rawBase =
+    'https://raw.githubusercontent.com/gonuit/gauge_indicator/00b5b5b6edebed4673fb4a9b69d03e0167162dd4/';
+const _blobBase =
+    'https://github.com/gonuit/gauge_indicator/blob/00b5b5b6edebed4673fb4a9b69d03e0167162dd4/';
 
 final Map<String, String> _sourceCache = {};
 
