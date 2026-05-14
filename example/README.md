@@ -1,17 +1,19 @@
-# example
+# gauge_indicator example
 
-A new Flutter project.
+Interactive demo for the [`gauge_indicator`](https://pub.dev/packages/gauge_indicator) package. The configuration panel on the left lets you tweak every gauge property live — layout, style, segments (drag the dividers to resize, or add/remove up to 10), progress bar, pointer, and animation curve & duration — and the gauge on the right reflects the changes in real time.
 
-## Getting Started
+Try it in your browser: <https://gauge-indicator.klyta.it/>
 
-This project is a starting point for a Flutter application.
+Run it:
 
-A few resources to get you started if this is your first Flutter project:
+```sh
+flutter run
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Or build for web:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```sh
+flutter build web --release
+```
+
+The entry point is [`lib/main.dart`](lib/main.dart); the page that hosts the gauge and the configuration panel lives in [`lib/pages/radial_gauge_example_page.dart`](lib/pages/radial_gauge_example_page.dart).

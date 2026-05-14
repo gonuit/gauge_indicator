@@ -1,1 +1,18 @@
 /readme/*
+
+# Example app — only ship the Dart sources used by pub.dev's "Example" tab.
+example/.dart_tool/
+example/.idea/
+example/.metadata
+example/.gitignore
+example/*.iml
+example/android/
+example/ios/
+example/macos/
+example/linux/
+example/windows/
+example/web/
+example/test/
+example/build/
+example/pubspec.lock
+example/analysis_options.yaml
