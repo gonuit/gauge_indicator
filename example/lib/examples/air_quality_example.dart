@@ -11,28 +11,8 @@ class AirQualityExample extends StatefulWidget {
   State<AirQualityExample> createState() => _AirQualityExampleState();
 }
 
-class _AirQualityExampleState extends State<AirQualityExample>
-    with TickerProviderStateMixin {
+class _AirQualityExampleState extends State<AirQualityExample> {
   double value = 78;
-
-  /// Slow ambient breath behind the gauge — sells the "live" feeling.
-  late final AnimationController _breath = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 2800),
-  )..repeat(reverse: true);
-
-  /// Short blink for the header status dot.
-  late final AnimationController _blink = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 1100),
-  )..repeat(reverse: true);
-
-  @override
-  void dispose() {
-    _breath.dispose();
-    _blink.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,13 +42,9 @@ class _AirQualityExampleState extends State<AirQualityExample>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _CardHeader(blink: _blink),
+              const _CardHeader(),
               const SizedBox(height: 8),
-              _GaugeStack(
-                value: value,
-                category: category,
-                breath: _breath,
-              ),
+              _Gauge(value: value, category: category),
               const SizedBox(height: 4),
               _CategoryPill(category: category),
               const SizedBox(height: 20),
@@ -86,9 +62,7 @@ class _AirQualityExampleState extends State<AirQualityExample>
 }
 
 class _CardHeader extends StatelessWidget {
-  final Animation<double> blink;
-
-  const _CardHeader({required this.blink});
+  const _CardHeader();
 
   @override
   Widget build(BuildContext context) {
@@ -108,42 +82,22 @@ class _CardHeader extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12),
-        Expanded(
+        const Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                children: [
-                  FadeTransition(
-                    opacity:
-                        Tween<double>(begin: 0.35, end: 1.0).animate(blink),
-                    child: Container(
-                      width: 7,
-                      height: 7,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF34D399),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(color: Color(0xCC34D399), blurRadius: 8),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  const Text(
-                    'DOWNTOWN · LIVE',
-                    style: TextStyle(
-                      color: Color(0xFF8E97C5),
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.4,
-                    ),
-                  ),
-                ],
+              Text(
+                'Downtown · live',
+                style: TextStyle(
+                  color: Color(0xFF8E97C5),
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.4,
+                ),
               ),
-              const SizedBox(height: 2),
-              const Text(
+              SizedBox(height: 2),
+              Text(
                 'Air quality',
                 style: TextStyle(
                   color: Colors.white,
@@ -164,114 +118,74 @@ class _CardHeader extends StatelessWidget {
   }
 }
 
-/// Stacks a soft, color-shifting halo behind the gauge so the whole dial
-/// feels like it's breathing. The halo color tweens between categories via
-/// an [AnimatedContainer] while a ticker fades and scales it.
-class _GaugeStack extends StatelessWidget {
+class _Gauge extends StatelessWidget {
   final double value;
   final _AqiCategory category;
-  final Animation<double> breath;
 
-  const _GaugeStack({
-    required this.value,
-    required this.category,
-    required this.breath,
-  });
+  const _Gauge({required this.value, required this.category});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 300,
       height: 220,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          AnimatedBuilder(
-            animation: breath,
-            builder: (context, _) {
-              final t =
-                  Curves.easeInOut.transform(breath.value); // 0 → 1
-              return Transform.scale(
-                scale: 0.92 + 0.10 * t,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 600),
-                  width: 200,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: category.color.withValues(alpha: 0.18 + 0.18 * t),
-                    boxShadow: [
-                      BoxShadow(
-                        color: category.color
-                            .withValues(alpha: 0.35 + 0.30 * t),
-                        blurRadius: 60 + 30 * t,
-                        spreadRadius: 4,
-                      ),
-                    ],
+      child: AnimatedRadialGauge(
+        duration: const Duration(milliseconds: 700),
+        curve: Curves.easeOutCubic,
+        value: value,
+        axis: GaugeAxis(
+          min: 0,
+          max: 500,
+          sweepDegrees: 240,
+          progressBar: null,
+          pointer: GaugePointer.circle(
+            radius: 9,
+            color: category.color,
+            border: const GaugePointerBorder(
+              color: Colors.white,
+              width: 3,
+            ),
+            shadow: Shadow(
+              color: category.color.withValues(alpha: 0.9),
+              blurRadius: 16,
+            ),
+          ),
+          style: const GaugeAxisStyle(
+            background: Colors.transparent,
+            thickness: 16,
+            zoneSpacing: 6,
+            cornerRadius: Radius.circular(8),
+          ),
+          zones: _zones,
+        ),
+        builder: (context, _, value) => Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 28),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  value.toStringAsFixed(0),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 56,
+                    fontWeight: FontWeight.w800,
+                    height: 1.0,
+                    fontFeatures: [FontFeature.tabularFigures()],
                   ),
                 ),
-              );
-            },
-          ),
-          _Gauge(value: value),
-        ],
-      ),
-    );
-  }
-}
-
-class _Gauge extends StatelessWidget {
-  final double value;
-
-  const _Gauge({required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedRadialGauge(
-      duration: const Duration(milliseconds: 700),
-      curve: Curves.easeOutCubic,
-      value: value,
-      axis: const GaugeAxis(
-        min: 0,
-        max: 500,
-        sweepDegrees: 240,
-        progressBar: null,
-        pointer: null,
-        style: GaugeAxisStyle(
-          background: Colors.transparent,
-          thickness: 16,
-          zoneSpacing: 6,
-          cornerRadius: Radius.circular(8),
-        ),
-        zones: _zones,
-      ),
-      builder: (context, _, value) => Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 28),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                value.toStringAsFixed(0),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 56,
-                  fontWeight: FontWeight.w800,
-                  height: 1.0,
-                  fontFeatures: [FontFeature.tabularFigures()],
+                const SizedBox(height: 4),
+                const Text(
+                  'AQI · US EPA',
+                  style: TextStyle(
+                    color: Color(0xFF6470A0),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 2,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                'AQI · US EPA',
-                style: TextStyle(
-                  color: Color(0xFF6470A0),
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 2,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -315,29 +229,13 @@ class _CategoryPill extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (child, animation) {
-              final slide = Tween<Offset>(
-                begin: const Offset(0, 0.4),
-                end: Offset.zero,
-              ).animate(animation);
-              return ClipRect(
-                child: FadeTransition(
-                  opacity: animation,
-                  child: SlideTransition(position: slide, child: child),
-                ),
-              );
-            },
-            child: Text(
-              category.label,
-              key: ValueKey(category.label),
-              style: TextStyle(
-                color: category.color,
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
+          Text(
+            category.label,
+            style: TextStyle(
+              color: category.color,
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.6,
             ),
           ),
         ],
