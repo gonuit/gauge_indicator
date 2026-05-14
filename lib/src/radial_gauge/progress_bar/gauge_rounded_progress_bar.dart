@@ -2,15 +2,34 @@ import 'dart:ui' as ui;
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:gauge_indicator/src/internal.dart';
 
+/// A [GaugeProgressBar] with rounded end caps.
+///
+/// When the visible arc is shorter than the diameter of its caps, the cap
+/// radius scales down so the shape stays valid near zero.
+///
+/// Exactly one of [color], [gradient], or [shader] must be provided.
+///
+/// ```dart
+/// GaugeProgressBar.rounded(color: Colors.green)
+/// ```
 class GaugeRoundedProgressBar extends Equatable implements GaugeProgressBar {
+  /// {@macro gauge_indicator.GaugeProgressBar.color}
   final Color? color;
+
+  /// {@macro gauge_indicator.GaugeProgressBar.gradient}
   final GaugeAxisGradient? gradient;
+
+  /// {@macro gauge_indicator.GaugeProgressBar.shader}
   final Shader? shader;
+
+  /// {@macro gauge_indicator.GaugeProgressBar.placement}
   @override
   final GaugeProgressPlacement placement;
 
+  /// Creates a rounded progress bar. Provide exactly one of [color],
+  /// [gradient], or [shader].
   const GaugeRoundedProgressBar({
     this.color,
     this.gradient,

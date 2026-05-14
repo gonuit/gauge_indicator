@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs
 import 'package:flutter/painting.dart';
 
 import '../radial_gauge/data/data.dart';

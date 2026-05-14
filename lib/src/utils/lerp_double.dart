@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs
 double lerpDouble(double begin, double end, double t) {
   /// This check is to ensure that the returned value will not differ because
   /// of issues with double calculations

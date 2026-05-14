@@ -2,15 +2,39 @@ import 'dart:ui' as ui;
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:gauge_indicator/src/internal.dart';
 
+/// A [GaugeProgressBar] with flat ends.
+///
+/// Exactly one of [color], [gradient], or [shader] must be provided.
+///
+/// ```dart
+/// GaugeProgressBar.basic(color: Colors.blue)
+/// ```
 class GaugeBasicProgressBar extends Equatable implements GaugeProgressBar {
+  /// {@template gauge_indicator.GaugeProgressBar.color}
+  /// Solid fill color. Mutually exclusive with [gradient] and [shader].
+  /// {@endtemplate}
   final Color? color;
+
+  /// {@template gauge_indicator.GaugeProgressBar.gradient}
+  /// Sweep gradient applied along the arc. Mutually exclusive with [color]
+  /// and [shader].
+  /// {@endtemplate}
   final GaugeAxisGradient? gradient;
+
+  /// {@template gauge_indicator.GaugeProgressBar.shader}
+  /// Custom shader used for the fill (e.g. a `FragmentShader`). Mutually
+  /// exclusive with [color] and [gradient].
+  /// {@endtemplate}
   final Shader? shader;
+
+  /// {@macro gauge_indicator.GaugeProgressBar.placement}
   @override
   final GaugeProgressPlacement placement;
 
+  /// Creates a basic progress bar. Provide exactly one of [color],
+  /// [gradient], or [shader].
   const GaugeBasicProgressBar({
     this.color,
     this.gradient,

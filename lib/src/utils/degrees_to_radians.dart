@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs
 import 'dart:math' as math;
 
 const double radians2Degrees = 180.0 / math.pi;

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs
 import 'package:flutter/animation.dart';
 
 /// This animation is used to disable property animation

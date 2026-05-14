@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:gauge_indicator/src/internal.dart';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
@@ -79,6 +81,29 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     }
   }
 
+  Listenable? _repaint;
+
+  Listenable? get repaint => _repaint;
+
+  set repaint(Listenable? value) {
+    if (identical(_repaint, value)) return;
+    if (attached) _repaint?.removeListener(markNeedsPaint);
+    _repaint = value;
+    if (attached) _repaint?.addListener(markNeedsPaint);
+  }
+
+  @override
+  void attach(PipelineOwner owner) {
+    super.attach(owner);
+    _repaint?.addListener(markNeedsPaint);
+  }
+
+  @override
+  void detach() {
+    _repaint?.removeListener(markNeedsPaint);
+    super.detach();
+  }
+
   late RadialGaugeLayout _computedLayout;
   late RadialGaugeAxisDefinition _axisDefinition;
 
@@ -89,12 +114,14 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     required final Alignment alignment,
     required final bool debug,
     required final double? radius,
+    Listenable? repaint,
     RenderBox? child,
   })  : _value = value,
         _axis = axis,
         _alignment = alignment,
         _radius = radius,
         _debug = debug,
+        _repaint = repaint,
         super(child);
 
   @override

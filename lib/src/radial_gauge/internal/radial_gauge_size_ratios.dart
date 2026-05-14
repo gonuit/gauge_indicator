@@ -1,7 +1,8 @@
+// ignore_for_file: public_member_api_docs
 import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
 
-import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:gauge_indicator/src/internal.dart';
 
 /// This class helps to determine the gauge widget size during the layout.
 class RadialGaugeSizeRatios {

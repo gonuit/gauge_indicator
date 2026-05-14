@@ -1,5 +1,6 @@
+// ignore_for_file: public_member_api_docs
 import 'package:flutter/widgets.dart';
-import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:gauge_indicator/src/internal.dart';
 
 Path calculateRoundedArcPath(
   Rect rect, {

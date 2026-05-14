@@ -2,20 +2,29 @@ import 'dart:math' as math;
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:gauge_indicator/src/internal.dart';
 
+/// Visual style for a [GaugeAxis] — controls thickness, corner radius,
+/// background, and segment spacing.
 @immutable
 class GaugeAxisStyle extends Equatable {
+  /// Width of the axis band in logical pixels.
   final double thickness;
+
+  /// Gap between adjacent segments, in fractional axis units.
   final double segmentSpacing;
 
-  /// Corner radius of the axis core segment
+  /// Corner radius of the axis surface. Clamped to half of [thickness].
   final Radius cornerRadius;
+
+  /// Fill color drawn behind the segments. When null, no background is
+  /// painted.
   final Color? background;
 
-  /// Whether to blend the colors of the segments.
+  /// Whether adjacent segment colors should blend across their boundary.
   final bool blendColors;
 
+  /// Creates an axis style.
   const GaugeAxisStyle({
     this.thickness = 20,
     this.background = const Color(0xFFf0f0f0),
@@ -24,6 +33,7 @@ class GaugeAxisStyle extends Equatable {
     this.blendColors = true,
   });
 
+  /// Linearly interpolates between two [GaugeAxisStyle]s at fraction [t].
   static GaugeAxisStyle lerp(
     GaugeAxisStyle begin,
     GaugeAxisStyle end,
@@ -42,7 +52,10 @@ class GaugeAxisStyle extends Equatable {
       [thickness, segmentSpacing, background, blendColors, cornerRadius];
 }
 
+/// A [Tween] over [GaugeAxis] values used by [AnimatedRadialGauge] to
+/// interpolate axis configurations during transitions.
 class GaugeAxisTween extends Tween<GaugeAxis?> {
+  /// Creates a tween between two axes.
   GaugeAxisTween({GaugeAxis? begin, GaugeAxis? end})
       : super(begin: begin, end: end);
 
@@ -50,6 +63,11 @@ class GaugeAxisTween extends Tween<GaugeAxis?> {
   GaugeAxis? lerp(double t) => GaugeAxis.lerp(begin, end, t);
 }
 
+/// Configuration for the gauge's circular axis.
+///
+/// Defines the value range ([min], [max]), the sweep angle ([degrees]),
+/// visual [style], [segments], [pointer], [progressBar], and animation
+/// [transformer]. Pass to [RadialGauge.axis] or [AnimatedRadialGauge.axis].
 @immutable
 class GaugeAxis extends Equatable {
   /// If specified, the defined indicator will be used to display
@@ -92,11 +110,14 @@ class GaugeAxis extends Equatable {
   /// the segments.
   final GaugeAxisTransformer transformer;
 
+  /// Progress bar drawn from [zero] to the current value. When null, no
+  /// progress bar is rendered.
   final GaugeProgressBar? progressBar;
 
-  /// Segments to be drawn on the gauge axis.
+  /// Segments drawn along the gauge axis.
   final List<GaugeSegment> segments;
 
+  /// Default pointer used when no [pointer] is specified.
   static const defaultPointer = GaugePointer.triangle(
     width: 24,
     height: 24,
@@ -111,9 +132,11 @@ class GaugeAxis extends Equatable {
     color: Colors.black,
   );
 
+  /// Default progress bar used when no [progressBar] is specified.
   static const defaultProgressBar =
       GaugeProgressBar.basic(color: Color(0xFF9fec6d));
 
+  /// Creates a gauge axis.
   const GaugeAxis({
     this.min = 0.0,
     this.max = 1.0,
@@ -129,6 +152,7 @@ class GaugeAxis extends Equatable {
           'The axis degree value must be between 10 and 360, inclusive.',
         );
 
+  /// Applies the [transformer] to produce a per-frame transformed axis.
   GaugeAxis transform({
     required GaugeRange range,
     required double progress,
@@ -137,6 +161,7 @@ class GaugeAxis extends Equatable {
   }) =>
       transformer.transform(this, range, progress, value, isInitial);
 
+  /// Returns a copy of this axis with the given fields replaced.
   GaugeAxis copyWith({
     final GaugeAxisStyle? style,
     final List<GaugeSegment>? segments,
@@ -160,6 +185,8 @@ class GaugeAxis extends Equatable {
         progressBar: progressBar ?? this.progressBar,
       );
 
+  /// Returns a copy with overlapping segments merged into a continuous
+  /// non-overlapping sequence.
   GaugeAxis flatten() => copyWith(
         segments: flattenSegments(
           segments,
@@ -170,6 +197,8 @@ class GaugeAxis extends Equatable {
   @override
   List<Object?> get props => [pointer, style, segments, degrees, progressBar];
 
+  /// Linearly interpolates between two axes at fraction [t]. Returns null
+  /// when both ends are null.
   static GaugeAxis? lerp(GaugeAxis? begin, GaugeAxis? end, double t) {
     if (begin == null && end == null) {
       return null;

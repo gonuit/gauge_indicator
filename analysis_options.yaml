@@ -3,6 +3,8 @@ include: package:flutter_lints/flutter.yaml
 linter:
   rules:
     - lines_longer_than_80_chars
+    - public_member_api_docs
 analyzer:
   errors:
     lines_longer_than_80_chars: warning
+    public_member_api_docs: warning

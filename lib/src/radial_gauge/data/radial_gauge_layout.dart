@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:gauge_indicator/src/internal.dart';
 
 import '../internal/internal.dart';
 
@@ -20,16 +20,28 @@ extension on BoxConstraints {
   }
 }
 
-/// Defines the radial gauge layout.
-/// The layout is defined by the three rects and the radius.
+/// The computed geometry of a gauge, passed to [GaugeProgressBar.paint] when
+/// implementing a custom progress bar.
+///
+/// Defined by three rects:
+///  * [sourceRect] — the widget's own bounds
+///  * [targetRect] — the area the gauge actually occupies inside [sourceRect]
+///    after aspect-ratio fitting
+///  * [circleRect] — the bounding box of the gauge's full circle
 class RadialGaugeLayout {
+  /// Bounding box of the gauge's full circle.
   final Rect circleRect;
+
+  /// Area the gauge actually paints into within [sourceRect].
   final Rect targetRect;
+
+  /// The full bounds of the gauge widget.
   final Rect sourceRect;
 
-  /// The circle radius
+  /// Radius of [circleRect].
   final double radius;
 
+  /// Creates a [RadialGaugeLayout].
   RadialGaugeLayout({
     required this.circleRect,
     required this.targetRect,

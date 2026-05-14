@@ -1,9 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:gauge_indicator/src/internal.dart';
 
+/// A triangular [GaugePointer] that points outward from the gauge center.
 class TrianglePointer extends Equatable implements GaugePointer {
+  /// Base width of the triangle in logical pixels.
   final double width;
+
+  /// Height of the triangle (base to tip) in logical pixels.
   final double height;
 
   @override
@@ -15,18 +19,31 @@ class TrianglePointer extends Equatable implements GaugePointer {
         VertexDefinition(width / 2, 0), // top center
       ], borderRadius);
 
+  /// {@macro gauge_indicator.GaugePointer.color}
   @override
   final Color? color;
+
+  /// {@macro gauge_indicator.GaugePointer.position}
   @override
   final GaugePointerPosition position;
+
+  /// {@macro gauge_indicator.GaugePointer.border}
   @override
   final GaugePointerBorder? border;
+
+  /// Corner radius applied to the triangle's vertices.
   final double borderRadius;
+
+  /// {@macro gauge_indicator.GaugePointer.gradient}
   @override
   final Gradient? gradient;
+
+  /// {@macro gauge_indicator.GaugePointer.shadow}
   @override
   final Shadow? shadow;
 
+  /// Creates a triangle pointer. Exactly one of [color] or [gradient]
+  /// must be provided.
   const TrianglePointer({
     required this.width,
     required this.height,

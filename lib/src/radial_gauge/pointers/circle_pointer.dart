@@ -1,18 +1,30 @@
 import 'package:equatable/equatable.dart';
-import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:gauge_indicator/src/internal.dart';
 import 'package:flutter/widgets.dart';
 
+/// A circular [GaugePointer] that marks the current value with a filled
+/// circle.
 class CirclePointer extends Equatable implements GaugePointer {
+  /// Radius of the circle in logical pixels.
   final double radius;
 
+  /// {@macro gauge_indicator.GaugePointer.position}
   @override
   final GaugePointerPosition position;
+
+  /// {@macro gauge_indicator.GaugePointer.color}
   @override
   final Color? color;
+
+  /// {@macro gauge_indicator.GaugePointer.border}
   @override
   final GaugePointerBorder? border;
+
+  /// {@macro gauge_indicator.GaugePointer.gradient}
   @override
   final Gradient? gradient;
+
+  /// {@macro gauge_indicator.GaugePointer.shadow}
   @override
   final Shadow? shadow;
 
@@ -25,6 +37,8 @@ class CirclePointer extends Equatable implements GaugePointer {
       radius: radius,
     ));
 
+  /// Creates a circle pointer. Exactly one of [color] or [gradient] must
+  /// be provided.
   const CirclePointer({
     required this.radius,
     this.color,

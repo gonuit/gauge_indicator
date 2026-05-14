@@ -1,8 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
-/// Provides string labels for the `RadialGauge`.
+/// Produces a string label for a numeric gauge value.
+///
+/// Use the factory constructors to pick a strategy, or subclass for custom
+/// formatting:
+///  * [GaugeLabelProvider.value] — numeric labels with configurable digits
+///  * [GaugeLabelProvider.map] — caller-supplied mapping function
+///  * [GaugeLabelProvider.categories] — labels for matching value ranges
 abstract class GaugeLabelProvider {
+  /// Base constructor for subclasses.
   const GaugeLabelProvider();
 
   /// Returns a numeric label for the provided value.
@@ -26,10 +33,13 @@ abstract class GaugeLabelProvider {
   String getLabel(double value);
 }
 
-/// Returns a numeric label for the provided value.
+/// A [GaugeLabelProvider] that formats the value as a fixed-precision
+/// number.
 class ValueLabelProvider extends GaugeLabelProvider {
+  /// Number of digits after the decimal point.
   final int fractionDigits;
 
+  /// Creates a numeric label provider.
   const ValueLabelProvider({
     this.fractionDigits = 0,
   });
@@ -40,12 +50,15 @@ class ValueLabelProvider extends GaugeLabelProvider {
   }
 }
 
+/// Function that maps a numeric gauge value to a display string.
 typedef ToLabel = String Function(double);
 
-/// Maps a numeric value to the label.
+/// A [GaugeLabelProvider] that delegates label production to a function.
 class MapLabelProvider extends GaugeLabelProvider {
+  /// Function returning the label for a given value.
   final ToLabel toLabel;
 
+  /// Creates a label provider backed by [toLabel].
   const MapLabelProvider({
     required this.toLabel,
   });
@@ -56,25 +69,36 @@ class MapLabelProvider extends GaugeLabelProvider {
   }
 }
 
-/// Use with [CategoryLabelProvider] to define string labels
-/// for specific value ranges.
+/// A named label for a `[from, to]` value range, used by
+/// [CategoryLabelProvider].
 class LabelCategory {
+  /// Lower bound of the range (inclusive).
   final double from;
+
+  /// Upper bound of the range (inclusive).
   final double to;
+
+  /// Label returned when a value falls inside the range.
   final String label;
 
+  /// Creates a label category.
   const LabelCategory(this.from, this.to, this.label);
 }
 
-/// Returns a label from the matching [LabelCategory]
-/// or a numeric label if no matching category is available.
+/// A [GaugeLabelProvider] that returns the label of the matching
+/// [LabelCategory], falling back to a numeric label when no category
+/// matches.
 ///
-/// If you only want to use a number label, take a look at the
-/// [ValueLabelProvider] class.
+/// For purely numeric labels, see [ValueLabelProvider].
 class CategoryLabelProvider extends GaugeLabelProvider {
+  /// Categories searched in order; the first match wins.
   final List<LabelCategory> categories;
+
+  /// Number of digits after the decimal point used for the fallback numeric
+  /// label when no category matches.
   final int fractionDigits;
 
+  /// Creates a category-based label provider.
   const CategoryLabelProvider(
     this.categories, {
     this.fractionDigits = 0,
@@ -90,17 +114,22 @@ class CategoryLabelProvider extends GaugeLabelProvider {
   }
 }
 
-/// A simple widget that uses the [Text] widget and
-/// the [GaugeLabelProvider] class to draw a value label
-/// for the [RadialGauge] widget.
+/// A centered [Text] widget that renders a gauge value through a
+/// [GaugeLabelProvider].
 ///
-/// Uses [GaugeLabelProvider] to transform the
-/// obtained value into a label.
+/// Use as the `child` or `builder` content for a [RadialGauge] /
+/// [AnimatedRadialGauge].
 class RadialGaugeLabel extends StatelessWidget {
+  /// The value to display.
   final double value;
+
+  /// Optional text style applied to the label.
   final TextStyle? style;
+
+  /// Provider that converts [value] into a display string.
   final GaugeLabelProvider labelProvider;
 
+  /// Creates a radial gauge label.
   const RadialGaugeLabel({
     Key? key,
     required this.value,

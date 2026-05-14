@@ -3,14 +3,25 @@ import 'package:flutter/material.dart';
 import '../../utils/utils.dart';
 import 'data.dart';
 
+/// A numeric `[min, max]` range used by [GaugeAxisTransformer].
 class GaugeRange {
+  /// Lower bound of the range.
   final double min;
+
+  /// Upper bound of the range.
   final double max;
 
+  /// Creates a range from [min] to [max].
   const GaugeRange(this.min, this.max);
 }
 
+/// Transforms a [GaugeAxis] per animation frame, enabling effects like
+/// color fade-in or value-driven segment overrides.
+///
+/// Use the factory constructors for built-in transformations; subclass to
+/// implement a custom one.
 abstract class GaugeAxisTransformer {
+  /// Base constructor for subclasses.
   const GaugeAxisTransformer();
 
   /// No transformation
