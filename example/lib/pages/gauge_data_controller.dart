@@ -122,15 +122,6 @@ class GaugeDataController extends ChangeNotifier {
     }
   }
 
-  Color _backgroundColor = Colors.transparent;
-  Color get backgroundColor => _backgroundColor;
-  set backgroundColor(Color value) {
-    if (value != backgroundColor) {
-      _backgroundColor = value;
-      notifyListeners();
-    }
-  }
-
   Color _pointerColor = const Color(0xFF002E5F);
   Color get pointerColor => _pointerColor;
   set pointerColor(Color value) {
@@ -208,6 +199,33 @@ class GaugeDataController extends ChangeNotifier {
   set pointerType(PointerType value) {
     if (value != pointerType) {
       _pointerType = value;
+      notifyListeners();
+    }
+  }
+
+  bool _hasSurface = false;
+  bool get hasSurface => _hasSurface;
+  set hasSurface(bool value) {
+    if (value != hasSurface) {
+      _hasSurface = value;
+      notifyListeners();
+    }
+  }
+
+  Color _surfaceColor = const Color(0xFFD9DEEB);
+  Color get surfaceColor => _surfaceColor;
+  set surfaceColor(Color value) {
+    if (value != surfaceColor) {
+      _surfaceColor = value;
+      notifyListeners();
+    }
+  }
+
+  double _surfaceRadius = 8;
+  double get surfaceRadius => _surfaceRadius;
+  set surfaceRadius(double value) {
+    if (value != surfaceRadius) {
+      _surfaceRadius = value;
       notifyListeners();
     }
   }
@@ -374,8 +392,11 @@ class GaugeDataController extends ChangeNotifier {
   }
 
   void removeSegment(int index) {
-    if (segments.length <= 1) return;
     RangeError.checkValidIndex(index, segments);
+    if (segments.length == 1) {
+      segments = const [];
+      return;
+    }
     final removed = segments[index];
     final next = [...segments]..removeAt(index);
     if (index > 0) {

@@ -70,10 +70,12 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
                   ),
                   style: GaugeAxisStyle(
                     thickness: _controller.thickness,
-                    background: _controller.backgroundColor,
+                    background: _controller.hasSurface
+                        ? _controller.surfaceColor
+                        : null,
                     segmentSpacing: _controller.spacing,
                     blendColors: false,
-                    cornerRadius: Radius.circular(_controller.segmentsRadius),
+                    cornerRadius: Radius.circular(_controller.surfaceRadius),
                   ),
                   segments: _controller.segments
                       .map((e) => e.copyWith(
@@ -286,11 +288,37 @@ class GaugeConfigPanel extends StatelessWidget {
                       double.parse(val.toStringAsFixed(2));
                 },
               ),
-              ColorField(
-                title: "Background",
-                color: _controller.backgroundColor,
-                onColorChanged: (c) => _controller.backgroundColor = c,
+            ],
+          ),
+          ConfigSection(
+            title: 'Surface',
+            children: [
+              SwitchListTile(
+                dense: true,
+                title: const Text('Enabled',
+                    style: TextStyle(fontSize: 13)),
+                value: _controller.hasSurface,
+                onChanged: (selected) {
+                  _controller.hasSurface = selected;
+                },
               ),
+              if (_controller.hasSurface) ...[
+                ValueSlider(
+                  label: "Radius",
+                  min: 0,
+                  max: 20,
+                  value: _controller.surfaceRadius,
+                  onChanged: (val) {
+                    _controller.surfaceRadius =
+                        double.parse(val.toStringAsFixed(2));
+                  },
+                ),
+                ColorField(
+                  title: "Color",
+                  color: _controller.surfaceColor,
+                  onColorChanged: (c) => _controller.surfaceColor = c,
+                ),
+              ],
             ],
           ),
           ConfigSection(
@@ -308,9 +336,7 @@ class GaugeConfigPanel extends StatelessWidget {
                       '–${_controller.segments[i].to.toStringAsFixed(0)}',
                   color: _controller.segments[i].color,
                   onColorChanged: (c) => _controller.setSegmentColor(i, c),
-                  onRemove: _controller.segments.length > 1
-                      ? () => _controller.removeSegment(i)
-                      : null,
+                  onRemove: () => _controller.removeSegment(i),
                 ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 8, 24, 4),
@@ -328,7 +354,9 @@ class GaugeConfigPanel extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     FilledButton.tonalIcon(
-                      onPressed: _controller.randomizeSegments,
+                      onPressed: _controller.segments.isEmpty
+                          ? null
+                          : _controller.randomizeSegments,
                       icon: const Icon(Icons.shuffle, size: 18),
                       label: const Text('Randomize'),
                     ),
