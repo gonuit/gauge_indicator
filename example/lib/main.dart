@@ -1,7 +1,9 @@
-import 'package:example/pages/radial_gauge_example_page.dart';
+import 'package:example/router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 void main() {
+  usePathUrlStrategy();
   runApp(const MyApp());
 }
 
@@ -10,7 +12,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Radial gauge',
       theme: ThemeData(
         colorSchemeSeed: Colors.blue,
@@ -18,8 +20,10 @@ class MyApp extends StatelessWidget {
           labelColor: Colors.black,
         ),
       ),
-      home: const Scaffold(
-        body: RadialGaugeExamplePage(),
+      routerConfig: router,
+      builder: (context, child) => ColoredBox(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: child,
       ),
     );
   }

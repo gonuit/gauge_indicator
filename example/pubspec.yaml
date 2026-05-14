@@ -14,8 +14,12 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_colorpicker: ^1.1.0
+  flutter_web_plugins:
+    sdk: flutter
   gauge_indicator:
     path: ../
+  go_router: ^17.2.3
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:

@@ -1,78 +1,170 @@
+import 'dart:math' as math;
+
 import 'package:example/examples/shader_gradient_example.dart';
-import 'package:example/widgets/package_title.dart';
+import 'package:example/widgets/showcase_sidebar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const _githubRepoBase =
+    'https://github.com/gonuit/gauge_indicator/blob/main/';
 
 class ExampleEntry {
+  final String path;
   final String name;
+  final IconData icon;
+  final String sourcePath;
   final WidgetBuilder builder;
 
-  const ExampleEntry({required this.name, required this.builder});
+  const ExampleEntry({
+    required this.path,
+    required this.name,
+    required this.icon,
+    required this.sourcePath,
+    required this.builder,
+  });
+
+  Uri get sourceUri => Uri.parse('$_githubRepoBase$sourcePath');
 }
 
 final List<ExampleEntry> examples = [
   ExampleEntry(
-    name: 'Gradient shader',
+    path: 'shader-progress-bar',
+    name: 'Progress bar shader',
+    icon: Icons.auto_awesome_outlined,
+    sourcePath: 'example/lib/examples/shader_gradient_example.dart',
     builder: (_) => const ShaderGradientExample(),
   ),
 ];
 
-class ExamplesGalleryPage extends StatefulWidget {
-  const ExamplesGalleryPage({super.key});
+class ExamplesGalleryShell extends StatelessWidget {
+  final String? currentSlug;
+  final Widget child;
 
-  @override
-  State<ExamplesGalleryPage> createState() => _ExamplesGalleryPageState();
-}
-
-class _ExamplesGalleryPageState extends State<ExamplesGalleryPage> {
-  int _selected = 0;
+  const ExamplesGalleryShell({
+    super.key,
+    required this.currentSlug,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
     final viewSize = MediaQuery.sizeOf(context);
     final isMobile = viewSize.width < 700;
 
-    final list = _ExamplesList(
-      examples: examples,
-      selected: _selected,
-      onSelected: (i) => setState(() => _selected = i),
+    final backButton = IconButton(
+      icon: const Icon(Icons.arrow_back),
+      tooltip: 'Back',
+      onPressed: () => context.go('/'),
     );
 
-    final demo = Center(child: examples[_selected].builder(context));
+    final list = _ExamplesList(
+      examples: examples,
+      currentSlug: currentSlug,
+    );
+
+    final currentEntry = examples.firstWhere(
+      (e) => e.path == currentSlug,
+      orElse: () => examples.first,
+    );
+
+    final content = Stack(
+      children: [
+        Positioned.fill(child: child),
+        Positioned(
+          top: 12,
+          right: 12,
+          child: _ViewSourceButton(entry: currentEntry),
+        ),
+      ],
+    );
 
     return Scaffold(
-      body: Column(
-        children: [
-          Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              Expanded(
-                child: PageTitle(
+      body: isMobile
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                SidebarHeader(
                   title: 'Examples',
-                  isSmall: isMobile,
+                  isSmall: true,
+                  leading: backButton,
+                ),
+                Expanded(child: content),
+                SizedBox(
+                  height: math.min(viewSize.height * 0.4, 240),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      border: const Border(
+                        top: BorderSide(color: Color(0xFFDDDDDD)),
+                      ),
+                    ),
+                    child: list,
+                  ),
+                ),
+              ],
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ShowcaseSidebar(
+                  title: 'Examples',
+                  leading: backButton,
+                  child: list,
+                ),
+                Expanded(child: content),
+              ],
+            ),
+    );
+  }
+}
+
+class _ViewSourceButton extends StatelessWidget {
+  final ExampleEntry entry;
+
+  const _ViewSourceButton({required this.entry});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.white,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: const BorderSide(color: Color(0xFFE3E8F2)),
+      ),
+      child: InkWell(
+        onTap: () => launchUrl(
+          entry.sourceUri,
+          mode: LaunchMode.externalApplication,
+        ),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.code, size: 16, color: Color(0xFF002E5F)),
+              SizedBox(width: 8),
+              Text(
+                'View on GitHub',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF002E5F),
                 ),
               ),
-              const SizedBox(width: 48),
+              SizedBox(width: 6),
+              Icon(
+                Icons.open_in_new,
+                size: 14,
+                color: Color(0xFF002E5F),
+              ),
             ],
           ),
-          Expanded(
-            child: isMobile
-                ? Column(
-                    children: [
-                      SizedBox(height: 120, child: list),
-                      Expanded(child: demo),
-                    ],
-                  )
-                : Row(
-                    children: [
-                      SizedBox(width: 240, child: list),
-                      Expanded(child: demo),
-                    ],
-                  ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -80,32 +172,100 @@ class _ExamplesGalleryPageState extends State<ExamplesGalleryPage> {
 
 class _ExamplesList extends StatelessWidget {
   final List<ExampleEntry> examples;
-  final int selected;
-  final ValueChanged<int> onSelected;
+  final String? currentSlug;
 
   const _ExamplesList({
     required this.examples,
-    required this.selected,
-    required this.onSelected,
+    required this.currentSlug,
   });
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        border: Border(right: BorderSide(color: Color(0xFFDDDDDD))),
-      ),
-      child: ListView.builder(
-        itemCount: examples.length,
-        itemBuilder: (context, i) {
-          final isSelected = i == selected;
-          return ListTile(
-            dense: true,
-            selected: isSelected,
-            title: Text(examples[i].name),
-            onTap: () => onSelected(i),
-          );
-        },
+    return ListView.builder(
+      padding: const EdgeInsets.only(top: 8, bottom: 24),
+      itemCount: examples.length,
+      itemBuilder: (context, i) {
+        final entry = examples[i];
+        return _ExampleTile(
+          entry: entry,
+          selected: entry.path == currentSlug,
+        );
+      },
+    );
+  }
+}
+
+class _ExampleTile extends StatelessWidget {
+  final ExampleEntry entry;
+  final bool selected;
+
+  const _ExampleTile({
+    required this.entry,
+    required this.selected,
+  });
+
+  static const _borderColor = Color(0xFFE3E8F2);
+  static const _selectedBorder = Color(0xFF002E5F);
+  static const _primaryText = Color(0xFF002E5F);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+      child: Material(
+        color: selected ? const Color(0xFFF1F5FC) : Colors.white,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(
+            color: selected ? _selectedBorder : _borderColor,
+            width: selected ? 1.5 : 1,
+          ),
+        ),
+        child: InkWell(
+          onTap: () => context.go('/examples/${entry.path}'),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            child: Row(
+              children: [
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: selected
+                        ? _selectedBorder.withValues(alpha: 0.1)
+                        : const Color(0xFFF4F6FB),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    entry.icon,
+                    size: 18,
+                    color: _primaryText,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    entry.name,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight:
+                          selected ? FontWeight.w600 : FontWeight.w500,
+                      color: _primaryText,
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.chevron_right,
+                  size: 18,
+                  color: selected
+                      ? _primaryText
+                      : _primaryText.withValues(alpha: 0.35),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

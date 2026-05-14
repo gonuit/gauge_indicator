@@ -1,11 +1,11 @@
-import 'package:example/pages/examples_gallery_page.dart';
 import 'package:example/widgets/color_picker.dart';
 import 'package:example/widgets/config_section.dart';
-import 'package:example/widgets/package_title.dart';
 import 'package:example/widgets/segment_range_editor.dart';
+import 'package:example/widgets/showcase_sidebar.dart';
 import 'package:example/widgets/value_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:go_router/go_router.dart';
 
 import 'dart:math' as math;
 
@@ -89,13 +89,23 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
           ),
         );
 
+        final examplesButton = IconButton(
+          icon: const Icon(Icons.collections_outlined),
+          tooltip: 'Examples',
+          onPressed: () => context.go('/examples'),
+        );
+
         if (isMobile) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              _TitleWithExamples(isSmall: true),
+              SidebarHeader(
+                title: 'gauge_indicator',
+                isSmall: true,
+                trailing: examplesButton,
+              ),
               Expanded(
                 child: gaugeWidget,
               ),
@@ -117,53 +127,16 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                decoration: const BoxDecoration(
-                  border: Border(right: BorderSide(color: Color(0xFFDDDDDD))),
-                ),
-                width: 350,
-                child: Column(
-                  children: [
-                    _TitleWithExamples(),
-                    Expanded(
-                      child: GaugeConfigPanel(controller: _controller),
-                    ),
-                  ],
-                ),
+              ShowcaseSidebar(
+                title: 'gauge_indicator',
+                trailing: examplesButton,
+                child: GaugeConfigPanel(controller: _controller),
               ),
               Expanded(child: gaugeWidget),
             ],
           );
         }
       }),
-    );
-  }
-}
-
-class _TitleWithExamples extends StatelessWidget {
-  final bool isSmall;
-
-  const _TitleWithExamples({this.isSmall = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.centerRight,
-      children: [
-        PageTitle(title: 'gauge_indicator', isSmall: isSmall),
-        Padding(
-          padding: const EdgeInsets.only(right: 4),
-          child: IconButton(
-            icon: const Icon(Icons.collections_outlined),
-            tooltip: 'Examples',
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => const ExamplesGalleryPage(),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
