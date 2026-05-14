@@ -231,6 +231,11 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
 
     for (var i = 0; i < axisDefinition.zones.length; i++) {
       final zone = axisDefinition.zones[i];
+      final shadow = zone.shadow;
+      if (shadow != null) {
+        canvas.drawPath(zone.path.shift(shadow.offset), shadow.toPaint());
+      }
+
       final paint = Paint()..style = PaintingStyle.fill;
 
       if (zone.shader != null) {
@@ -281,11 +286,10 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
 
     // Drawn last so labels stay on top; clipped per-zone so overflow
     // truncates at the boundary.
-    for (var i = 0; i < axis.zones.length; i++) {
-      final zone = axis.zones[i];
-      final label = zone.label;
-      if (label == null) continue;
+    for (var i = 0; i < axisDefinition.zones.length; i++) {
       final zoneDef = axisDefinition.zones[i];
+      final label = zoneDef.label;
+      if (label == null) continue;
       paintGaugeZoneLabel(
         canvas: canvas,
         zonePath: zoneDef.path,
@@ -295,7 +299,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
         axisMin: axis.min,
         axisMax: axis.max,
         sweepDegrees: axis.sweepDegrees,
-        zone: zone,
+        zone: axis.zones[i],
         label: label,
       );
     }

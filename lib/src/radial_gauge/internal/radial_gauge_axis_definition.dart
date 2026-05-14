@@ -11,6 +11,8 @@ class GaugeZoneDefinition {
   final GaugeAxisGradient? gradient;
   final GaugeBorder? border;
   final Shader? shader;
+  final BoxShadow? shadow;
+  final GaugeZoneLabel? label;
   final Path path;
 
   GaugeZoneDefinition({
@@ -21,6 +23,8 @@ class GaugeZoneDefinition {
     required this.gradient,
     required this.border,
     required this.shader,
+    required this.shadow,
+    required this.label,
   });
 
   GaugeZoneDefinition shift(Offset offset) => GaugeZoneDefinition(
@@ -31,6 +35,8 @@ class GaugeZoneDefinition {
         gradient: gradient,
         border: border,
         shader: shader,
+        shadow: shadow,
+        label: label,
       );
 }
 
@@ -214,6 +220,8 @@ class RadialGaugeAxisDefinition {
         gradient: zone.gradient,
         border: zone.border,
         shader: zone.shader,
+        shadow: zone.shadow,
+        label: zone.label,
         path: path,
       );
     }
