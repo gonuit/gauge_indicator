@@ -38,9 +38,22 @@ Path calculateRadiusArcPath(
   final startAngle = gaugeDegreesTween.transform(from);
   final endAngle = gaugeDegreesTween.transform(to);
 
+  final centerRadius = radius - halfThickness;
+
+  /// Scale corner radius down proportionally to fit small segments.
+  final segmentArcLength =
+      centerRadius * toRadians((endAngle - startAngle).abs());
+  final maxCornerX = segmentArcLength / 2;
+  final scale = cornerRadius.x > maxCornerX && cornerRadius.x > 0
+      ? maxCornerX / cornerRadius.x
+      : 1.0;
+  cornerRadius = Radius.elliptical(
+    cornerRadius.x * scale,
+    (cornerRadius.y * scale).clamp(0.0, halfThickness),
+  );
+
   final outerRadius = radius;
   final centerOuterRadius = outerRadius - cornerRadius.y;
-  final centerRadius = radius - halfThickness;
   final innerRadius = radius - thickness;
   final centerInnerRadius = innerRadius + cornerRadius.y;
 

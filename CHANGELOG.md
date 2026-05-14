@@ -1,3 +1,5 @@
+## 0.5.0
+- Fixed segment corner radius producing distorted shapes when segments are too small to fit the requested radius.
 ## 0.4.3
 - Support negative values [#7](https://github.com/gonuit/gauge_indicator/pull/7) by [dino-keskic](https://github.com/dino-keskic)
 - Added gauge segments border.
