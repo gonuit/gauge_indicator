@@ -1,4 +1,5 @@
 ## 0.5.0
+- Reworked the example application with a redesigned configuration panel: collapsible sections, interactive segment range editor with add/remove, and animation curve & duration controls.
 - Fixed segment corner radius producing distorted shapes when segments are too small to fit the requested radius.
 - Fixed segment spacing scaling with the axis degrees instead of staying consistent across different axis spans.
 - Fixed inverted segment rendering when the axis is too narrow to fit the requested spacing; spacing now shrinks proportionally to fit.

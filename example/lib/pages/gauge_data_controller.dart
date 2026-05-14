@@ -20,7 +20,45 @@ const colors = [
   Color(0xFFD9DEEB),
 ];
 
+const availableCurves = <String, Curve>{
+  'elasticOut': Curves.elasticOut,
+  'elasticIn': Curves.elasticIn,
+  'elasticInOut': Curves.elasticInOut,
+  'easeOut': Curves.easeOut,
+  'easeIn': Curves.easeIn,
+  'easeInOut': Curves.easeInOut,
+  'easeOutBack': Curves.easeOutBack,
+  'easeInBack': Curves.easeInBack,
+  'easeInOutBack': Curves.easeInOutBack,
+  'bounceOut': Curves.bounceOut,
+  'bounceIn': Curves.bounceIn,
+  'bounceInOut': Curves.bounceInOut,
+  'fastOutSlowIn': Curves.fastOutSlowIn,
+  'decelerate': Curves.decelerate,
+  'linear': Curves.linear,
+};
+
 class GaugeDataController extends ChangeNotifier {
+  String _curveName = 'elasticOut';
+  String get curveName => _curveName;
+  Curve get curve => availableCurves[_curveName] ?? Curves.elasticOut;
+  set curveName(String value) {
+    if (value != _curveName && availableCurves.containsKey(value)) {
+      _curveName = value;
+      notifyListeners();
+    }
+  }
+
+  Duration _duration = const Duration(milliseconds: 2000);
+  Duration get duration => _duration;
+  set durationMs(double ms) {
+    final v = Duration(milliseconds: ms.round());
+    if (v != _duration) {
+      _duration = v;
+      notifyListeners();
+    }
+  }
+
   double _value = 65;
   double get value => _value;
   set value(double val) {
@@ -258,31 +296,94 @@ class GaugeDataController extends ChangeNotifier {
     ),
   ];
 
+  static const double minSegmentSize = 2;
+
   void randomizeSegments() {
+    final count = segments.length;
+    if (count == 0) return;
     final random = math.Random();
-    final a = random.nextDouble() * 100;
-    final b = random.nextDouble() * 100;
-    final stops = a > b ? [b, a] : [a, b];
-    segments = <GaugeSegment>[
-      GaugeSegment(
-        from: 0,
-        to: stops[0],
-        color: colors[random.nextInt(colors.length)],
-        cornerRadius: Radius.zero,
-      ),
-      GaugeSegment(
-        from: stops[0],
-        to: stops[1],
-        color: colors[random.nextInt(colors.length)],
-        cornerRadius: Radius.zero,
-      ),
-      GaugeSegment(
-        from: stops[1],
-        to: 100,
-        color: colors[random.nextInt(colors.length)],
-        cornerRadius: Radius.zero,
-      ),
+    const span = 100.0;
+    final free = span - count * minSegmentSize;
+    final stops = <double>[0, free];
+    for (var i = 0; i < count - 1; i++) {
+      stops.add(random.nextDouble() * free);
+    }
+    stops.sort();
+    segments = [
+      for (var i = 0; i < count; i++)
+        GaugeSegment(
+          from: stops[i] + i * minSegmentSize,
+          to: stops[i + 1] + (i + 1) * minSegmentSize,
+          color: colors[random.nextInt(colors.length)],
+          cornerRadius: Radius.zero,
+        ),
     ];
+  }
+
+  static const int maxSegments = 10;
+
+  bool get canAddSegment => segments.length < maxSegments;
+
+  void addSegment() {
+    if (!canAddSegment) return;
+    final random = math.Random();
+    final color = colors[random.nextInt(colors.length)];
+    if (segments.isEmpty) {
+      segments = [
+        GaugeSegment(
+          from: 0,
+          to: 100,
+          color: color,
+          cornerRadius: Radius.zero,
+        ),
+      ];
+      return;
+    }
+    final n = segments.length;
+    final scale = n / (n + 1);
+    final start = segments.first.from;
+    final end = segments.last.to;
+
+    final next = <GaugeSegment>[];
+    var cursor = start;
+    for (final s in segments) {
+      final newSize = (s.to - s.from) * scale;
+      next.add(s.copyWith(from: cursor, to: cursor + newSize));
+      cursor += newSize;
+    }
+    next.add(GaugeSegment(
+      from: cursor,
+      to: end,
+      color: color,
+      cornerRadius: Radius.zero,
+    ));
+    segments = next;
+  }
+
+  void setSegmentBoundary(int boundaryIndex, double position) {
+    if (boundaryIndex < 0 || boundaryIndex >= segments.length - 1) return;
+    final left = segments[boundaryIndex];
+    final right = segments[boundaryIndex + 1];
+    final clamped = position.clamp(left.from, right.to);
+    segments = [
+      ...segments.sublist(0, boundaryIndex),
+      left.copyWith(to: clamped),
+      right.copyWith(from: clamped),
+      ...segments.sublist(boundaryIndex + 2),
+    ];
+  }
+
+  void removeSegment(int index) {
+    if (segments.length <= 1) return;
+    RangeError.checkValidIndex(index, segments);
+    final removed = segments[index];
+    final next = [...segments]..removeAt(index);
+    if (index > 0) {
+      next[index - 1] = next[index - 1].copyWith(to: removed.to);
+    } else {
+      next[0] = next[0].copyWith(from: removed.from);
+    }
+    segments = next;
   }
 
   GaugeProgressBar getProgressBar(ProgressBarType progressBarType) {

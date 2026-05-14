@@ -1,5 +1,7 @@
 import 'package:example/widgets/color_picker.dart';
+import 'package:example/widgets/config_section.dart';
 import 'package:example/widgets/package_title.dart';
+import 'package:example/widgets/segment_range_editor.dart';
 import 'package:example/widgets/value_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
@@ -49,8 +51,8 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
                           ),
                           value: value,
                         ),
-                duration: const Duration(milliseconds: 2000),
-                curve: Curves.elasticOut,
+                duration: _controller.duration,
+                curve: _controller.curve,
                 value: _controller.value,
                 axis: GaugeAxis(
                   min: 0,
@@ -148,217 +150,281 @@ class GaugeConfigPanel extends StatelessWidget {
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, _) => ListView(
-        padding: const EdgeInsets.symmetric(vertical: 24),
+        padding: const EdgeInsets.only(top: 8, bottom: 24),
         children: [
-          ValueSlider(
-            label: "Value",
-            min: 0,
-            max: 100,
-            value: _controller.sliderValue,
-            onChanged: (val) {
-              _controller.sliderValue = double.parse(val.toStringAsFixed(2));
-            },
-            onChangeEnd: (newVal) {
-              _controller.value = newVal;
-            },
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+            child: Material(
+              color: Colors.white,
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: const BorderSide(color: Color(0xFFE3E8F2)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 12, 8, 4),
+                child: ValueSlider(
+              label: "Value",
+              min: 0,
+              max: 100,
+              value: _controller.sliderValue,
+              onChanged: (val) {
+                _controller.sliderValue =
+                    double.parse(val.toStringAsFixed(2));
+              },
+              onChangeEnd: (newVal) {
+                _controller.value = newVal;
+              },
+                ),
+              ),
+            ),
           ),
-          ValueSlider(
-            label: "Degrees",
-            min: 30,
-            max: 360,
-            value: _controller.degree,
-            onChanged: (val) {
-              _controller.degree = double.parse(val.toStringAsFixed(2));
-            },
+          ConfigSection(
+            title: 'Animation',
+            children: [
+              LabeledDropdown<String>(
+                label: 'Curve',
+                value: _controller.curveName,
+                items: availableCurves.keys.toList(),
+                itemLabel: (s) => s,
+                onChanged: (v) => _controller.curveName = v,
+              ),
+              ValueSlider(
+                label: 'Duration',
+                min: 100,
+                max: 5000,
+                value: _controller.duration.inMilliseconds.toDouble(),
+                formatValue: (v) => '${v.round()} ms',
+                onChanged: (v) => _controller.durationMs = v,
+              ),
+            ],
           ),
-          ValueSlider(
-            label: "Segments radius",
-            min: 0,
-            max: 20,
-            value: _controller.segmentsRadius,
-            onChanged: (val) {
-              _controller.segmentsRadius = double.parse(val.toStringAsFixed(2));
-            },
+          ConfigSection(
+            title: 'Layout',
+            initiallyExpanded: true,
+            children: [
+              ValueSlider(
+                label: "Degrees",
+                min: 30,
+                max: 360,
+                value: _controller.degree,
+                onChanged: (val) {
+                  _controller.degree = double.parse(val.toStringAsFixed(2));
+                },
+              ),
+              ValueSlider(
+                label: "Gauge radius",
+                min: 50,
+                max: 250,
+                value: _controller.gaugeRadius,
+                onChanged: (val) {
+                  _controller.gaugeRadius =
+                      double.parse(val.toStringAsFixed(2));
+                },
+              ),
+              ValueSlider(
+                label: "Parent height",
+                min: 150,
+                max: 500,
+                value: _controller.parentHeight,
+                onChanged: (val) {
+                  _controller.parentHeight =
+                      double.parse(val.toStringAsFixed(2));
+                },
+              ),
+              ValueSlider(
+                label: "Parent width",
+                min: 150,
+                max: 500,
+                value: _controller.parentWidth,
+                onChanged: (val) {
+                  _controller.parentWidth =
+                      double.parse(val.toStringAsFixed(2));
+                },
+              ),
+            ],
           ),
-          ValueSlider(
-            label: "Thickness",
-            min: 5,
-            max: 40,
-            value: _controller.thickness,
-            onChanged: (val) {
-              _controller.thickness = double.parse(val.toStringAsFixed(2));
-            },
+          ConfigSection(
+            title: 'Style',
+            children: [
+              ValueSlider(
+                label: "Thickness",
+                min: 5,
+                max: 40,
+                value: _controller.thickness,
+                onChanged: (val) {
+                  _controller.thickness =
+                      double.parse(val.toStringAsFixed(2));
+                },
+              ),
+              ValueSlider(
+                label: "Spacing",
+                min: 0,
+                max: 20,
+                value: _controller.spacing,
+                onChanged: (val) {
+                  _controller.spacing = double.parse(val.toStringAsFixed(2));
+                },
+              ),
+              ValueSlider(
+                label: "Segments radius",
+                min: 0,
+                max: 20,
+                value: _controller.segmentsRadius,
+                onChanged: (val) {
+                  _controller.segmentsRadius =
+                      double.parse(val.toStringAsFixed(2));
+                },
+              ),
+              ValueSlider(
+                label: "Font size",
+                min: 8,
+                max: 48,
+                value: _controller.fontSize,
+                onChanged: (val) {
+                  _controller.fontSize =
+                      double.parse(val.toStringAsFixed(2));
+                },
+              ),
+              ColorField(
+                title: "Background",
+                color: _controller.backgroundColor,
+                onColorChanged: (c) => _controller.backgroundColor = c,
+              ),
+            ],
           ),
-          ValueSlider(
-            label: "Spacing",
-            min: 0,
-            max: 20,
-            value: _controller.spacing,
-            onChanged: (val) {
-              _controller.spacing = double.parse(val.toStringAsFixed(2));
-            },
+          ConfigSection(
+            title: 'Segments',
+            children: [
+              SegmentRangeEditor(
+                segments: _controller.segments,
+                onBoundaryChanged: _controller.setSegmentBoundary,
+              ),
+              for (var i = 0; i < _controller.segments.length; i++)
+                ColorField(
+                  key: ValueKey('segment-$i'),
+                  title: 'Segment ${i + 1}  ·  '
+                      '${_controller.segments[i].from.toStringAsFixed(0)}'
+                      '–${_controller.segments[i].to.toStringAsFixed(0)}',
+                  color: _controller.segments[i].color,
+                  onColorChanged: (c) => _controller.setSegmentColor(i, c),
+                  onRemove: _controller.segments.length > 1
+                      ? () => _controller.removeSegment(i)
+                      : null,
+                ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 8, 24, 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    OutlinedButton.icon(
+                      onPressed: _controller.canAddSegment
+                          ? _controller.addSegment
+                          : null,
+                      icon: const Icon(Icons.add, size: 18),
+                      label: Text(_controller.canAddSegment
+                          ? 'Add'
+                          : 'Max ${GaugeDataController.maxSegments} segments'),
+                    ),
+                    const SizedBox(height: 8),
+                    FilledButton.tonalIcon(
+                      onPressed: _controller.randomizeSegments,
+                      icon: const Icon(Icons.shuffle, size: 18),
+                      label: const Text('Randomize'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          ValueSlider(
-            label: "Font size",
-            min: 8,
-            max: 48,
-            value: _controller.fontSize,
-            onChanged: (val) {
-              _controller.fontSize = double.parse(val.toStringAsFixed(2));
-            },
-          ),
-          ValueSlider(
-            label: "Gauge radius",
-            min: 50,
-            max: 250,
-            value: _controller.gaugeRadius,
-            onChanged: (val) {
-              _controller.gaugeRadius = double.parse(val.toStringAsFixed(2));
-            },
-          ),
-          ValueSlider(
-            label: "Parent height",
-            min: 150,
-            max: 500,
-            value: _controller.parentHeight,
-            onChanged: (val) {
-              _controller.parentHeight = double.parse(val.toStringAsFixed(2));
-            },
-          ),
-          ValueSlider(
-            label: "Parent width",
-            min: 150,
-            max: 500,
-            value: _controller.parentWidth,
-            onChanged: (val) {
-              _controller.parentWidth = double.parse(val.toStringAsFixed(2));
-            },
-          ),
-          const Divider(),
-          ColorField(
-            title: "Background color",
-            color: _controller.backgroundColor,
-            onColorChanged: (c) => _controller.backgroundColor = c,
-          ),
-          ColorField(
-            title: "Segment 1 color",
-            color: _controller.segments[0].color,
-            onColorChanged: (c) => _controller.setSegmentColor(0, c),
-          ),
-          ColorField(
-            title: "Segment 2 color",
-            color: _controller.segments[1].color,
-            onColorChanged: (c) => _controller.setSegmentColor(1, c),
-          ),
-          ColorField(
-            title: "Segment 3 color",
-            color: _controller.segments[2].color,
-            onColorChanged: (c) => _controller.setSegmentColor(2, c),
-          ),
-          const Divider(),
-          CheckboxListTile(
-              title: const Text("Has progress bar"),
-              value: _controller.hasProgressBar,
-              onChanged: (selected) {
-                if (selected != null) {
+          ConfigSection(
+            title: 'Progress bar',
+            children: [
+              SwitchListTile(
+                dense: true,
+                title: const Text('Enabled',
+                    style: TextStyle(fontSize: 13)),
+                value: _controller.hasProgressBar,
+                onChanged: (selected) {
                   _controller.hasProgressBar = selected;
-                }
-              }),
-          if (_controller.hasProgressBar)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: DropdownButton<GaugeProgressPlacement>(
-                items: [
-                  for (final val in GaugeProgressPlacement.values)
-                    DropdownMenuItem(
-                      value: val,
-                      child: Text("Placement: ${val.name}"),
-                    )
-                ],
-                value: _controller.progressBarPlacement,
-                onChanged: (val) {
-                  if (val == null) return;
-                  _controller.progressBarPlacement = val;
                 },
               ),
-            ),
-          if (_controller.hasProgressBar)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: DropdownButton<ProgressBarType>(
-                items: [
-                  for (final val in ProgressBarType.values)
-                    DropdownMenuItem(
-                      value: val,
-                      child: Text("Type: ${val.name}"),
-                    )
-                ],
-                value: _controller.progressBarType,
-                onChanged: (val) {
-                  if (val == null) return;
-                  _controller.progressBarType = val;
-                },
-              ),
-            ),
-          if (_controller.hasProgressBar)
-            ColorField(
-              title: "Select progress bar color",
-              color: _controller.progressBarColor,
-              onColorChanged: (c) => _controller.progressBarColor = c,
-            ),
-          const Divider(),
-          CheckboxListTile(
-              title: const Text("Has pointer"),
-              value: _controller.hasPointer,
-              onChanged: (selected) async {
-                if (selected != null) {
+              if (_controller.hasProgressBar) ...[
+                LabeledSegmented<GaugeProgressPlacement>(
+                  label: 'Placement',
+                  value: _controller.progressBarPlacement,
+                  values: GaugeProgressPlacement.values,
+                  labelOf: (v) => v.name,
+                  iconOf: (v) => switch (v) {
+                    GaugeProgressPlacement.inside =>
+                      Icons.center_focus_strong_outlined,
+                    GaugeProgressPlacement.over => Icons.layers_outlined,
+                  },
+                  onChanged: (v) => _controller.progressBarPlacement = v,
+                ),
+                LabeledSegmented<ProgressBarType>(
+                  label: 'Type',
+                  value: _controller.progressBarType,
+                  values: ProgressBarType.values,
+                  labelOf: (v) => v.name,
+                  iconOf: (v) => v == ProgressBarType.rounded
+                      ? Icons.rounded_corner
+                      : Icons.crop_square,
+                  onChanged: (v) => _controller.progressBarType = v,
+                ),
+                ColorField(
+                  title: "Color",
+                  color: _controller.progressBarColor,
+                  onColorChanged: (c) => _controller.progressBarColor = c,
+                ),
+              ],
+            ],
+          ),
+          ConfigSection(
+            title: 'Pointer',
+            children: [
+              SwitchListTile(
+                dense: true,
+                title: const Text('Enabled',
+                    style: TextStyle(fontSize: 13)),
+                value: _controller.hasPointer,
+                onChanged: (selected) {
                   _controller.hasPointer = selected;
-                }
-              }),
-          if (_controller.hasPointer)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: DropdownButton<PointerType>(
-                items: [
-                  for (final val in PointerType.values)
-                    DropdownMenuItem(
-                      value: val,
-                      child: Text("Type: ${val.name}"),
-                    )
-                ],
-                value: _controller.pointerType,
-                onChanged: (val) {
-                  if (val == null) return;
-
-                  _controller.pointerType = val;
                 },
               ),
-            ),
-          if (_controller.hasPointer)
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: ValueSlider(
-                label: "Pointer size",
-                min: 16,
-                max: 36,
-                value: _controller.pointerSize,
-                onChanged: (val) {
-                  _controller.pointerSize = val;
-                },
-              ),
-            ),
-          if (_controller.hasPointer)
-            ColorField(
-              title: "Pointer color",
-              color: _controller.pointerColor,
-              onColorChanged: (c) => _controller.pointerColor = c,
-            ),
-          const Divider(),
-          Center(
-            child: ElevatedButton(
-              onPressed: _controller.randomizeSegments,
-              child: const Text("Randomize segments"),
-            ),
+              if (_controller.hasPointer) ...[
+                LabeledSegmented<PointerType>(
+                  label: 'Type',
+                  value: _controller.pointerType,
+                  values: PointerType.values,
+                  labelOf: (v) => switch (v) {
+                    PointerType.needle => 'Needle',
+                    PointerType.triangle => 'Triangle',
+                    PointerType.circle => 'Circle',
+                  },
+                  iconOf: (v) => switch (v) {
+                    PointerType.needle => Icons.navigation_outlined,
+                    PointerType.triangle => Icons.change_history,
+                    PointerType.circle => Icons.circle_outlined,
+                  },
+                  onChanged: (v) => _controller.pointerType = v,
+                ),
+                ValueSlider(
+                  label: "Pointer size",
+                  min: 16,
+                  max: 36,
+                  value: _controller.pointerSize,
+                  onChanged: (val) {
+                    _controller.pointerSize = val;
+                  },
+                ),
+                ColorField(
+                  title: "Color",
+                  color: _controller.pointerColor,
+                  onColorChanged: (c) => _controller.pointerColor = c,
+                ),
+              ],
+            ],
           ),
         ],
       ),
