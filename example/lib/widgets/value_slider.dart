@@ -9,14 +9,14 @@ class ValueSlider extends StatelessWidget {
   final double max;
 
   const ValueSlider({
-    Key? key,
+    super.key,
     required this.label,
     required this.onChanged,
     this.onChangeEnd,
     required this.value,
     required this.min,
     required this.max,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

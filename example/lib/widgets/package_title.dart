@@ -5,10 +5,10 @@ class PageTitle extends StatelessWidget {
   final bool isSmall;
 
   const PageTitle({
-    Key? key,
+    super.key,
     required this.title,
     this.isSmall = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

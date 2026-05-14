@@ -15,10 +15,10 @@ Future<Color?> pickColor(BuildContext context, Color initialColor) {
       ),
       actions: <Widget>[
         ElevatedButton(
-          child: const Text('Select'),
           onPressed: () {
             Navigator.of(context).pop(color);
           },
+          child: const Text('Select'),
         ),
       ],
     ),
@@ -31,11 +31,11 @@ class ColorField extends StatelessWidget {
   final ValueChanged<Color> onColorChanged;
 
   const ColorField({
-    Key? key,
+    super.key,
     required this.title,
     required this.color,
     required this.onColorChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

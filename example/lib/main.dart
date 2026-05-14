@@ -6,15 +6,15 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Radial gauge',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        tabBarTheme: const TabBarTheme(
+        colorSchemeSeed: Colors.blue,
+        tabBarTheme: const TabBarThemeData(
           labelColor: Colors.black,
         ),
       ),

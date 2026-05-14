@@ -9,7 +9,7 @@ import 'dart:math' as math;
 import 'gauge_data_controller.dart';
 
 class RadialGaugeExamplePage extends StatefulWidget {
-  const RadialGaugeExamplePage({Key? key}) : super(key: key);
+  const RadialGaugeExamplePage({super.key});
 
   @override
   State<RadialGaugeExamplePage> createState() => _RadialGaugeExamplePageState();
@@ -139,10 +139,9 @@ class GaugeConfigPanel extends StatelessWidget {
   final GaugeDataController _controller;
 
   const GaugeConfigPanel({
-    Key? key,
+    super.key,
     required GaugeDataController controller,
-  })  : _controller = controller,
-        super(key: key);
+  }) : _controller = controller;
 
   @override
   Widget build(BuildContext context) {
@@ -272,8 +271,8 @@ class GaugeConfigPanel extends StatelessWidget {
                 items: [
                   for (final val in GaugeProgressPlacement.values)
                     DropdownMenuItem(
-                      child: Text("Placement: ${val.name}"),
                       value: val,
+                      child: Text("Placement: ${val.name}"),
                     )
                 ],
                 value: _controller.progressBarPlacement,
@@ -290,8 +289,8 @@ class GaugeConfigPanel extends StatelessWidget {
                 items: [
                   for (final val in ProgressBarType.values)
                     DropdownMenuItem(
-                      child: Text("Type: ${val.name}"),
                       value: val,
+                      child: Text("Type: ${val.name}"),
                     )
                 ],
                 value: _controller.progressBarType,
@@ -323,8 +322,8 @@ class GaugeConfigPanel extends StatelessWidget {
                 items: [
                   for (final val in PointerType.values)
                     DropdownMenuItem(
-                      child: Text("Type: ${val.name}"),
                       value: val,
+                      child: Text("Type: ${val.name}"),
                     )
                 ],
                 value: _controller.pointerType,
