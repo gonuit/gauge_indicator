@@ -1,5 +1,6 @@
 ## 0.5.0-beta.5
 - Segments now reach the axis ends instead of leaving a half-spacing gap at the boundaries; their outer caps inherit `GaugeAxisStyle.cornerRadius` so they trace the axis background ([#6](https://github.com/gonuit/gauge_indicator/issues/6)).
+- Fixed `GaugeAxisStyle.cornerRadius` changes not triggering a repaint, so the surface now updates when the radius is changed.
 
 ## 0.5.0-beta.4
 - Fixed rounded progress bar artifact at zero and near-zero values ([#13](https://github.com/gonuit/gauge_indicator/issues/13)).
