@@ -3,6 +3,9 @@ import 'dart:math' as math;
 import 'package:example/examples/active_zone_example.dart';
 import 'package:example/examples/getting_started_example.dart';
 import 'package:example/examples/shader_gradient_example.dart';
+import 'package:example/examples/step_goal_example.dart';
+import 'package:example/examples/thermometer_example.dart';
+import 'package:example/examples/voltmeter_example.dart';
 import 'package:example/examples/zones_example.dart';
 import 'package:example/widgets/showcase_sidebar.dart';
 import 'package:example/widgets/source_code_dialog.dart';
@@ -46,6 +49,27 @@ final List<ExampleEntry> examples = [
     icon: Icons.highlight_alt_outlined,
     sourcePath: 'example/lib/examples/active_zone_example.dart',
     builder: (_) => const ActiveZoneExample(),
+  ),
+  ExampleEntry(
+    path: 'thermometer',
+    name: 'Thermometer',
+    icon: Icons.thermostat_outlined,
+    sourcePath: 'example/lib/examples/thermometer_example.dart',
+    builder: (_) => const ThermometerExample(),
+  ),
+  ExampleEntry(
+    path: 'step-goal',
+    name: 'Step goal',
+    icon: Icons.directions_walk_outlined,
+    sourcePath: 'example/lib/examples/step_goal_example.dart',
+    builder: (_) => const StepGoalExample(),
+  ),
+  ExampleEntry(
+    path: 'voltmeter',
+    name: 'Voltmeter',
+    icon: Icons.electric_bolt_outlined,
+    sourcePath: 'example/lib/examples/voltmeter_example.dart',
+    builder: (_) => const VoltmeterExample(),
   ),
   ExampleEntry(
     path: 'shader-progress-bar',
