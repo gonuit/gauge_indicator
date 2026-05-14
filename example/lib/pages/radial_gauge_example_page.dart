@@ -1,3 +1,4 @@
+import 'package:example/widgets/code_viewer_dialog.dart';
 import 'package:example/widgets/color_picker.dart';
 import 'package:example/widgets/config_section.dart';
 import 'package:example/widgets/segment_range_editor.dart';
@@ -9,6 +10,7 @@ import 'package:go_router/go_router.dart';
 
 import 'dart:math' as math;
 
+import 'gauge_code_generator.dart';
 import 'gauge_data_controller.dart';
 
 class RadialGaugeExamplePage extends StatefulWidget {
@@ -455,6 +457,20 @@ class GaugeConfigPanel extends StatelessWidget {
                 ),
               ],
             ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 16, 12, 0),
+            child: SizedBox(
+              height: 44,
+              child: FilledButton.icon(
+                icon: const Icon(Icons.code, size: 18),
+                label: const Text('Show code'),
+                onPressed: () => showCodeViewer(
+                  context,
+                  generateGaugeCode(_controller),
+                ),
+              ),
+            ),
           ),
         ],
       ),

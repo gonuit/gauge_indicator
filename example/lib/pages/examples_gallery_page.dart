@@ -1,13 +1,13 @@
 import 'dart:math' as math;
 
+import 'package:example/examples/active_zone_example.dart';
+import 'package:example/examples/getting_started_example.dart';
 import 'package:example/examples/shader_gradient_example.dart';
+import 'package:example/examples/threshold_zones_example.dart';
 import 'package:example/widgets/showcase_sidebar.dart';
+import 'package:example/widgets/source_code_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-const _githubRepoBase =
-    'https://github.com/gonuit/gauge_indicator/blob/main/';
 
 class ExampleEntry {
   final String path;
@@ -23,11 +23,30 @@ class ExampleEntry {
     required this.sourcePath,
     required this.builder,
   });
-
-  Uri get sourceUri => Uri.parse('$_githubRepoBase$sourcePath');
 }
 
 final List<ExampleEntry> examples = [
+  ExampleEntry(
+    path: 'getting-started',
+    name: 'Getting started',
+    icon: Icons.play_circle_outline,
+    sourcePath: 'example/lib/examples/getting_started_example.dart',
+    builder: (_) => const GettingStartedExample(),
+  ),
+  ExampleEntry(
+    path: 'threshold-zones',
+    name: 'Threshold zones',
+    icon: Icons.donut_small_outlined,
+    sourcePath: 'example/lib/examples/threshold_zones_example.dart',
+    builder: (_) => const ThresholdZonesExample(),
+  ),
+  ExampleEntry(
+    path: 'active-zone',
+    name: 'Active zone',
+    icon: Icons.highlight_alt_outlined,
+    sourcePath: 'example/lib/examples/active_zone_example.dart',
+    builder: (_) => const ActiveZoneExample(),
+  ),
   ExampleEntry(
     path: 'shader-progress-bar',
     name: 'Progress bar shader',
@@ -137,9 +156,10 @@ class _ViewSourceButton extends StatelessWidget {
         side: const BorderSide(color: Color(0xFFE3E8F2)),
       ),
       child: InkWell(
-        onTap: () => launchUrl(
-          entry.sourceUri,
-          mode: LaunchMode.externalApplication,
+        onTap: () => SourceCodeDialog.show(
+          context,
+          title: entry.name,
+          sourcePath: entry.sourcePath,
         ),
         child: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -149,18 +169,12 @@ class _ViewSourceButton extends StatelessWidget {
               Icon(Icons.code, size: 16, color: Color(0xFF002E5F)),
               SizedBox(width: 8),
               Text(
-                'View on GitHub',
+                'View source',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF002E5F),
                 ),
-              ),
-              SizedBox(width: 6),
-              Icon(
-                Icons.open_in_new,
-                size: 14,
-                color: Color(0xFF002E5F),
               ),
             ],
           ),
