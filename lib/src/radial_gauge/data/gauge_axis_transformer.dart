@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../../utils/utils.dart';
@@ -123,22 +125,33 @@ class _ProgressTransformer extends GaugeAxisTransformer {
     double value,
     bool isInitial,
   ) {
+    /// One overlay per underlying zone, clipped to the recoloured side of
+    /// [value] and inheriting that zone's [GaugeZone.cornerRadius] and other
+    /// properties. When there are no zones, fall back to a single overlay
+    /// across the recoloured range so the transformer still produces a fill
+    /// on a bare axis.
+    final overlays = <GaugeZone>[];
+    if (axis.zones.isEmpty) {
+      overlays.add(
+        reversed
+            ? GaugeZone(from: value, to: range.max, color: color)
+            : GaugeZone(from: range.min, to: value, color: color),
+      );
+    } else {
+      for (final zone in axis.zones) {
+        final overlayFrom = reversed ? math.max(value, zone.from) : zone.from;
+        final overlayTo = reversed ? zone.to : math.min(value, zone.to);
+        if (overlayTo <= overlayFrom) continue;
+        overlays.add(zone.copyWith(
+          from: overlayFrom,
+          to: overlayTo,
+          color: color,
+        ));
+      }
+    }
+
     final zones = flattenZones(
-      [
-        ...axis.zones,
-        if (reversed)
-          GaugeZone(
-            from: value,
-            to: range.max,
-            color: color,
-          )
-        else
-          GaugeZone(
-            from: range.min,
-            to: value,
-            color: color,
-          ),
-      ],
+      [...axis.zones, ...overlays],
       colorBlending: blendColors,
     ).toList();
 

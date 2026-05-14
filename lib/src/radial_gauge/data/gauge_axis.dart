@@ -93,7 +93,8 @@ class GaugeAxis extends Equatable {
   /// Defaults to 1.0. Must be greater than [min].
   final double max;
 
-  /// Value from which the progress bar is drawn. Defaults to 0.0.
+  /// Value from which the progress bar is drawn. Must lie within
+  /// `[min, max]`. Defaults to [min].
   final double origin;
 
   /// Sweep angle of the axis in degrees. Defaults to 180.
@@ -156,7 +157,7 @@ class GaugeAxis extends Equatable {
   const GaugeAxis({
     this.min = 0.0,
     this.max = 1.0,
-    double origin = 0.0,
+    double? origin,
     @Deprecated('Renamed to origin. Will be removed in 0.6.0.')
     double? zero,
     this.transformer = const GaugeAxisTransformer.noTransform(),

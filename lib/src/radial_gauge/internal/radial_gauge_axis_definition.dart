@@ -146,8 +146,11 @@ class RadialGaugeAxisDefinition {
     final axisArcLength = radius * toRadians(axis.sweepDegrees);
     final minZoneFraction =
         axisArcLength > 0 ? _minZonePx / axisArcLength : 0.0;
-    final separator =
-        math.min(desiredSeparator, _maxSeparator(axis, minZoneFraction));
+    final separators = _resolveSeparators(
+      axis,
+      desiredSeparator,
+      minZoneFraction,
+    );
 
     final pathRadius = axis.style.thickness * 0.5;
     final pathInsets = EdgeInsets.all(pathRadius);
@@ -171,8 +174,8 @@ class RadialGaugeAxisDefinition {
       final isLast = i == axis.zones.length - 1;
       // Only trim where a neighbor zone exists; outer caps reach the
       // axis ends.
-      final trimStart = isFirst ? 0.0 : separator;
-      final trimEnd = isLast ? 0.0 : separator;
+      final trimStart = isFirst ? 0.0 : separators[i - 1];
+      final trimEnd = isLast ? 0.0 : separators[i];
 
       final thickness = axis.style.thickness;
       final halfThickness = thickness / 2;
@@ -219,22 +222,45 @@ class RadialGaugeAxisDefinition {
   /// Minimum rendered zone width in logical pixels.
   static const double _minZonePx = 1.0;
 
-  /// Largest separator that keeps every zone at least [minWidth] wide.
-  static double _maxSeparator(GaugeAxis axis, double minWidth) {
+  /// Per-boundary separator widths. There are `zones.length - 1` boundaries;
+  /// `result[i]` is the gap between `zones[i]` and `zones[i + 1]`. Honors
+  /// [GaugeAxisStyle.zoneSpacingMode]: uniform picks the smallest value
+  /// supported by any zone; local trims only the gaps adjacent to narrow
+  /// zones.
+  static List<double> _resolveSeparators(
+    GaugeAxis axis,
+    double desiredSeparator,
+    double minWidth,
+  ) {
     final count = axis.zones.length;
-    if (count < 2) return double.infinity;
+    if (count < 2) return const <double>[];
+
     final range = axis.max - axis.min;
-    var maxSeparator = double.infinity;
-    for (var i = 0; i < count; i++) {
+    final reservable = List<double>.generate(count, (i) {
       final zone = axis.zones[i];
       // Same clamp as the render loop so animation overshoot doesn't collapse
       // the spacing budget for a frame.
       final from = ((zone.from - axis.min) / range).clamp(0.0, 1.0);
       final to = ((zone.to - axis.min) / range).clamp(0.0, 1.0);
-      final width = to - from;
-      final reservable = math.max(0.0, width - minWidth);
-      maxSeparator = math.min(maxSeparator, reservable / 2);
+      return math.max(0.0, to - from - minWidth);
+    });
+
+    switch (axis.style.zoneSpacingMode) {
+      case ZoneSpacingMode.uniform:
+        var maxSeparator = double.infinity;
+        for (final r in reservable) {
+          maxSeparator = math.min(maxSeparator, r / 2);
+        }
+        final separator = math.min(desiredSeparator, maxSeparator);
+        return List<double>.filled(count - 1, separator);
+
+      case ZoneSpacingMode.local:
+        // Each boundary between zone i and zone i+1 reserves up to half of
+        // both zones' free space.
+        return List<double>.generate(count - 1, (i) {
+          final local = math.min(reservable[i], reservable[i + 1]) / 2;
+          return math.min(desiredSeparator, local);
+        });
     }
-    return maxSeparator;
   }
 }

@@ -5,7 +5,7 @@ export 'src/radial_gauge/widgets/animated_radial_gauge.dart'
     show AnimatedRadialGauge, GaugeLabelBuilder;
 
 export 'src/radial_gauge/data/gauge_axis.dart'
-    show GaugeAxis, GaugeAxisStyle, GaugeAxisTween;
+    show GaugeAxis, GaugeAxisStyle, GaugeAxisTween, ZoneSpacingMode;
 export 'src/radial_gauge/data/gauge_axis_gradient.dart' show GaugeAxisGradient;
 export 'src/radial_gauge/data/gauge_axis_transformer.dart'
     show GaugeAxisTransformer, GaugeRange;
