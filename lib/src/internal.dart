@@ -9,3 +9,4 @@ export 'radial_gauge/widgets/widgets.dart';
 export 'radial_gauge/data/data.dart';
 export 'radial_gauge/pointers/pointers.dart';
 export 'radial_gauge/progress_bar/progress_bar.dart';
+export 'radial_gauge/zone_labels/zone_labels.dart';

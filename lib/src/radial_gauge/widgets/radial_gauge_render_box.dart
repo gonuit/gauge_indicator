@@ -279,6 +279,27 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
       progressBar.paint(axis, layout, canvas, _from, _valueProgress);
     }
 
+    // Drawn last so labels stay on top; clipped per-zone so overflow
+    // truncates at the boundary.
+    for (var i = 0; i < axis.zones.length; i++) {
+      final zone = axis.zones[i];
+      final label = zone.label;
+      if (label == null) continue;
+      final zoneDef = axisDefinition.zones[i];
+      paintGaugeZoneLabel(
+        canvas: canvas,
+        zonePath: zoneDef.path,
+        center: axisDefinition.center,
+        centerlineRadius: axisDefinition.radius,
+        thickness: axisDefinition.thickness,
+        axisMin: axis.min,
+        axisMax: axis.max,
+        sweepDegrees: axis.sweepDegrees,
+        zone: zone,
+        label: label,
+      );
+    }
+
     canvas.restore();
 
     /// Draw a pointer

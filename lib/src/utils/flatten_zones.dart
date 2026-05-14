@@ -48,6 +48,7 @@ Iterable<GaugeZone> flattenZones(
       shader: lastZone.shader,
       border: lastZone.border,
       cornerRadius: lastZone.cornerRadius,
+      label: lastZone.label,
     );
   }
 }

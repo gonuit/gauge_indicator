@@ -29,6 +29,9 @@ class GaugeZone extends Equatable {
   /// Corner radius applied to the zone's ends.
   final Radius cornerRadius;
 
+  /// Optional label drawn inside the zone band.
+  final GaugeZoneLabel? label;
+
   /// Creates a gauge zone.
   const GaugeZone({
     required this.from,
@@ -38,6 +41,7 @@ class GaugeZone extends Equatable {
     this.border,
     this.shader,
     this.cornerRadius = Radius.zero,
+    this.label,
   });
 
   /// Returns a copy of this zone with the given fields replaced.
@@ -49,6 +53,7 @@ class GaugeZone extends Equatable {
     Shader? shader,
     GaugeBorder? border,
     Radius? cornerRadius,
+    GaugeZoneLabel? label,
   }) =>
       GaugeZone(
         from: from ?? this.from,
@@ -58,6 +63,7 @@ class GaugeZone extends Equatable {
         shader: shader ?? this.shader,
         border: border ?? this.border,
         cornerRadius: cornerRadius ?? this.cornerRadius,
+        label: label ?? this.label,
       );
 
   /// Linearly interpolates between two zones at fraction [t].
@@ -70,9 +76,10 @@ class GaugeZone extends Equatable {
         shader: end.shader,
         border: GaugeBorder.lerp(begin.border, end.border, t),
         cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t)!,
+        label: end.label,
       );
 
   @override
   List<Object?> get props =>
-      [from, to, color, gradient, shader, cornerRadius, border];
+      [from, to, color, gradient, shader, cornerRadius, border, label];
 }

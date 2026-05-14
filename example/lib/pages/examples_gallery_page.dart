@@ -9,6 +9,7 @@ import 'package:example/examples/shader_gradient_example.dart';
 import 'package:example/examples/step_goal_example.dart';
 import 'package:example/examples/thermometer_example.dart';
 import 'package:example/examples/voltmeter_example.dart';
+import 'package:example/examples/zone_labels_example.dart';
 import 'package:example/examples/zones_example.dart';
 import 'package:example/widgets/showcase_sidebar.dart';
 import 'package:example/widgets/source_code_dialog.dart';
@@ -57,6 +58,14 @@ final List<ExampleEntry> examples = [
     icon: Icons.highlight_alt_outlined,
     sourcePath: 'example/lib/examples/active_zone_example.dart',
     builder: (_) => const ActiveZoneExample(),
+  ),
+  ExampleEntry(
+    path: 'zone-labels',
+    name: 'Zone labels',
+    subtitle: 'Text + icon inside the band, clipped to the zone',
+    icon: Icons.label_outline,
+    sourcePath: 'example/lib/examples/zone_labels_example.dart',
+    builder: (_) => const ZoneLabelsExample(),
   ),
   ExampleEntry(
     path: 'thermometer',
