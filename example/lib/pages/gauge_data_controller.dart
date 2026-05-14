@@ -104,11 +104,11 @@ class GaugeDataController extends ChangeNotifier {
     }
   }
 
-  double _segmentsRadius = 8;
-  double get segmentsRadius => _segmentsRadius;
-  set segmentsRadius(double value) {
-    if (value != segmentsRadius) {
-      _segmentsRadius = value;
+  double _zonesRadius = 8;
+  double get zonesRadius => _zonesRadius;
+  set zonesRadius(double value) {
+    if (value != zonesRadius) {
+      _zonesRadius = value;
       notifyListeners();
     }
   }
@@ -285,28 +285,28 @@ class GaugeDataController extends ChangeNotifier {
     }
   }
 
-  List<GaugeSegment> get segments => _segments;
-  set segments(List<GaugeSegment> value) {
-    if (value != segments) {
-      _segments = value;
+  List<GaugeZone> get zones => _zones;
+  set zones(List<GaugeZone> value) {
+    if (value != zones) {
+      _zones = value;
       notifyListeners();
     }
   }
 
-  List<GaugeSegment> _segments = <GaugeSegment>[
-    const GaugeSegment(
+  List<GaugeZone> _zones = <GaugeZone>[
+    const GaugeZone(
       from: 0,
       to: 60.0,
       color: Color(0xFFD9DEEB),
       cornerRadius: Radius.zero,
     ),
-    const GaugeSegment(
+    const GaugeZone(
       from: 60.0,
       to: 85.0,
       color: Color(0xFFD9DEEB),
       cornerRadius: Radius.zero,
     ),
-    const GaugeSegment(
+    const GaugeZone(
       from: 85.0,
       to: 100,
       color: Color(0xFFD9DEEB),
@@ -314,41 +314,41 @@ class GaugeDataController extends ChangeNotifier {
     ),
   ];
 
-  static const double minSegmentSize = 2;
+  static const double minZoneSize = 2;
 
-  void randomizeSegments() {
-    final count = segments.length;
+  void randomizeZones() {
+    final count = zones.length;
     if (count == 0) return;
     final random = math.Random();
     const span = 100.0;
-    final free = span - count * minSegmentSize;
+    final free = span - count * minZoneSize;
     final stops = <double>[0, free];
     for (var i = 0; i < count - 1; i++) {
       stops.add(random.nextDouble() * free);
     }
     stops.sort();
-    segments = [
+    zones = [
       for (var i = 0; i < count; i++)
-        GaugeSegment(
-          from: stops[i] + i * minSegmentSize,
-          to: stops[i + 1] + (i + 1) * minSegmentSize,
+        GaugeZone(
+          from: stops[i] + i * minZoneSize,
+          to: stops[i + 1] + (i + 1) * minZoneSize,
           color: colors[random.nextInt(colors.length)],
           cornerRadius: Radius.zero,
         ),
     ];
   }
 
-  static const int maxSegments = 10;
+  static const int maxZones = 10;
 
-  bool get canAddSegment => segments.length < maxSegments;
+  bool get canAddZone => zones.length < maxZones;
 
-  void addSegment() {
-    if (!canAddSegment) return;
+  void addZone() {
+    if (!canAddZone) return;
     final random = math.Random();
     final color = colors[random.nextInt(colors.length)];
-    if (segments.isEmpty) {
-      segments = [
-        GaugeSegment(
+    if (zones.isEmpty) {
+      zones = [
+        GaugeZone(
           from: 0,
           to: 100,
           color: color,
@@ -357,54 +357,54 @@ class GaugeDataController extends ChangeNotifier {
       ];
       return;
     }
-    final n = segments.length;
+    final n = zones.length;
     final scale = n / (n + 1);
-    final start = segments.first.from;
-    final end = segments.last.to;
+    final start = zones.first.from;
+    final end = zones.last.to;
 
-    final next = <GaugeSegment>[];
+    final next = <GaugeZone>[];
     var cursor = start;
-    for (final s in segments) {
+    for (final s in zones) {
       final newSize = (s.to - s.from) * scale;
       next.add(s.copyWith(from: cursor, to: cursor + newSize));
       cursor += newSize;
     }
-    next.add(GaugeSegment(
+    next.add(GaugeZone(
       from: cursor,
       to: end,
       color: color,
       cornerRadius: Radius.zero,
     ));
-    segments = next;
+    zones = next;
   }
 
-  void setSegmentBoundary(int boundaryIndex, double position) {
-    if (boundaryIndex < 0 || boundaryIndex >= segments.length - 1) return;
-    final left = segments[boundaryIndex];
-    final right = segments[boundaryIndex + 1];
+  void setZoneBoundary(int boundaryIndex, double position) {
+    if (boundaryIndex < 0 || boundaryIndex >= zones.length - 1) return;
+    final left = zones[boundaryIndex];
+    final right = zones[boundaryIndex + 1];
     final clamped = position.clamp(left.from, right.to);
-    segments = [
-      ...segments.sublist(0, boundaryIndex),
+    zones = [
+      ...zones.sublist(0, boundaryIndex),
       left.copyWith(to: clamped),
       right.copyWith(from: clamped),
-      ...segments.sublist(boundaryIndex + 2),
+      ...zones.sublist(boundaryIndex + 2),
     ];
   }
 
-  void removeSegment(int index) {
-    RangeError.checkValidIndex(index, segments);
-    if (segments.length == 1) {
-      segments = const [];
+  void removeZone(int index) {
+    RangeError.checkValidIndex(index, zones);
+    if (zones.length == 1) {
+      zones = const [];
       return;
     }
-    final removed = segments[index];
-    final next = [...segments]..removeAt(index);
+    final removed = zones[index];
+    final next = [...zones]..removeAt(index);
     if (index > 0) {
       next[index - 1] = next[index - 1].copyWith(to: removed.to);
     } else {
       next[0] = next[0].copyWith(from: removed.from);
     }
-    segments = next;
+    zones = next;
   }
 
   GaugeProgressBar getProgressBar(ProgressBarType progressBarType) {
@@ -422,10 +422,10 @@ class GaugeDataController extends ChangeNotifier {
     }
   }
 
-  void setSegmentColor(int index, Color color) {
-    RangeError.checkValidIndex(index, segments);
+  void setZoneColor(int index, Color color) {
+    RangeError.checkValidIndex(index, zones);
 
-    segments[index] = segments[index].copyWith(
+    zones[index] = zones[index].copyWith(
       color: color,
     );
 

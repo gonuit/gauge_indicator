@@ -4,7 +4,7 @@ export 'calculate_axis_path.dart';
 export 'calculate_radius_path.dart';
 export 'calculate_rounded_path.dart';
 export 'degrees_to_radians.dart';
-export 'flatten_segments.dart';
+export 'flatten_zones.dart';
 export 'get_arc_angle.dart';
 export 'get_point_on_circle.dart';
 export 'get_sagitta.dart';

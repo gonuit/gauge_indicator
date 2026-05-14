@@ -3,12 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 
 /// Reproduces the alignment concerns reported on
-/// https://github.com/gonuit/gauge_indicator/issues/6 — segment caps tracing
+/// https://github.com/gonuit/gauge_indicator/issues/6 — zone caps tracing
 /// the axis background and the rounded progress fill aligning inside the
-/// segments when `placement: inside` is used.
+/// zones when `placement: inside` is used.
 void main() {
   testWidgets(
-    'Segments align with axis background, rounded inside progress fits',
+    'Zones align with axis background, rounded inside progress fits',
     (tester) async {
       await tester.binding.setSurfaceSize(const Size(488, 280));
       addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -28,10 +28,10 @@ void main() {
                   axis: GaugeAxis(
                     min: 0,
                     max: 100,
-                    degrees: 180,
+                    sweepDegrees: 180,
                     style: GaugeAxisStyle(
                       thickness: 24,
-                      segmentSpacing: 8,
+                      zoneSpacing: 8,
                       blendColors: false,
                       cornerRadius: Radius.circular(20),
                       background: Color(0xFFFF00FF),
@@ -47,32 +47,32 @@ void main() {
                         colorStops: [0, 0.5, 1],
                       ),
                     ),
-                    segments: [
-                      GaugeSegment(
+                    zones: [
+                      GaugeZone(
                         from: 0,
                         to: 20,
                         color: Color(0xFFCCCCCC),
                         cornerRadius: Radius.circular(10),
                       ),
-                      GaugeSegment(
+                      GaugeZone(
                         from: 20,
                         to: 40,
                         color: Color(0xFFCCCCCC),
                         cornerRadius: Radius.circular(10),
                       ),
-                      GaugeSegment(
+                      GaugeZone(
                         from: 40,
                         to: 60,
                         color: Color(0xFFCCCCCC),
                         cornerRadius: Radius.circular(10),
                       ),
-                      GaugeSegment(
+                      GaugeZone(
                         from: 60,
                         to: 80,
                         color: Color(0xFFCCCCCC),
                         cornerRadius: Radius.circular(10),
                       ),
-                      GaugeSegment(
+                      GaugeZone(
                         from: 80,
                         to: 100,
                         color: Color(0xFFCCCCCC),
@@ -89,7 +89,7 @@ void main() {
 
       await expectLater(
         find.byType(MaterialApp),
-        matchesGoldenFile('goldens/radial_gauge_segment_alignment.png'),
+        matchesGoldenFile('goldens/radial_gauge_zone_alignment.png'),
       );
     },
   );

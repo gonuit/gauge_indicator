@@ -62,13 +62,13 @@ String generateGaugeCode(GaugeDataController c) {
           if (c.hasSurface) {
             b.line('background: ${_color(c.surfaceColor)},');
           }
-          b.line('segmentSpacing: ${_d(c.spacing)},');
+          b.line('zoneSpacing: ${_d(c.spacing)},');
           b.line('blendColors: false,');
           b.line('cornerRadius: Radius.circular(${_d(c.surfaceRadius)}),');
         });
         b.line('),');
 
-        _writeSegments(b, c);
+        _writeZones(b, c);
       });
       b.line('),');
     });
@@ -144,20 +144,20 @@ void _writeProgressBar(_CodeBuilder b, GaugeDataController c) {
   b.line('),');
 }
 
-void _writeSegments(_CodeBuilder b, GaugeDataController c) {
-  if (c.segments.isEmpty) {
-    b.line('segments: [],');
+void _writeZones(_CodeBuilder b, GaugeDataController c) {
+  if (c.zones.isEmpty) {
+    b.line('zones: [],');
     return;
   }
-  b.line('segments: [');
+  b.line('zones: [');
   b.indent(() {
-    for (final s in c.segments) {
-      b.line('GaugeSegment(');
+    for (final s in c.zones) {
+      b.line('GaugeZone(');
       b.indent(() {
         b.line('from: ${_d(s.from)},');
         b.line('to: ${_d(s.to)},');
         b.line('color: ${_color(s.color)},');
-        b.line('cornerRadius: Radius.circular(${_d(c.segmentsRadius)}),');
+        b.line('cornerRadius: Radius.circular(${_d(c.zonesRadius)}),');
       });
       b.line('),');
     }

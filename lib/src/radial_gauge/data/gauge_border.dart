@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
-/// A stroke painted around a [GaugeSegment].
+/// A stroke painted around a [GaugeZone].
 class GaugeBorder extends Equatable {
   /// Stroke color.
   final Color color;
@@ -10,7 +10,7 @@ class GaugeBorder extends Equatable {
   /// Stroke width in logical pixels.
   final double width;
 
-  /// Creates a segment border.
+  /// Creates a zone border.
   const GaugeBorder({
     required this.color,
     this.width = 1.0,

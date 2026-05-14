@@ -1,7 +1,7 @@
 import 'package:example/widgets/code_viewer_dialog.dart';
 import 'package:example/widgets/color_picker.dart';
 import 'package:example/widgets/config_section.dart';
-import 'package:example/widgets/segment_range_editor.dart';
+import 'package:example/widgets/zone_range_editor.dart';
 import 'package:example/widgets/showcase_sidebar.dart';
 import 'package:example/widgets/value_slider.dart';
 import 'package:flutter/material.dart';
@@ -76,14 +76,14 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
                     background: _controller.hasSurface
                         ? _controller.surfaceColor
                         : null,
-                    segmentSpacing: _controller.spacing,
+                    zoneSpacing: _controller.spacing,
                     blendColors: false,
                     cornerRadius: Radius.circular(_controller.surfaceRadius),
                   ),
-                  segments: _controller.segments
+                  zones: _controller.zones
                       .map((e) => e.copyWith(
                           cornerRadius:
-                              Radius.circular(_controller.segmentsRadius)))
+                              Radius.circular(_controller.zonesRadius)))
                       .toList(),
                 ),
               ),
@@ -273,12 +273,12 @@ class GaugeConfigPanel extends StatelessWidget {
                 },
               ),
               ValueSlider(
-                label: "Segments radius",
+                label: "Zones radius",
                 min: 0,
                 max: 20,
-                value: _controller.segmentsRadius,
+                value: _controller.zonesRadius,
                 onChanged: (val) {
-                  _controller.segmentsRadius =
+                  _controller.zonesRadius =
                       double.parse(val.toStringAsFixed(2));
                 },
               ),
@@ -326,21 +326,21 @@ class GaugeConfigPanel extends StatelessWidget {
             ],
           ),
           ConfigSection(
-            title: 'Segments',
+            title: 'Zones',
             children: [
-              SegmentRangeEditor(
-                segments: _controller.segments,
-                onBoundaryChanged: _controller.setSegmentBoundary,
+              ZoneRangeEditor(
+                zones: _controller.zones,
+                onBoundaryChanged: _controller.setZoneBoundary,
               ),
-              for (var i = 0; i < _controller.segments.length; i++)
+              for (var i = 0; i < _controller.zones.length; i++)
                 ColorField(
-                  key: ValueKey('segment-$i'),
-                  title: 'Segment ${i + 1}  ·  '
-                      '${_controller.segments[i].from.toStringAsFixed(0)}'
-                      '–${_controller.segments[i].to.toStringAsFixed(0)}',
-                  color: _controller.segments[i].color,
-                  onColorChanged: (c) => _controller.setSegmentColor(i, c),
-                  onRemove: () => _controller.removeSegment(i),
+                  key: ValueKey('zone-$i'),
+                  title: 'Zone ${i + 1}  ·  '
+                      '${_controller.zones[i].from.toStringAsFixed(0)}'
+                      '–${_controller.zones[i].to.toStringAsFixed(0)}',
+                  color: _controller.zones[i].color,
+                  onColorChanged: (c) => _controller.setZoneColor(i, c),
+                  onRemove: () => _controller.removeZone(i),
                 ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 8, 24, 4),
@@ -348,19 +348,19 @@ class GaugeConfigPanel extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     OutlinedButton.icon(
-                      onPressed: _controller.canAddSegment
-                          ? _controller.addSegment
+                      onPressed: _controller.canAddZone
+                          ? _controller.addZone
                           : null,
                       icon: const Icon(Icons.add, size: 18),
-                      label: Text(_controller.canAddSegment
+                      label: Text(_controller.canAddZone
                           ? 'Add'
-                          : 'Max ${GaugeDataController.maxSegments} segments'),
+                          : 'Max ${GaugeDataController.maxZones} zones'),
                     ),
                     const SizedBox(height: 8),
                     FilledButton.tonalIcon(
-                      onPressed: _controller.segments.isEmpty
+                      onPressed: _controller.zones.isEmpty
                           ? null
-                          : _controller.randomizeSegments,
+                          : _controller.randomizeZones,
                       icon: const Icon(Icons.shuffle, size: 18),
                       label: const Text('Randomize'),
                     ),

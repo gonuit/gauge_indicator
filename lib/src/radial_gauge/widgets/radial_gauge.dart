@@ -5,7 +5,7 @@ import 'package:gauge_indicator/src/internal.dart';
 
 /// A radial gauge that draws a value along a circular axis.
 ///
-/// The gauge is configured through a [GaugeAxis] (range, sweep, segments,
+/// The gauge is configured through a [GaugeAxis] (range, sweep, zones,
 /// pointer, progress bar). The current [value] is drawn against that axis.
 /// An optional [child] is centered inside the gauge for labels or icons.
 ///
@@ -18,7 +18,7 @@ import 'package:gauge_indicator/src/internal.dart';
 ///   axis: const GaugeAxis(
 ///     min: 0,
 ///     max: 100,
-///     degrees: 270,
+///     sweepDegrees: 270,
 ///     style: GaugeAxisStyle(
 ///       thickness: 14,
 ///       background: Color(0xFFDFE2EC),
@@ -42,7 +42,7 @@ class RadialGauge extends SingleChildRenderObjectWidget {
   final double? radius;
 
   /// {@template gauge_indicator.RadialGauge.axis}
-  /// Configures the gauge's value range, sweep angle, visual style, segments,
+  /// Configures the gauge's value range, sweep angle, visual style, zones,
   /// pointer, and progress bar. Only a single axis is supported.
   /// {@endtemplate}
   final GaugeAxis axis;

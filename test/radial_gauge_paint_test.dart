@@ -6,10 +6,10 @@ import 'package:gauge_indicator/gauge_indicator.dart';
 ///
 /// Bare [RadialGauge] (no [RepaintBoundary] above it) is painted with a
 /// non-zero canvas offset whenever it is not at its parent's (0, 0). The
-/// segments must follow that offset together with the axis surface.
+/// zones must follow that offset together with the axis surface.
 void main() {
   testWidgets(
-    'RadialGauge segments follow parent offset (Padding)',
+    'RadialGauge zones follow parent offset (Padding)',
     (tester) async {
       await tester.binding.setSurfaceSize(const Size(408, 248));
       addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -29,14 +29,14 @@ void main() {
                   axis: GaugeAxis(
                     min: 0,
                     max: 100,
-                    degrees: 180,
+                    sweepDegrees: 180,
                     style: GaugeAxisStyle(
                       thickness: 14,
                       background: Color(0xFFDFE2EC),
                     ),
-                    segments: [
-                      GaugeSegment(from: 0, to: 50, color: Color(0xFF673AB7)),
-                      GaugeSegment(from: 50, to: 100, color: Color(0xFFE91E63)),
+                    zones: [
+                      GaugeZone(from: 0, to: 50, color: Color(0xFF673AB7)),
+                      GaugeZone(from: 50, to: 100, color: Color(0xFFE91E63)),
                     ],
                   ),
                 ),
@@ -54,7 +54,7 @@ void main() {
   );
 
   testWidgets(
-    'RadialGauge segments follow parent offset (Row of two gauges)',
+    'RadialGauge zones follow parent offset (Row of two gauges)',
     (tester) async {
       await tester.binding.setSurfaceSize(const Size(508, 188));
       addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -77,19 +77,19 @@ void main() {
                       axis: GaugeAxis(
                         min: 0,
                         max: 100,
-                        degrees: 180,
+                        sweepDegrees: 180,
                         style: GaugeAxisStyle(
                           thickness: 12,
                           background: Color(0xFFE0E4EE),
                         ),
-                        segments: [
-                          GaugeSegment(
+                        zones: [
+                          GaugeZone(
                               from: 0, to: 25, color: Color(0xFF2196F3)),
-                          GaugeSegment(
+                          GaugeZone(
                               from: 25, to: 50, color: Color(0xFF4CAF50)),
-                          GaugeSegment(
+                          GaugeZone(
                               from: 50, to: 75, color: Color(0xFFFFEB3B)),
-                          GaugeSegment(
+                          GaugeZone(
                               from: 75, to: 100, color: Color(0xFFF44336)),
                         ],
                       ),
@@ -104,19 +104,19 @@ void main() {
                       axis: GaugeAxis(
                         min: 0,
                         max: 120,
-                        degrees: 180,
+                        sweepDegrees: 180,
                         style: GaugeAxisStyle(
                           thickness: 12,
                           background: Color(0xFFE0E4EE),
                         ),
-                        segments: [
-                          GaugeSegment(
+                        zones: [
+                          GaugeZone(
                               from: 0, to: 30, color: Color(0xFF9C27B0)),
-                          GaugeSegment(
+                          GaugeZone(
                               from: 30, to: 60, color: Color(0xFFFF9800)),
-                          GaugeSegment(
+                          GaugeZone(
                               from: 60, to: 90, color: Color(0xFFE91E63)),
-                          GaugeSegment(
+                          GaugeZone(
                               from: 90, to: 120, color: Color(0xFF009688)),
                         ],
                       ),

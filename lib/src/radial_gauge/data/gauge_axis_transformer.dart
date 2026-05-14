@@ -16,7 +16,7 @@ class GaugeRange {
 }
 
 /// Transforms a [GaugeAxis] per animation frame, enabling effects like
-/// color fade-in or value-driven segment overrides.
+/// color fade-in or value-driven zone overrides.
 ///
 /// Use the factory constructors for built-in transformations; subclass to
 /// implement a custom one.
@@ -27,13 +27,13 @@ abstract class GaugeAxisTransformer {
   /// No transformation
   const factory GaugeAxisTransformer.noTransform() = _NoTransform;
 
-  /// Gradually displays the colors of the segments.
+  /// Gradually displays the colors of the zones.
   const factory GaugeAxisTransformer.colorFadeIn({
     required Interval interval,
     Color background,
   }) = _ColorFadeIn;
 
-  /// Uses segments to display gauge value.
+  /// Uses zones to display gauge value.
   /// Can be used as a progress bar.
   const factory GaugeAxisTransformer.progress({
     required Color color,
@@ -88,7 +88,7 @@ class _ColorFadeIn extends GaugeAxisTransformer {
   ) {
     if (isInitial) {
       final value = interval.transform(progress);
-      final updatedSegments = axis.segments
+      final updatedZones = axis.zones
           .map((s) => s.copyWith(
                 color: Color.alphaBlend(
                   s.color.withOpacity(value),
@@ -96,7 +96,7 @@ class _ColorFadeIn extends GaugeAxisTransformer {
                 ),
               ))
           .toList();
-      return axis.copyWith(segments: updatedSegments);
+      return axis.copyWith(zones: updatedZones);
     } else {
       return axis;
     }
@@ -104,7 +104,7 @@ class _ColorFadeIn extends GaugeAxisTransformer {
 }
 
 class _ProgressTransformer extends GaugeAxisTransformer {
-  /// Whether to blend the colors of the segments.
+  /// Whether to blend the colors of the zones.
   final bool blendColors;
   final bool reversed;
   final Color color;
@@ -123,17 +123,17 @@ class _ProgressTransformer extends GaugeAxisTransformer {
     double value,
     bool isInitial,
   ) {
-    final segments = flattenSegments(
+    final zones = flattenZones(
       [
-        ...axis.segments,
+        ...axis.zones,
         if (reversed)
-          GaugeSegment(
+          GaugeZone(
             from: value,
             to: range.max,
             color: color,
           )
         else
-          GaugeSegment(
+          GaugeZone(
             from: range.min,
             to: value,
             color: color,
@@ -142,6 +142,6 @@ class _ProgressTransformer extends GaugeAxisTransformer {
       colorBlending: blendColors,
     ).toList();
 
-    return axis.copyWith(segments: segments);
+    return axis.copyWith(zones: zones);
   }
 }

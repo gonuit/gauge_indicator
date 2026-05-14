@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
-import 'package:example/examples/active_segment_example.dart';
+import 'package:example/examples/active_zone_example.dart';
 import 'package:example/examples/getting_started_example.dart';
-import 'package:example/examples/segments_example.dart';
 import 'package:example/examples/shader_gradient_example.dart';
+import 'package:example/examples/zones_example.dart';
 import 'package:example/widgets/showcase_sidebar.dart';
 import 'package:example/widgets/source_code_dialog.dart';
 import 'package:flutter/material.dart';
@@ -34,17 +34,17 @@ final List<ExampleEntry> examples = [
     builder: (_) => const GettingStartedExample(),
   ),
   ExampleEntry(
-    path: 'threshold-zones',
-    name: 'Threshold zones',
+    path: 'zones',
+    name: 'Zones',
     icon: Icons.donut_small_outlined,
-    sourcePath: 'example/lib/examples/segments_example.dart',
-    builder: (_) => const ThresholdZonesExample(),
+    sourcePath: 'example/lib/examples/zones_example.dart',
+    builder: (_) => const ZonesExample(),
   ),
   ExampleEntry(
     path: 'active-zone',
     name: 'Active zone',
     icon: Icons.highlight_alt_outlined,
-    sourcePath: 'example/lib/examples/active_segment_example.dart',
+    sourcePath: 'example/lib/examples/active_zone_example.dart',
     builder: (_) => const ActiveZoneExample(),
   ),
   ExampleEntry(

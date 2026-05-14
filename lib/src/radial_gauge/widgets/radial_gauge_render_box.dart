@@ -218,41 +218,41 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
 
     if (hasProgressBarInside) {
       canvas.clipPath(axisDefinition.surface);
-      if (axisDefinition.segments.isNotEmpty) {
-        final segmentsPath = Path();
-        for (final segment in axisDefinition.segments) {
-          segmentsPath.addPath(segment.path, Offset.zero);
+      if (axisDefinition.zones.isNotEmpty) {
+        final zonesPath = Path();
+        for (final zone in axisDefinition.zones) {
+          zonesPath.addPath(zone.path, Offset.zero);
         }
-        canvas.clipPath(segmentsPath);
+        canvas.clipPath(zonesPath);
       }
     }
 
-    // drawing segments
+    // drawing zones
 
-    for (var i = 0; i < axisDefinition.segments.length; i++) {
-      final segment = axisDefinition.segments[i];
+    for (var i = 0; i < axisDefinition.zones.length; i++) {
+      final zone = axisDefinition.zones[i];
       final paint = Paint()..style = PaintingStyle.fill;
 
-      if (segment.shader != null) {
-        paint.shader = segment.shader!;
-      } else if (segment.gradient != null) {
-        final gradient = segment.gradient!;
+      if (zone.shader != null) {
+        paint.shader = zone.shader!;
+      } else if (zone.gradient != null) {
+        final gradient = zone.gradient!;
         paint.shader = ui.Gradient.sweep(
           layout.circleRect.center,
           gradient.colors,
           gradient.colorStops,
           gradient.tileMode,
           0.0,
-          segment.sweepAngle,
-          GradientRotation(segment.startAngle)
+          zone.sweepAngle,
+          GradientRotation(zone.startAngle)
               .transform(layout.circleRect)
               .storage,
         );
-      } else if (segment.color != null) {
-        paint.color = segment.color!;
+      } else if (zone.color != null) {
+        paint.color = zone.color!;
       }
 
-      canvas.drawPath(segment.path, paint);
+      canvas.drawPath(zone.path, paint);
     }
 
     // drawing progress
@@ -262,16 +262,16 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
       progressBar.paint(axis, layout, canvas, _from, _valueProgress);
     }
 
-    for (var i = 0; i < axisDefinition.segments.length; i++) {
-      final segment = axisDefinition.segments[i];
-      final border = segment.border;
+    for (var i = 0; i < axisDefinition.zones.length; i++) {
+      final zone = axisDefinition.zones[i];
+      final border = zone.border;
       if (border == null) continue;
 
       final borderPaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = border.width
         ..color = border.color;
-      canvas.drawPath(segment.path, borderPaint);
+      canvas.drawPath(zone.path, borderPaint);
     }
 
     if (progressBar != null &&

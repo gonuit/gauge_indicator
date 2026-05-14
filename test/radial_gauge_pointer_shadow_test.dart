@@ -29,7 +29,7 @@ void main() {
                   axis: GaugeAxis(
                     min: 0,
                     max: 100,
-                    degrees: 180,
+                    sweepDegrees: 180,
                     style: GaugeAxisStyle(
                       thickness: 14,
                       background: Color(0xFFDFE2EC),
@@ -39,8 +39,8 @@ void main() {
                       placement: GaugeProgressPlacement.inside,
                       color: Color(0xFF673AB7),
                     ),
-                    segments: [
-                      GaugeSegment(
+                    zones: [
+                      GaugeZone(
                         from: 0,
                         to: 100,
                         color: Color(0xFFDFE2EC),

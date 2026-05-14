@@ -1,6 +1,6 @@
 # gauge_indicator example
 
-Interactive demo for the [`gauge_indicator`](https://pub.dev/packages/gauge_indicator) package. The configuration panel on the left lets you tweak every gauge property live — layout, style, segments (drag the dividers to resize, or add/remove up to 10), progress bar, pointer, and animation curve & duration — and the gauge on the right reflects the changes in real time.
+Interactive demo for the [`gauge_indicator`](https://pub.dev/packages/gauge_indicator) package. The configuration panel on the left lets you tweak every gauge property live — layout, style, zones (drag the dividers to resize, or add/remove up to 10), progress bar, pointer, and animation curve & duration — and the gauge on the right reflects the changes in real time.
 
 Try it in your browser: <https://gauge-indicator.klyta.it/>
 

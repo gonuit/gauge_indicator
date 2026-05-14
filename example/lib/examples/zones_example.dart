@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 
-/// Demonstrates a custom [GaugeAxisTransformer] that highlights only the
-/// segment containing the current value — every other segment fades to a
-/// neutral gray.
+/// Demonstrates [GaugeZone]s as colored ranges on the axis — a classic
+/// dial-meter look where each range carries its own meaning.
 ///
 /// The gauge itself lives in [_Gauge] below — everything in this widget is
 /// just the [Slider] wiring that drives it.
-class ActiveZoneExample extends StatefulWidget {
-  const ActiveZoneExample({super.key});
+class ZonesExample extends StatefulWidget {
+  const ZonesExample({super.key});
 
   @override
-  State<ActiveZoneExample> createState() => _ActiveZoneExampleState();
+  State<ZonesExample> createState() => _ZonesExampleState();
 }
 
-class _ActiveZoneExampleState extends State<ActiveZoneExample> {
+class _ZonesExampleState extends State<ZonesExample> {
   double value = 45;
 
   @override
@@ -38,35 +37,12 @@ class _ActiveZoneExampleState extends State<ActiveZoneExample> {
   }
 }
 
-/// Each segment covers a range on the axis and paints it with its [color].
-const _segments = [
-  GaugeSegment(from: 0, to: 60, color: Color(0xFF6FCF97)),
-  GaugeSegment(from: 60, to: 85, color: Color(0xFFF2C94C)),
-  GaugeSegment(from: 85, to: 100, color: Color(0xFFEB5757)),
+/// Each zone covers a range on the axis and paints it with its [color].
+const _zones = [
+  GaugeZone(from: 0, to: 60, color: Color(0xFF6FCF97)),
+  GaugeZone(from: 60, to: 85, color: Color(0xFFF2C94C)),
+  GaugeZone(from: 85, to: 100, color: Color(0xFFEB5757)),
 ];
-
-/// Recolors every segment that doesn't contain [value] to [inactiveColor].
-class _ActiveSegmentTransformer extends GaugeAxisTransformer {
-  final Color inactiveColor;
-
-  const _ActiveSegmentTransformer({required this.inactiveColor});
-
-  @override
-  GaugeAxis transform(
-    GaugeAxis axis,
-    GaugeRange range,
-    double progress,
-    double value,
-    bool isInitial,
-  ) {
-    final updated = axis.segments
-        .map((s) => value >= s.from && value <= s.to
-            ? s
-            : s.copyWith(color: inactiveColor))
-        .toList();
-    return axis.copyWith(segments: updated);
-  }
-}
 
 class _Gauge extends StatelessWidget {
   final double value;
@@ -87,13 +63,10 @@ class _Gauge extends StatelessWidget {
           max: 100,
           sweepDegrees: 240,
           progressBar: null,
-          transformer: _ActiveSegmentTransformer(
-            inactiveColor: Color(0xFFD9DEEB),
-          ),
           style: GaugeAxisStyle(
             background: Colors.transparent,
             thickness: 24,
-            segmentSpacing: 4,
+            zoneSpacing: 4,
           ),
           pointer: GaugePointer.triangle(
             width: 28,
@@ -103,7 +76,7 @@ class _Gauge extends StatelessWidget {
             border: GaugePointerBorder(color: Colors.white, width: 2),
             position: GaugePointerPosition.surface(offset: Offset(0, 12)),
           ),
-          segments: _segments,
+          zones: _zones,
         ),
       ),
     );

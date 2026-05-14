@@ -4,7 +4,7 @@ import 'package:gauge_indicator/gauge_indicator.dart';
 
 /// Regression coverage for https://github.com/gonuit/gauge_indicator/issues/13
 ///
-/// The rounded progress bar's cap radius is scaled down (like segment corner
+/// The rounded progress bar's cap radius is scaled down (like zone corner
 /// radii) when the arc is shorter than the diameter of its caps. At value 0
 /// nothing is drawn; small values render a thin full-height sliver.
 void main() {
@@ -108,7 +108,7 @@ class _Gauge extends StatelessWidget {
         axis: GaugeAxis(
           min: 0,
           max: 150,
-          degrees: 250,
+          sweepDegrees: 250,
           style: GaugeAxisStyle(
             thickness: 14,
             background: const Color(0xFFDFE2EC),
@@ -118,8 +118,8 @@ class _Gauge extends StatelessWidget {
             placement: placement,
             color: const Color(0xFF4CAF50),
           ),
-          segments: const [
-            GaugeSegment(
+          zones: const [
+            GaugeZone(
               from: 0,
               to: 150,
               color: Color(0xFFDFE2EC),

@@ -10,6 +10,8 @@ export 'src/radial_gauge/data/gauge_axis_gradient.dart' show GaugeAxisGradient;
 export 'src/radial_gauge/data/gauge_axis_transformer.dart'
     show GaugeAxisTransformer, GaugeRange;
 export 'src/radial_gauge/data/gauge_border.dart' show GaugeBorder;
+export 'src/radial_gauge/data/gauge_zone.dart' show GaugeZone;
+// ignore: deprecated_member_use_from_same_package
 export 'src/radial_gauge/data/gauge_segment.dart' show GaugeSegment;
 export 'src/radial_gauge/data/gauge_label_provider.dart'
     show

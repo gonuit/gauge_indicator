@@ -12,7 +12,7 @@ enum GaugePointerAnchor {
   /// The pointer is placed in the center of the indicator widget.
   center,
 
-  /// The pointer is positioned above the surface of the indicator segments.
+  /// The pointer is positioned above the surface of the indicator zones.
   surface,
 }
 
@@ -38,16 +38,16 @@ class GaugePointerPosition extends Equatable {
     this.offset = Offset.zero,
   }) : anchor = GaugePointerAnchor.center;
 
-  /// Places the pointer above the surface of the indicator segments.
+  /// Places the pointer above the surface of the indicator zones.
   ///
-  /// Use [offset] to push the pointer above or below the segments — for
+  /// Use [offset] to push the pointer above or below the zones — for
   /// instance, by the axis thickness:
   /// ```dart
   /// GaugePointerPosition.surface(
-  ///   offset: Offset(0.0, axisThickness),  // below the segments
+  ///   offset: Offset(0.0, axisThickness),  // below the zones
   /// );
   /// GaugePointerPosition.surface(
-  ///   offset: Offset(0.0, -axisThickness), // above the segments
+  ///   offset: Offset(0.0, -axisThickness), // above the zones
   /// )
   /// ```
   const GaugePointerPosition.surface({

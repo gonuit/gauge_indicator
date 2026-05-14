@@ -5,23 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
 /// Visual style for a [GaugeAxis] — controls thickness, corner radius,
-/// background, and segment spacing.
+/// background, and zone spacing.
 @immutable
 class GaugeAxisStyle extends Equatable {
   /// Width of the axis band in logical pixels.
   final double thickness;
 
-  /// Gap between adjacent segments, in fractional axis units.
-  final double segmentSpacing;
+  /// Gap between adjacent zones, in fractional axis units.
+  final double zoneSpacing;
+
+  /// Renamed to [zoneSpacing].
+  @Deprecated('Renamed to zoneSpacing. Will be removed in 0.6.0.')
+  double get segmentSpacing => zoneSpacing;
 
   /// Corner radius of the axis surface. Clamped to half of [thickness].
   final Radius cornerRadius;
 
-  /// Fill color drawn behind the segments. When null, no background is
+  /// Fill color drawn behind the zones. When null, no background is
   /// painted.
   final Color? background;
 
-  /// Whether adjacent segment colors should blend across their boundary.
+  /// Whether adjacent zone colors should blend across their boundary.
   final bool blendColors;
 
   /// Creates an axis style.
@@ -29,9 +33,11 @@ class GaugeAxisStyle extends Equatable {
     this.thickness = 20,
     this.background = const Color(0xFFf0f0f0),
     this.cornerRadius = const Radius.circular(10),
-    this.segmentSpacing = 0,
+    double zoneSpacing = 0,
+    @Deprecated('Renamed to zoneSpacing. Will be removed in 0.6.0.')
+    double? segmentSpacing,
     this.blendColors = true,
-  });
+  }) : zoneSpacing = segmentSpacing ?? zoneSpacing;
 
   /// Linearly interpolates between two [GaugeAxisStyle]s at fraction [t].
   static GaugeAxisStyle lerp(
@@ -43,13 +49,13 @@ class GaugeAxisStyle extends Equatable {
         thickness: lerpDouble(begin.thickness, end.thickness, t),
         background: Color.lerp(begin.background, end.background, t),
         blendColors: end.blendColors,
-        segmentSpacing: lerpDouble(begin.segmentSpacing, end.segmentSpacing, t),
+        zoneSpacing: lerpDouble(begin.zoneSpacing, end.zoneSpacing, t),
         cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t)!,
       );
 
   @override
   List<Object?> get props =>
-      [thickness, segmentSpacing, background, blendColors, cornerRadius];
+      [thickness, zoneSpacing, background, blendColors, cornerRadius];
 }
 
 /// A [Tween] over [GaugeAxis] values used by [AnimatedRadialGauge] to
@@ -66,7 +72,7 @@ class GaugeAxisTween extends Tween<GaugeAxis?> {
 /// Configuration for the gauge's circular axis.
 ///
 /// Defines the value range ([min], [max]), the sweep angle ([sweepDegrees]),
-/// visual [style], [segments], [pointer], [progressBar], and animation
+/// visual [style], [zones], [pointer], [progressBar], and animation
 /// [transformer]. Pass to [RadialGauge.axis] or [AnimatedRadialGauge.axis].
 @immutable
 class GaugeAxis extends Equatable {
@@ -106,22 +112,26 @@ class GaugeAxis extends Equatable {
   /// Specifies the style of the indicator axis.
   final GaugeAxisStyle style;
 
-  /// Transformer is responsible for modifying segments.
+  /// Transformer is responsible for modifying zones.
   ///
   /// Implementations:
   /// - [GaugeAxisTransformer.noTransform] - default, no transformation.
-  /// - [GaugeAxisTransformer.progress] - Uses segments to display gauge value.
+  /// - [GaugeAxisTransformer.progress] - Uses zones to display gauge value.
   ///  Can be used as a progress bar.
   /// - [GaugeAxisTransformer.colorFadeIn] - Gradually displays the colors of
-  /// the segments.
+  /// the zones.
   final GaugeAxisTransformer transformer;
 
-  /// Progress bar drawn from [zero] to the current value. When null, no
+  /// Progress bar drawn from [origin] to the current value. When null, no
   /// progress bar is rendered.
   final GaugeProgressBar? progressBar;
 
-  /// Segments drawn along the gauge axis.
-  final List<GaugeSegment> segments;
+  /// Zones drawn along the gauge axis.
+  final List<GaugeZone> zones;
+
+  /// Renamed to [zones].
+  @Deprecated('Renamed to zones. Will be removed in 0.6.0.')
+  List<GaugeZone> get segments => zones;
 
   /// Default pointer used when no [pointer] is specified.
   static const defaultPointer = GaugePointer.triangle(
@@ -150,7 +160,9 @@ class GaugeAxis extends Equatable {
     @Deprecated('Renamed to origin. Will be removed in 0.6.0.')
     double? zero,
     this.transformer = const GaugeAxisTransformer.noTransform(),
-    this.segments = const [],
+    List<GaugeZone> zones = const [],
+    @Deprecated('Renamed to zones. Will be removed in 0.6.0.')
+    List<GaugeZone>? segments,
     double sweepDegrees = 180,
     @Deprecated('Renamed to sweepDegrees. Will be removed in 0.6.0.')
     double? degrees,
@@ -158,6 +170,7 @@ class GaugeAxis extends Equatable {
     this.progressBar = defaultProgressBar,
     this.style = const GaugeAxisStyle(),
   })  : origin = zero ?? origin,
+        zones = segments ?? zones,
         sweepDegrees = degrees ?? sweepDegrees,
         assert(
           (degrees ?? sweepDegrees) >= 10 &&
@@ -177,7 +190,9 @@ class GaugeAxis extends Equatable {
   /// Returns a copy of this axis with the given fields replaced.
   GaugeAxis copyWith({
     final GaugeAxisStyle? style,
-    final List<GaugeSegment>? segments,
+    final List<GaugeZone>? zones,
+    @Deprecated('Renamed to zones. Will be removed in 0.6.0.')
+    final List<GaugeZone>? segments,
     final GaugePointer? pointer,
     final GaugeProgressBar? progressBar,
     final GaugeAxisTransformer? transformer,
@@ -195,25 +210,25 @@ class GaugeAxis extends Equatable {
         max: max ?? this.max,
         origin: origin ?? zero ?? this.origin,
         sweepDegrees: sweepDegrees ?? degrees ?? this.sweepDegrees,
-        segments: segments ?? this.segments,
+        zones: zones ?? segments ?? this.zones,
         style: style ?? this.style,
         pointer: pointer ?? this.pointer,
         transformer: transformer ?? this.transformer,
         progressBar: progressBar ?? this.progressBar,
       );
 
-  /// Returns a copy with overlapping segments merged into a continuous
+  /// Returns a copy with overlapping zones merged into a continuous
   /// non-overlapping sequence.
   GaugeAxis flatten() => copyWith(
-        segments: flattenSegments(
-          segments,
+        zones: flattenZones(
+          zones,
           colorBlending: style.blendColors,
         ).toList(),
       );
 
   @override
   List<Object?> get props =>
-      [pointer, style, segments, sweepDegrees, progressBar];
+      [pointer, style, zones, sweepDegrees, progressBar];
 
   /// Linearly interpolates between two axes at fraction [t]. Returns null
   /// when both ends are null.
@@ -225,24 +240,24 @@ class GaugeAxis extends Equatable {
     } else if (end == null) {
       return begin;
     } else {
-      late final List<GaugeSegment> transformedSegments;
+      late final List<GaugeZone> transformedZones;
       if (t == 1.0) {
-        transformedSegments = end.segments;
+        transformedZones = end.zones;
       } else if (t == 0.0) {
-        transformedSegments = begin.segments;
+        transformedZones = begin.zones;
       } else {
-        transformedSegments = List.generate(
-          math.max(begin.segments.length, end.segments.length),
+        transformedZones = List.generate(
+          math.max(begin.zones.length, end.zones.length),
           (index) {
-            final beginSegment =
-                index < begin.segments.length ? begin.segments[index] : null;
-            final endSegment =
-                index < end.segments.length ? end.segments[index] : null;
+            final beginZone =
+                index < begin.zones.length ? begin.zones[index] : null;
+            final endZone =
+                index < end.zones.length ? end.zones[index] : null;
 
-            /// One segment is always present.
-            return GaugeSegment.lerp(
-              beginSegment ?? endSegment!.copyWith(from: endSegment.to),
-              endSegment ?? beginSegment!.copyWith(to: beginSegment.from),
+            /// One zone is always present.
+            return GaugeZone.lerp(
+              beginZone ?? endZone!.copyWith(from: endZone.to),
+              endZone ?? beginZone!.copyWith(to: beginZone.from),
               t,
             );
           },
@@ -255,7 +270,7 @@ class GaugeAxis extends Equatable {
         pointer: end.pointer,
         progressBar: end.progressBar,
         transformer: end.transformer,
-        segments: transformedSegments,
+        zones: transformedZones,
       );
     }
   }

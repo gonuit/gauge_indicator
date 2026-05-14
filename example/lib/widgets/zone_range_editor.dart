@@ -2,25 +2,25 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 
-class SegmentRangeEditor extends StatefulWidget {
-  final List<GaugeSegment> segments;
+class ZoneRangeEditor extends StatefulWidget {
+  final List<GaugeZone> zones;
   final void Function(int boundaryIndex, double position) onBoundaryChanged;
   final double min;
   final double max;
 
-  const SegmentRangeEditor({
+  const ZoneRangeEditor({
     super.key,
-    required this.segments,
+    required this.zones,
     required this.onBoundaryChanged,
     this.min = 0,
     this.max = 100,
   });
 
   @override
-  State<SegmentRangeEditor> createState() => _SegmentRangeEditorState();
+  State<ZoneRangeEditor> createState() => _ZoneRangeEditorState();
 }
 
-class _SegmentRangeEditorState extends State<SegmentRangeEditor> {
+class _ZoneRangeEditorState extends State<ZoneRangeEditor> {
   static const double _barHeight = 22;
   static const double _thumbWidth = 14;
   static const double _thumbHeight = 30;
@@ -32,13 +32,13 @@ class _SegmentRangeEditorState extends State<SegmentRangeEditor> {
     if (_draggingIndex == i && _draggingPosition != null) {
       return _draggingPosition!;
     }
-    return widget.segments[i].to;
+    return widget.zones[i].to;
   }
 
   @override
   Widget build(BuildContext context) {
-    final segments = widget.segments;
-    if (segments.length < 2) return const SizedBox.shrink();
+    final zones = widget.zones;
+    if (zones.length < 2) return const SizedBox.shrink();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
@@ -62,27 +62,27 @@ class _SegmentRangeEditorState extends State<SegmentRangeEditor> {
                     borderRadius: BorderRadius.circular(6),
                     child: Stack(
                       children: [
-                        for (var i = 0; i < segments.length; i++)
+                        for (var i = 0; i < zones.length; i++)
                           Builder(builder: (_) {
                             final from = i == 0
-                                ? segments[0].from
+                                ? zones[0].from
                                 : _boundary(i - 1);
-                            final to = i == segments.length - 1
-                                ? segments[i].to
+                            final to = i == zones.length - 1
+                                ? zones[i].to
                                 : _boundary(i);
                             return Positioned(
                               left: xFor(from),
                               width: xFor(to) - xFor(from),
                               top: 0,
                               bottom: 0,
-                              child: Container(color: segments[i].color),
+                              child: Container(color: zones[i].color),
                             );
                           }),
                       ],
                     ),
                   ),
                 ),
-                for (var i = 0; i < segments.length - 1; i++)
+                for (var i = 0; i < zones.length - 1; i++)
                   Positioned(
                     left: xFor(_boundary(i)) - _thumbWidth / 2,
                     top: 0,
@@ -92,14 +92,14 @@ class _SegmentRangeEditorState extends State<SegmentRangeEditor> {
                       onStart: () {
                         setState(() {
                           _draggingIndex = i;
-                          _draggingPosition = segments[i].to;
+                          _draggingPosition = zones[i].to;
                         });
                       },
                       onDrag: (dx) {
                         if (_draggingPosition == null) return;
                         final delta = dx / width * span;
-                        final lo = segments[i].from + 1;
-                        final hi = segments[i + 1].to - 1;
+                        final lo = zones[i].from + 1;
+                        final hi = zones[i + 1].to - 1;
                         final next =
                             (_draggingPosition! + delta).clamp(lo, hi);
                         setState(() {

@@ -4,7 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/widgets.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
-class GaugeSegmentDefinition {
+class GaugeZoneDefinition {
   final double startAngle;
   final double sweepAngle;
   final Color? color;
@@ -13,7 +13,7 @@ class GaugeSegmentDefinition {
   final Shader? shader;
   final Path path;
 
-  GaugeSegmentDefinition({
+  GaugeZoneDefinition({
     required this.startAngle,
     required this.sweepAngle,
     required this.path,
@@ -23,7 +23,7 @@ class GaugeSegmentDefinition {
     required this.shader,
   });
 
-  GaugeSegmentDefinition shift(Offset offset) => GaugeSegmentDefinition(
+  GaugeZoneDefinition shift(Offset offset) => GaugeZoneDefinition(
         startAngle: startAngle,
         sweepAngle: sweepAngle,
         path: path.shift(offset),
@@ -39,7 +39,7 @@ class RadialGaugeAxisDefinition {
   final Rect rect;
   final Path surface;
   final double thickness;
-  final List<GaugeSegmentDefinition> segments;
+  final List<GaugeZoneDefinition> zones;
 
   Offset get center => rect.center;
   double get radius => rect.width / 2;
@@ -53,14 +53,14 @@ class RadialGaugeAxisDefinition {
   RadialGaugeAxisDefinition({
     required this.surface,
     required this.rect,
-    required this.segments,
+    required this.zones,
     required this.thickness,
   });
 
   RadialGaugeAxisDefinition shift(Offset offset) => RadialGaugeAxisDefinition(
         surface: surface.shift(offset),
         rect: rect.shift(offset),
-        segments: segments.map((s) => s.shift(offset)).toList(),
+        zones: zones.map((s) => s.shift(offset)).toList(),
         thickness: thickness,
       );
 
@@ -122,7 +122,7 @@ class RadialGaugeAxisDefinition {
       surface: axisSurface,
       rect: axisRect,
       thickness: thickness,
-      segments: _calculateAxisSegments(
+      zones: _calculateAxisZones(
         axisRect,
         axis,
         gaugeDegreesTween,
@@ -131,23 +131,23 @@ class RadialGaugeAxisDefinition {
     );
   }
 
-  static Iterable<GaugeSegmentDefinition> _calculateAxisSegments(
+  static Iterable<GaugeZoneDefinition> _calculateAxisZones(
     Rect axisRect,
     GaugeAxis axis,
     Tween<double> gaugeDegreesTween,
     double radius,
   ) sync* {
-    final spacingAngle = getArcAngle(axis.style.segmentSpacing, radius);
-    // Each segment has a half separator added / removed from its path.
+    final spacingAngle = getArcAngle(axis.style.zoneSpacing, radius);
+    // Each zone has a half separator added / removed from its path.
     final separatorAngle = spacingAngle / 2;
     // Fraction of the axis span, so the gap stays consistent across degrees.
     final desiredSeparator = separatorAngle / toRadians(axis.sweepDegrees);
-    // Reserve a minimum rendered width per segment so they don't disappear.
+    // Reserve a minimum rendered width per zone so they don't disappear.
     final axisArcLength = radius * toRadians(axis.sweepDegrees);
-    final minSegmentFraction =
-        axisArcLength > 0 ? _minSegmentPx / axisArcLength : 0.0;
+    final minZoneFraction =
+        axisArcLength > 0 ? _minZonePx / axisArcLength : 0.0;
     final separator =
-        math.min(desiredSeparator, _maxSeparator(axis, minSegmentFraction));
+        math.min(desiredSeparator, _maxSeparator(axis, minZoneFraction));
 
     final pathRadius = axis.style.thickness * 0.5;
     final pathInsets = EdgeInsets.all(pathRadius);
@@ -155,21 +155,21 @@ class RadialGaugeAxisDefinition {
 
     final range = axis.max - axis.min;
 
-    for (var i = 0; i < axis.segments.length; i++) {
-      final segment = axis.segments[i];
+    for (var i = 0; i < axis.zones.length; i++) {
+      final zone = axis.zones[i];
 
       // Clamp to [0, 1] so animation overshoot (e.g. elastic curves) doesn't
-      // produce negative widths or push segments outside the visible axis.
-      final from = ((segment.from - axis.min) / range).clamp(0.0, 1.0);
+      // produce negative widths or push zones outside the visible axis.
+      final from = ((zone.from - axis.min) / range).clamp(0.0, 1.0);
       final startAngle = gaugeDegreesTween.transform(from);
 
-      final to = ((segment.to - axis.min) / range).clamp(0.0, 1.0);
+      final to = ((zone.to - axis.min) / range).clamp(0.0, 1.0);
       final endAngle = gaugeDegreesTween.transform(to);
       final sweepAngle = endAngle - startAngle;
 
       final isFirst = i == 0;
-      final isLast = i == axis.segments.length - 1;
-      // Only trim where a neighbor segment exists; outer caps reach the
+      final isLast = i == axis.zones.length - 1;
+      // Only trim where a neighbor zone exists; outer caps reach the
       // axis ends.
       final trimStart = isFirst ? 0.0 : separator;
       final trimEnd = isLast ? 0.0 : separator;
@@ -180,7 +180,7 @@ class RadialGaugeAxisDefinition {
       final clampedFrom = (from + trimStart).clamp(0.0, 1.0);
       final clampedTo = (to - trimEnd).clamp(0.0, 1.0);
 
-      final segmentCornerRadius = segment.cornerRadius.clampValues(
+      final zoneCornerRadius = zone.cornerRadius.clampValues(
         minimumX: 0,
         minimumY: 0,
         maximumX: halfThickness,
@@ -195,42 +195,42 @@ class RadialGaugeAxisDefinition {
 
       final path = calculateRadiusArcPath(
         externalRect,
-        cornerRadius: segmentCornerRadius,
-        startCornerRadius: isFirst ? styleCornerRadius : segmentCornerRadius,
-        endCornerRadius: isLast ? styleCornerRadius : segmentCornerRadius,
+        cornerRadius: zoneCornerRadius,
+        startCornerRadius: isFirst ? styleCornerRadius : zoneCornerRadius,
+        endCornerRadius: isLast ? styleCornerRadius : zoneCornerRadius,
         degrees: axis.sweepDegrees,
         from: math.min(clampedFrom, clampedTo),
         to: math.max(clampedFrom, clampedTo),
         thickness: thickness,
       );
 
-      yield GaugeSegmentDefinition(
+      yield GaugeZoneDefinition(
         startAngle: toRadians(startAngle) + trimStart,
         sweepAngle: toRadians(sweepAngle) - trimEnd,
-        color: segment.color,
-        gradient: segment.gradient,
-        border: segment.border,
-        shader: segment.shader,
+        color: zone.color,
+        gradient: zone.gradient,
+        border: zone.border,
+        shader: zone.shader,
         path: path,
       );
     }
   }
 
-  /// Minimum rendered segment width in logical pixels.
-  static const double _minSegmentPx = 1.0;
+  /// Minimum rendered zone width in logical pixels.
+  static const double _minZonePx = 1.0;
 
-  /// Largest separator that keeps every segment at least [minWidth] wide.
+  /// Largest separator that keeps every zone at least [minWidth] wide.
   static double _maxSeparator(GaugeAxis axis, double minWidth) {
-    final count = axis.segments.length;
+    final count = axis.zones.length;
     if (count < 2) return double.infinity;
     final range = axis.max - axis.min;
     var maxSeparator = double.infinity;
     for (var i = 0; i < count; i++) {
-      final seg = axis.segments[i];
+      final zone = axis.zones[i];
       // Same clamp as the render loop so animation overshoot doesn't collapse
       // the spacing budget for a frame.
-      final from = ((seg.from - axis.min) / range).clamp(0.0, 1.0);
-      final to = ((seg.to - axis.min) / range).clamp(0.0, 1.0);
+      final from = ((zone.from - axis.min) / range).clamp(0.0, 1.0);
+      final to = ((zone.to - axis.min) / range).clamp(0.0, 1.0);
       final width = to - from;
       final reservable = math.max(0.0, width - minWidth);
       maxSeparator = math.min(maxSeparator, reservable / 2);
