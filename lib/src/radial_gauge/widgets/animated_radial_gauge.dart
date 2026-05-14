@@ -121,7 +121,8 @@ class _AnimatedRadialGaugeState
             radius: radius,
             alignment: widget.alignment,
             axis: axis,
-            child: widget.builder?.call(context, widget.child, value),
+            child: widget.builder?.call(context, widget.child, value) ??
+                widget.child,
           );
         },
       ),

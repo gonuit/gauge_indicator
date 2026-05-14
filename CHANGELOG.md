@@ -6,6 +6,7 @@
 - Reserved a 1px minimum rendered width per segment so middle segments no longer vanish before edges when the axis is small.
 - Spacing is now applied symmetrically to every segment so relative widths are preserved (previously middle segments lost twice the trim of edge segments, which made naturally-wider middle segments appear smaller than narrower edge segments under tight spacing).
 - Fixed flickering during animations with overshooting curves (e.g. elastic) by bounding segment positions to the visible axis range.
+- Fixed `AnimatedRadialGauge.child` being silently ignored when no `builder` was provided ([#21](https://github.com/gonuit/gauge_indicator/issues/21)).
 ## 0.4.3
 - Support negative values [#7](https://github.com/gonuit/gauge_indicator/pull/7) by [dino-keskic](https://github.com/dino-keskic)
 - Added gauge segments border.
