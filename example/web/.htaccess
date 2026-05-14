@@ -3,6 +3,14 @@ Options +FollowSymlinks
 
 DirectoryIndex index.html
 
+<IfModule mod_mime.c>
+    # Stop the host's `.dart` mapping from leaking into `main.dart.mjs`.
+    RemoveType .dart
+    AddType text/javascript            .js .mjs
+    AddType application/wasm           .wasm
+    AddType application/manifest+json  .webmanifest
+</IfModule>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /

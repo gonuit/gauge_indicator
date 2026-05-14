@@ -1,3 +1,6 @@
+## 0.5.0-beta.7
+- Reorganized the README around the examples gallery and trimmed Usage to a minimal install + setup snippet.
+
 ## 0.5.0-beta.6
 - `GaugeAxis.origin` now defaults to `min` instead of `0.0`, so progress bars on axes that don't include zero render correctly out of the box. An assertion catches origins outside `[min, max]`.
 - Added `repaint` parameter on `RadialGauge` / `AnimatedRadialGauge` for paint-only updates driven by an external listenable (e.g. shaders).

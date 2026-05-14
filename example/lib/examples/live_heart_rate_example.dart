@@ -122,6 +122,7 @@ class _Gauge extends StatelessWidget {
           /// A rounded progress bar with a sweep gradient — the colour at the
           /// tip reflects the current BPM zone without any extra logic.
           progressBar: GaugeProgressBar.rounded(
+            placement: GaugeProgressPlacement.inside,
             gradient: GaugeAxisGradient(
               colors: [
                 Color(0xFF34D399),

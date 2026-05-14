@@ -7,9 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 const _rawBase =
-    'https://raw.githubusercontent.com/gonuit/gauge_indicator/00b5b5b6edebed4673fb4a9b69d03e0167162dd4/';
+    'https://raw.githubusercontent.com/gonuit/gauge_indicator/d2f51edd4d5abaaad812933f5a50ccc4cdea1285/';
 const _blobBase =
-    'https://github.com/gonuit/gauge_indicator/blob/00b5b5b6edebed4673fb4a9b69d03e0167162dd4/';
+    'https://github.com/gonuit/gauge_indicator/blob/d2f51edd4d5abaaad812933f5a50ccc4cdea1285/';
 
 final Map<String, String> _sourceCache = {};
 
