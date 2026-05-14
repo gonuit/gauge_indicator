@@ -194,7 +194,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
 
       for (int i = 0; i < axisDefinition.segments.length; i++) {
         final segment = axisDefinition.segments[i];
-        segmentsPath.addPath(segment.path, offset);
+        segmentsPath.addPath(segment.path, Offset.zero);
       }
       canvas.clipPath(segmentsPath);
     }

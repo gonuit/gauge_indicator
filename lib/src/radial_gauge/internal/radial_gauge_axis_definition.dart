@@ -21,6 +21,16 @@ class GaugeSegmentDefinition {
     required this.border,
     required this.shader,
   });
+
+  GaugeSegmentDefinition shift(Offset offset) => GaugeSegmentDefinition(
+        startAngle: startAngle,
+        sweepAngle: sweepAngle,
+        path: path.shift(offset),
+        color: color,
+        gradient: gradient,
+        border: border,
+        shader: shader,
+      );
 }
 
 class RadialGaugeAxisDefinition {
@@ -49,7 +59,7 @@ class RadialGaugeAxisDefinition {
   RadialGaugeAxisDefinition shift(Offset offset) => RadialGaugeAxisDefinition(
         surface: surface.shift(offset),
         rect: rect.shift(offset),
-        segments: segments,
+        segments: segments.map((s) => s.shift(offset)).toList(),
         thickness: thickness,
       );
 

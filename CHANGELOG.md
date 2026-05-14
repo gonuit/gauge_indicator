@@ -1,3 +1,6 @@
+## 0.5.0-beta.2
+- Fixed `RadialGauge` segments painting at the parent canvas origin instead of the gauge's position when used without a `RepaintBoundary` (e.g. directly inside a `Padding`, `Row`, or any layout with a non-zero offset) ([#17](https://github.com/gonuit/gauge_indicator/issues/17)).
+
 ## 0.5.0-beta.1
 - Reworked the example application with a redesigned configuration panel: collapsible sections, interactive segment range editor with add/remove, and animation curve & duration controls.
 - Fixed segment corner radius producing distorted shapes when segments are too small to fit the requested radius.
