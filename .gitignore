@@ -27,3 +27,9 @@
 .dart_tool/
 .packages
 build/
+
+# Tooling
+.playwright-mcp/
+
+# Golden test failure artifacts
+test/failures/

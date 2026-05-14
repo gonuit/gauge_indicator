@@ -1,5 +1,12 @@
 /readme/*
 
+# Build artifacts (.pubignore replaces .gitignore for pub publish).
+build/
+.dart_tool/
+
+# Tests — not consumed by package users.
+test/
+
 # Example app — only ship the Dart sources used by pub.dev's "Example" tab.
 example/.dart_tool/
 example/.idea/
