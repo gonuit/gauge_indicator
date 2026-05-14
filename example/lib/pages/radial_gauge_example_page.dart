@@ -1,3 +1,4 @@
+import 'package:example/pages/examples_gallery_page.dart';
 import 'package:example/widgets/color_picker.dart';
 import 'package:example/widgets/config_section.dart';
 import 'package:example/widgets/package_title.dart';
@@ -94,7 +95,7 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              const PageTitle(title: 'gauge_indicator', isSmall: true),
+              _TitleWithExamples(isSmall: true),
               Expanded(
                 child: gaugeWidget,
               ),
@@ -123,7 +124,7 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
                 width: 350,
                 child: Column(
                   children: [
-                    const PageTitle(title: 'gauge_indicator'),
+                    _TitleWithExamples(),
                     Expanded(
                       child: GaugeConfigPanel(controller: _controller),
                     ),
@@ -135,6 +136,34 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
           );
         }
       }),
+    );
+  }
+}
+
+class _TitleWithExamples extends StatelessWidget {
+  final bool isSmall;
+
+  const _TitleWithExamples({this.isSmall = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.centerRight,
+      children: [
+        PageTitle(title: 'gauge_indicator', isSmall: isSmall),
+        Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: IconButton(
+            icon: const Icon(Icons.collections_outlined),
+            tooltip: 'Examples',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => const ExamplesGalleryPage(),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
