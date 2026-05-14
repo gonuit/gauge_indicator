@@ -7,6 +7,7 @@
 - Added `GaugeAxisStyle.zoneSpacingMode` (`uniform` or `local`) for choosing whether a narrow zone tightens every gap uniformly or only the gaps next to it.
 - `GaugeAxisTransformer.progress` now inherits the underlying zones' `cornerRadius` (and other properties) when recolouring, so the masked portion keeps the same shape as the zones it covers.
 - On 360° axes, the rounded cap radius now tapers as progress approaches a full revolution, so the end and start caps no longer collide at the seam.
+- Added `GaugeZone.label` (`GaugeZoneLabel`) for rendering a text and/or icon label inside the band, laid out along the arc and clipped to the zone ([#12](https://github.com/gonuit/gauge_indicator/issues/12)).
 - Narrowed the public API to widgets and their configuration classes; internal utilities are no longer exported.
 - Documented all public classes, fields, and constructors.
 
