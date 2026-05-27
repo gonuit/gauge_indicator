@@ -74,9 +74,9 @@ class RadialGauge extends SingleChildRenderObjectWidget {
     this.alignment = Alignment.center,
     this.debug = false,
     this.repaint,
-    Widget? child,
-    Key? key,
-  }) : super(key: key, child: child);
+    super.child,
+    super.key,
+  });
 
   @override
   RenderObject createRenderObject(BuildContext context) {

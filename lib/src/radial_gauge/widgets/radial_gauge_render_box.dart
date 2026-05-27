@@ -188,15 +188,15 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
       if (debug) {
         canvas.drawRect(
           layout.sourceRect,
-          Paint()..color = Colors.blue.withOpacity(0.1),
+          Paint()..color = Colors.blue.withValues(alpha: 0.1),
         );
         canvas.drawRect(
           layout.targetRect,
-          Paint()..color = Colors.red.withOpacity(0.1),
+          Paint()..color = Colors.red.withValues(alpha: 0.1),
         );
         canvas.drawRect(
           layout.circleRect,
-          Paint()..color = Colors.green.withOpacity(0.1),
+          Paint()..color = Colors.green.withValues(alpha: 0.1),
         );
       }
       return true;

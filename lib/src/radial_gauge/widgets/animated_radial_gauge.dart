@@ -28,7 +28,7 @@ typedef GaugeLabelBuilder = Widget Function(
 ///   duration: const Duration(milliseconds: 800),
 ///   curve: Curves.easeOutCubic,
 ///   value: speed,
-///   axis: const GaugeAxis(min: 0, max: 100, degrees: 270),
+///   axis: const GaugeAxis(min: 0, max: 100, sweepDegrees: 270),
 ///   builder: (context, child, value) => Text(value.toStringAsFixed(0)),
 /// )
 /// ```
@@ -69,26 +69,21 @@ class AnimatedRadialGauge extends ImplicitlyAnimatedWidget {
   /// Creates an animated radial gauge. [value], [duration], and [curve]
   /// drive how the gauge transitions when the props change.
   const AnimatedRadialGauge({
-    Key? key,
+    super.key,
     this.initialValue = 0.0,
-    required Duration duration,
+    required super.duration,
     required this.value,
     this.builder,
     this.axis = const GaugeAxis(),
-    Curve curve = Curves.linear,
+    super.curve,
     this.alignment = Alignment.center,
     this.radius,
     this.debug = false,
     this.child,
     this.repaint,
     this.onAnimationFrame,
-    VoidCallback? onEnd,
-  }) : super(
-          key: key,
-          duration: duration,
-          curve: curve,
-          onEnd: onEnd,
-        );
+    super.onEnd,
+  });
 
   @override
   AnimatedWidgetBaseState<AnimatedRadialGauge> createState() =>

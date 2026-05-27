@@ -1,3 +1,11 @@
+## 0.6.0
+
+### Removed
+- Deprecated aliases from `0.5.0`: `GaugeSegment`, `GaugeAxis.segments`/`zero`/`degrees`, and `GaugeAxisStyle.segmentSpacing`. Use `GaugeZone`, `zones`, `origin`, `sweepDegrees`, and `zoneSpacing`.
+
+### Changed
+- Minimum Flutter version is now `3.27.0` (Dart `3.6.0`) to stay on currently supported framework APIs.
+
 ## 0.5.0
 
 ### Added

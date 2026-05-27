@@ -8,6 +8,6 @@ Matrix4 rotateOverOrigin({
   required double rotation,
 }) =>
     matrix
-      ..translate(origin.dx, origin.dy)
+      ..translateByDouble(origin.dx, origin.dy, 0, 1)
       ..multiply(Matrix4.rotationZ(rotation))
-      ..translate(-origin.dx, -origin.dy);
+      ..translateByDouble(-origin.dx, -origin.dy, 0, 1);

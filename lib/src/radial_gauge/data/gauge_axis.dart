@@ -30,10 +30,6 @@ class GaugeAxisStyle extends Equatable {
   /// gap on both sides. Defaults to [ZoneSpacingMode.uniform].
   final ZoneSpacingMode zoneSpacingMode;
 
-  /// Renamed to [zoneSpacing].
-  @Deprecated('Renamed to zoneSpacing. Will be removed in 0.6.0.')
-  double get segmentSpacing => zoneSpacing;
-
   /// Corner radius of the axis surface. Clamped to half of [thickness].
   final Radius cornerRadius;
 
@@ -49,12 +45,10 @@ class GaugeAxisStyle extends Equatable {
     this.thickness = 20,
     this.background = const Color(0xFFf0f0f0),
     this.cornerRadius = const Radius.circular(10),
-    double zoneSpacing = 0,
+    this.zoneSpacing = 0,
     this.zoneSpacingMode = ZoneSpacingMode.uniform,
-    @Deprecated('Renamed to zoneSpacing. Will be removed in 0.6.0.')
-    double? segmentSpacing,
     this.blendColors = true,
-  }) : zoneSpacing = segmentSpacing ?? zoneSpacing;
+  });
 
   /// Linearly interpolates between two [GaugeAxisStyle]s at fraction [t].
   static GaugeAxisStyle lerp(
@@ -86,8 +80,7 @@ class GaugeAxisStyle extends Equatable {
 /// interpolate axis configurations during transitions.
 class GaugeAxisTween extends Tween<GaugeAxis?> {
   /// Creates a tween between two axes.
-  GaugeAxisTween({GaugeAxis? begin, GaugeAxis? end})
-      : super(begin: begin, end: end);
+  GaugeAxisTween({super.begin, super.end});
 
   @override
   GaugeAxis? lerp(double t) => GaugeAxis.lerp(begin, end, t);
@@ -126,14 +119,6 @@ class GaugeAxis extends Equatable {
   /// Must be between 10 and 360 inclusive.
   final double sweepDegrees;
 
-  /// Renamed to [origin].
-  @Deprecated('Renamed to origin. Will be removed in 0.6.0.')
-  double get zero => origin;
-
-  /// Renamed to [sweepDegrees].
-  @Deprecated('Renamed to sweepDegrees. Will be removed in 0.6.0.')
-  double get degrees => sweepDegrees;
-
   /// Specifies the style of the indicator axis.
   final GaugeAxisStyle style;
 
@@ -153,10 +138,6 @@ class GaugeAxis extends Equatable {
 
   /// Zones drawn along the gauge axis.
   final List<GaugeZone> zones;
-
-  /// Renamed to [zones].
-  @Deprecated('Renamed to zones. Will be removed in 0.6.0.')
-  List<GaugeZone> get segments => zones;
 
   /// Default pointer used when no [pointer] is specified.
   static const defaultPointer = GaugePointer.triangle(
@@ -182,29 +163,19 @@ class GaugeAxis extends Equatable {
     this.min = 0.0,
     this.max = 1.0,
     double? origin,
-    @Deprecated('Renamed to origin. Will be removed in 0.6.0.')
-    double? zero,
     this.transformer = const GaugeAxisTransformer.noTransform(),
-    List<GaugeZone> zones = const [],
-    @Deprecated('Renamed to zones. Will be removed in 0.6.0.')
-    List<GaugeZone>? segments,
-    double sweepDegrees = 180,
-    @Deprecated('Renamed to sweepDegrees. Will be removed in 0.6.0.')
-    double? degrees,
+    this.zones = const [],
+    this.sweepDegrees = 180,
     this.pointer = defaultPointer,
     this.progressBar = defaultProgressBar,
     this.style = const GaugeAxisStyle(),
-  })  : origin = zero ?? origin ?? min,
-        zones = segments ?? zones,
-        sweepDegrees = degrees ?? sweepDegrees,
+  })  : origin = origin ?? min,
         assert(
-          (degrees ?? sweepDegrees) >= 10 &&
-              (degrees ?? sweepDegrees) <= 360,
+          sweepDegrees >= 10 && sweepDegrees <= 360,
           'sweepDegrees must be between 10 and 360, inclusive.',
         ),
         assert(
-          (zero ?? origin ?? min) >= min &&
-              (zero ?? origin ?? min) <= max,
+          (origin ?? min) >= min && (origin ?? min) <= max,
           'origin must be within [min, max].',
         );
 
@@ -221,26 +192,20 @@ class GaugeAxis extends Equatable {
   GaugeAxis copyWith({
     final GaugeAxisStyle? style,
     final List<GaugeZone>? zones,
-    @Deprecated('Renamed to zones. Will be removed in 0.6.0.')
-    final List<GaugeZone>? segments,
     final GaugePointer? pointer,
     final GaugeProgressBar? progressBar,
     final GaugeAxisTransformer? transformer,
     final double? sweepDegrees,
-    @Deprecated('Renamed to sweepDegrees. Will be removed in 0.6.0.')
-    final double? degrees,
     final double? min,
     final double? max,
     final double? origin,
-    @Deprecated('Renamed to origin. Will be removed in 0.6.0.')
-    final double? zero,
   }) =>
       GaugeAxis(
         min: min ?? this.min,
         max: max ?? this.max,
-        origin: origin ?? zero ?? this.origin,
-        sweepDegrees: sweepDegrees ?? degrees ?? this.sweepDegrees,
-        zones: zones ?? segments ?? this.zones,
+        origin: origin ?? this.origin,
+        sweepDegrees: sweepDegrees ?? this.sweepDegrees,
+        zones: zones ?? this.zones,
         style: style ?? this.style,
         pointer: pointer ?? this.pointer,
         transformer: transformer ?? this.transformer,

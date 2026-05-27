@@ -1,5 +1,3 @@
-library gauge_indicator;
-
 export 'src/radial_gauge/widgets/radial_gauge.dart' show RadialGauge;
 export 'src/radial_gauge/widgets/animated_radial_gauge.dart'
     show AnimatedRadialGauge, GaugeLabelBuilder;
@@ -13,8 +11,6 @@ export 'src/radial_gauge/data/gauge_border.dart' show GaugeBorder;
 export 'src/radial_gauge/data/gauge_zone.dart' show GaugeZone;
 export 'src/radial_gauge/zone_labels/gauge_zone_label.dart'
     show GaugeZoneLabel, GaugeZoneLabelAlignment;
-// ignore: deprecated_member_use_from_same_package
-export 'src/radial_gauge/data/gauge_segment.dart' show GaugeSegment;
 export 'src/radial_gauge/data/gauge_label_provider.dart'
     show
         GaugeLabelProvider,

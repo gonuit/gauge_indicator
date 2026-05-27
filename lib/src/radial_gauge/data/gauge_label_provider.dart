@@ -131,11 +131,11 @@ class RadialGaugeLabel extends StatelessWidget {
 
   /// Creates a radial gauge label.
   const RadialGaugeLabel({
-    Key? key,
+    super.key,
     required this.value,
     this.style,
     this.labelProvider = const GaugeLabelProvider.value(),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

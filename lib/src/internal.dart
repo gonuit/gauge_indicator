@@ -2,7 +2,7 @@
 /// Internal barrel: re-exports everything inside the package for use by
 /// other `lib/src/` files. Not part of the public API — do not import from
 /// outside the package.
-library gauge_indicator.internal;
+library;
 
 export 'utils/utils.dart';
 export 'radial_gauge/widgets/widgets.dart';
