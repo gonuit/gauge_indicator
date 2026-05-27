@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 /// Produces a string label for a numeric gauge value.
@@ -106,11 +105,12 @@ class CategoryLabelProvider extends GaugeLabelProvider {
 
   @override
   String getLabel(double value) {
-    final category = categories.firstWhereOrNull(
-      (c) => c.from <= value && c.to >= value,
-    );
-
-    return category?.label ?? value.toStringAsFixed(fractionDigits);
+    for (final category in categories) {
+      if (category.from <= value && category.to >= value) {
+        return category.label;
+      }
+    }
+    return value.toStringAsFixed(fractionDigits);
   }
 }
 
