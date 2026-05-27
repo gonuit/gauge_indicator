@@ -1,9 +1,8 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
 /// A stroke painted around a [GaugeZone].
-class GaugeBorder extends Equatable {
+class GaugeBorder {
   /// Stroke color.
   final Color color;
 
@@ -17,7 +16,16 @@ class GaugeBorder extends Equatable {
   });
 
   @override
-  List<Object?> get props => [color, width];
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is GaugeBorder &&
+        runtimeType == other.runtimeType &&
+        other.color == color &&
+        other.width == width;
+  }
+
+  @override
+  int get hashCode => Object.hash(color, width);
 
   /// Linearly interpolates between two borders at fraction [t]. Returns null
   /// when [end] is null.

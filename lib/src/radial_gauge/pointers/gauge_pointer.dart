@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
 import 'needle_pointer.dart';
@@ -17,7 +16,7 @@ enum GaugePointerAnchor {
 }
 
 /// Describes the pointer position with [anchor] and [offset].
-class GaugePointerPosition extends Equatable {
+class GaugePointerPosition {
   /// Position in which the indicator is anchored.
   final GaugePointerAnchor anchor;
 
@@ -55,12 +54,21 @@ class GaugePointerPosition extends Equatable {
   }) : anchor = GaugePointerAnchor.surface;
 
   @override
-  List<Object?> get props => [anchor, offset];
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is GaugePointerPosition &&
+        runtimeType == other.runtimeType &&
+        other.anchor == anchor &&
+        other.offset == offset;
+  }
+
+  @override
+  int get hashCode => Object.hash(anchor, offset);
 }
 
 /// A stroke painted around a [GaugePointer].
 @immutable
-class GaugePointerBorder extends Equatable {
+class GaugePointerBorder {
   /// The stroke color.
   final Color color;
 
@@ -74,7 +82,16 @@ class GaugePointerBorder extends Equatable {
   }) : assert(width > 0, 'Width must be larger than 0.');
 
   @override
-  List<Object?> get props => [color, width];
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is GaugePointerBorder &&
+        runtimeType == other.runtimeType &&
+        other.color == color &&
+        other.width == width;
+  }
+
+  @override
+  int get hashCode => Object.hash(color, width);
 }
 
 /// A pointer drawn on the gauge at the current value.

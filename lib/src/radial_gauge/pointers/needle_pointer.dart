@@ -1,10 +1,9 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
 /// A tapered needle [GaugePointer] that points outward from the gauge
 /// center at the current value.
-class NeedlePointer extends Equatable implements GaugePointer {
+class NeedlePointer implements GaugePointer {
   /// Base width of the needle in logical pixels.
   final double width;
 
@@ -62,5 +61,29 @@ class NeedlePointer extends Equatable implements GaugePointer {
             'Either color or gradient must be provided.');
 
   @override
-  List<Object?> get props => [size, color, border, position, borderRadius];
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is NeedlePointer &&
+        runtimeType == other.runtimeType &&
+        other.width == width &&
+        other.height == height &&
+        other.color == color &&
+        other.border == border &&
+        other.position == position &&
+        other.borderRadius == borderRadius &&
+        other.gradient == gradient &&
+        other.shadow == shadow;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        width,
+        height,
+        color,
+        border,
+        position,
+        borderRadius,
+        gradient,
+        shadow,
+      );
 }

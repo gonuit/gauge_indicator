@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
@@ -7,7 +6,7 @@ import 'package:gauge_indicator/src/internal.dart';
 /// Provide [color], [gradient], or [shader] to fill the zone. Use
 /// [cornerRadius] for rounded edges and [border] for a stroke.
 @immutable
-class GaugeZone extends Equatable {
+class GaugeZone {
   /// Lower bound of the zone, in axis units.
   final double from;
 
@@ -104,7 +103,24 @@ class GaugeZone extends Equatable {
       );
 
   @override
-  List<Object?> get props => [
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is GaugeZone &&
+        runtimeType == other.runtimeType &&
+        other.from == from &&
+        other.to == to &&
+        other.color == color &&
+        other.gradient == gradient &&
+        other.shader == shader &&
+        other.cornerRadius == cornerRadius &&
+        other.border == border &&
+        other.label == label &&
+        other.shadow == shadow &&
+        other.thickness == thickness;
+  }
+
+  @override
+  int get hashCode => Object.hash(
         from,
         to,
         color,
@@ -115,5 +131,5 @@ class GaugeZone extends Equatable {
         label,
         shadow,
         thickness,
-      ];
+      );
 }

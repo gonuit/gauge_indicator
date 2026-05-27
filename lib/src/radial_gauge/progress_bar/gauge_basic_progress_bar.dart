@@ -1,6 +1,5 @@
 import 'dart:ui' as ui;
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
@@ -11,7 +10,7 @@ import 'package:gauge_indicator/src/internal.dart';
 /// ```dart
 /// GaugeProgressBar.basic(color: Colors.blue)
 /// ```
-class GaugeBasicProgressBar extends Equatable implements GaugeProgressBar {
+class GaugeBasicProgressBar implements GaugeProgressBar {
   /// {@template gauge_indicator.GaugeProgressBar.color}
   /// Solid fill color. Mutually exclusive with [gradient] and [shader].
   /// {@endtemplate}
@@ -87,5 +86,16 @@ class GaugeBasicProgressBar extends Equatable implements GaugeProgressBar {
   }
 
   @override
-  List<Object?> get props => [color, gradient, shader, placement];
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is GaugeBasicProgressBar &&
+        runtimeType == other.runtimeType &&
+        other.color == color &&
+        other.gradient == gradient &&
+        other.shader == shader &&
+        other.placement == placement;
+  }
+
+  @override
+  int get hashCode => Object.hash(color, gradient, shader, placement);
 }

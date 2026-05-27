@@ -2,6 +2,7 @@
 
 ### Removed
 - Deprecated aliases from `0.5.0`: `GaugeSegment`, `GaugeAxis.segments`/`zero`/`degrees`, and `GaugeAxisStyle.segmentSpacing`. Use `GaugeZone`, `zones`, `origin`, `sweepDegrees`, and `zoneSpacing`.
+- `equatable` dependency. Configuration classes now implement `==` and `hashCode` directly, dropping a transitive dependency and removing per-frame list allocations during gauge animation.
 
 ### Changed
 - Minimum Flutter version is now `3.27.0` (Dart `3.6.0`) to stay on currently supported framework APIs.

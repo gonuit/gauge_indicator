@@ -1,10 +1,9 @@
-import 'package:equatable/equatable.dart';
 import 'package:gauge_indicator/src/internal.dart';
 import 'package:flutter/widgets.dart';
 
 /// A circular [GaugePointer] that marks the current value with a filled
 /// circle.
-class CirclePointer extends Equatable implements GaugePointer {
+class CirclePointer implements GaugePointer {
   /// Radius of the circle in logical pixels.
   final double radius;
 
@@ -53,5 +52,25 @@ class CirclePointer extends Equatable implements GaugePointer {
         );
 
   @override
-  List<Object?> get props => [size, color, border, position, gradient, shadow];
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is CirclePointer &&
+        runtimeType == other.runtimeType &&
+        other.radius == radius &&
+        other.color == color &&
+        other.border == border &&
+        other.position == position &&
+        other.gradient == gradient &&
+        other.shadow == shadow;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        radius,
+        color,
+        border,
+        position,
+        gradient,
+        shadow,
+      );
 }

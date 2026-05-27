@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
@@ -19,7 +19,7 @@ enum ZoneSpacingMode {
 /// Visual style for a [GaugeAxis] — controls thickness, corner radius,
 /// background, and zone spacing.
 @immutable
-class GaugeAxisStyle extends Equatable {
+class GaugeAxisStyle {
   /// Width of the axis band in logical pixels.
   final double thickness;
 
@@ -66,14 +66,27 @@ class GaugeAxisStyle extends Equatable {
       );
 
   @override
-  List<Object?> get props => [
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is GaugeAxisStyle &&
+        runtimeType == other.runtimeType &&
+        other.thickness == thickness &&
+        other.zoneSpacing == zoneSpacing &&
+        other.zoneSpacingMode == zoneSpacingMode &&
+        other.background == background &&
+        other.blendColors == blendColors &&
+        other.cornerRadius == cornerRadius;
+  }
+
+  @override
+  int get hashCode => Object.hash(
         thickness,
         zoneSpacing,
         zoneSpacingMode,
         background,
         blendColors,
         cornerRadius,
-      ];
+      );
 }
 
 /// A [Tween] over [GaugeAxis] values used by [AnimatedRadialGauge] to
@@ -92,7 +105,7 @@ class GaugeAxisTween extends Tween<GaugeAxis?> {
 /// visual [style], [zones], [pointer], [progressBar], and animation
 /// [transformer]. Pass to [RadialGauge.axis] or [AnimatedRadialGauge.axis].
 @immutable
-class GaugeAxis extends Equatable {
+class GaugeAxis {
   /// If specified, the defined indicator will be used to display
   /// the current value of the gauge.
   ///
@@ -222,8 +235,25 @@ class GaugeAxis extends Equatable {
       );
 
   @override
-  List<Object?> get props =>
-      [pointer, style, zones, sweepDegrees, progressBar];
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is GaugeAxis &&
+        runtimeType == other.runtimeType &&
+        other.pointer == pointer &&
+        other.style == style &&
+        listEquals(other.zones, zones) &&
+        other.sweepDegrees == sweepDegrees &&
+        other.progressBar == progressBar;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        pointer,
+        style,
+        Object.hashAll(zones),
+        sweepDegrees,
+        progressBar,
+      );
 
   /// Linearly interpolates between two axes at fraction [t]. Returns null
   /// when both ends are null.

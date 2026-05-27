@@ -1,9 +1,8 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
 /// A triangular [GaugePointer] that points outward from the gauge center.
-class TrianglePointer extends Equatable implements GaugePointer {
+class TrianglePointer implements GaugePointer {
   /// Base width of the triangle in logical pixels.
   final double width;
 
@@ -60,5 +59,29 @@ class TrianglePointer extends Equatable implements GaugePointer {
         );
 
   @override
-  List<Object?> get props => [size, color, border, borderRadius, position];
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is TrianglePointer &&
+        runtimeType == other.runtimeType &&
+        other.width == width &&
+        other.height == height &&
+        other.color == color &&
+        other.border == border &&
+        other.borderRadius == borderRadius &&
+        other.position == position &&
+        other.gradient == gradient &&
+        other.shadow == shadow;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        width,
+        height,
+        color,
+        border,
+        borderRadius,
+        position,
+        gradient,
+        shadow,
+      );
 }
