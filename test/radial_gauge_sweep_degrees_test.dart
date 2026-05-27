@@ -77,8 +77,9 @@ void main() {
     );
   });
 
-  testWidgets('sweepDegrees: 360 tapers caps near the seam at high progress',
-      (tester) async {
+  testWidgets('sweepDegrees: 360 tapers caps near the seam at high progress', (
+    tester,
+  ) async {
     await pumpGauge(
       tester,
       sweepDegrees: 360,

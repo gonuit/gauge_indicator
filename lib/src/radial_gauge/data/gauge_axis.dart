@@ -55,15 +55,14 @@ class GaugeAxisStyle {
     GaugeAxisStyle begin,
     GaugeAxisStyle end,
     double t,
-  ) =>
-      GaugeAxisStyle(
-        thickness: lerpDouble(begin.thickness, end.thickness, t),
-        background: Color.lerp(begin.background, end.background, t),
-        blendColors: end.blendColors,
-        zoneSpacing: lerpDouble(begin.zoneSpacing, end.zoneSpacing, t),
-        zoneSpacingMode: end.zoneSpacingMode,
-        cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t)!,
-      );
+  ) => GaugeAxisStyle(
+    thickness: lerpDouble(begin.thickness, end.thickness, t),
+    background: Color.lerp(begin.background, end.background, t),
+    blendColors: end.blendColors,
+    zoneSpacing: lerpDouble(begin.zoneSpacing, end.zoneSpacing, t),
+    zoneSpacingMode: end.zoneSpacingMode,
+    cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t)!,
+  );
 
   @override
   bool operator ==(Object other) {
@@ -80,13 +79,13 @@ class GaugeAxisStyle {
 
   @override
   int get hashCode => Object.hash(
-        thickness,
-        zoneSpacing,
-        zoneSpacingMode,
-        background,
-        blendColors,
-        cornerRadius,
-      );
+    thickness,
+    zoneSpacing,
+    zoneSpacingMode,
+    background,
+    blendColors,
+    cornerRadius,
+  );
 }
 
 /// A [Tween] over [GaugeAxis] values used by [AnimatedRadialGauge] to
@@ -156,20 +155,16 @@ class GaugeAxis {
   static const defaultPointer = GaugePointer.triangle(
     width: 24,
     height: 24,
-    border: GaugePointerBorder(
-      color: Color(0xFFf0f0f0),
-      width: 2,
-    ),
+    border: GaugePointerBorder(color: Color(0xFFf0f0f0), width: 2),
     borderRadius: 3,
-    position: GaugePointerPosition.surface(
-      offset: Offset(0, 8),
-    ),
+    position: GaugePointerPosition.surface(offset: Offset(0, 8)),
     color: Colors.black,
   );
 
   /// Default progress bar used when no [progressBar] is specified.
-  static const defaultProgressBar =
-      GaugeProgressBar.basic(color: Color(0xFF9fec6d));
+  static const defaultProgressBar = GaugeProgressBar.basic(
+    color: Color(0xFF9fec6d),
+  );
 
   /// Creates a gauge axis.
   const GaugeAxis({
@@ -182,15 +177,15 @@ class GaugeAxis {
     this.pointer = defaultPointer,
     this.progressBar = defaultProgressBar,
     this.style = const GaugeAxisStyle(),
-  })  : origin = origin ?? min,
-        assert(
-          sweepDegrees >= 10 && sweepDegrees <= 360,
-          'sweepDegrees must be between 10 and 360, inclusive.',
-        ),
-        assert(
-          (origin ?? min) >= min && (origin ?? min) <= max,
-          'origin must be within [min, max].',
-        );
+  }) : origin = origin ?? min,
+       assert(
+         sweepDegrees >= 10 && sweepDegrees <= 360,
+         'sweepDegrees must be between 10 and 360, inclusive.',
+       ),
+       assert(
+         (origin ?? min) >= min && (origin ?? min) <= max,
+         'origin must be within [min, max].',
+       );
 
   /// Applies the [transformer] to produce a per-frame transformed axis.
   GaugeAxis transform({
@@ -198,8 +193,7 @@ class GaugeAxis {
     required double progress,
     required double value,
     required bool isInitial,
-  }) =>
-      transformer.transform(this, range, progress, value, isInitial);
+  }) => transformer.transform(this, range, progress, value, isInitial);
 
   /// Returns a copy of this axis with the given fields replaced.
   GaugeAxis copyWith({
@@ -212,27 +206,23 @@ class GaugeAxis {
     final double? min,
     final double? max,
     final double? origin,
-  }) =>
-      GaugeAxis(
-        min: min ?? this.min,
-        max: max ?? this.max,
-        origin: origin ?? this.origin,
-        sweepDegrees: sweepDegrees ?? this.sweepDegrees,
-        zones: zones ?? this.zones,
-        style: style ?? this.style,
-        pointer: pointer ?? this.pointer,
-        transformer: transformer ?? this.transformer,
-        progressBar: progressBar ?? this.progressBar,
-      );
+  }) => GaugeAxis(
+    min: min ?? this.min,
+    max: max ?? this.max,
+    origin: origin ?? this.origin,
+    sweepDegrees: sweepDegrees ?? this.sweepDegrees,
+    zones: zones ?? this.zones,
+    style: style ?? this.style,
+    pointer: pointer ?? this.pointer,
+    transformer: transformer ?? this.transformer,
+    progressBar: progressBar ?? this.progressBar,
+  );
 
   /// Returns a copy with overlapping zones merged into a continuous
   /// non-overlapping sequence.
   GaugeAxis flatten() => copyWith(
-        zones: flattenZones(
-          zones,
-          colorBlending: style.blendColors,
-        ).toList(),
-      );
+    zones: flattenZones(zones, colorBlending: style.blendColors).toList(),
+  );
 
   @override
   bool operator ==(Object other) {
@@ -248,12 +238,12 @@ class GaugeAxis {
 
   @override
   int get hashCode => Object.hash(
-        pointer,
-        style,
-        Object.hashAll(zones),
-        sweepDegrees,
-        progressBar,
-      );
+    pointer,
+    style,
+    Object.hashAll(zones),
+    sweepDegrees,
+    progressBar,
+  );
 
   /// Linearly interpolates between two axes at fraction [t]. Returns null
   /// when both ends are null.
@@ -274,8 +264,9 @@ class GaugeAxis {
         transformedZones = List.generate(
           math.max(begin.zones.length, end.zones.length),
           (index) {
-            final beginZone =
-                index < begin.zones.length ? begin.zones[index] : null;
+            final beginZone = index < begin.zones.length
+                ? begin.zones[index]
+                : null;
             final endZone = index < end.zones.length ? end.zones[index] : null;
 
             /// One zone is always present.
@@ -288,8 +279,11 @@ class GaugeAxis {
         );
       }
       return end.copyWith(
-        sweepDegrees: lerpDouble(begin.sweepDegrees, end.sweepDegrees, t)
-            .clamp(10.0, 360.0),
+        sweepDegrees: lerpDouble(
+          begin.sweepDegrees,
+          end.sweepDegrees,
+          t,
+        ).clamp(10.0, 360.0),
         style: GaugeAxisStyle.lerp(begin.style, end.style, t),
         pointer: end.pointer,
         progressBar: end.progressBar,

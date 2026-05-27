@@ -54,11 +54,7 @@ void main() {
           to: 100,
           color: Color(0xFF000000),
           gradient: GaugeAxisGradient(
-            colors: [
-              Color(0xFFD50000),
-              Color(0xFFFFEB3B),
-              Color(0xFF00C853),
-            ],
+            colors: [Color(0xFFD50000), Color(0xFFFFEB3B), Color(0xFF00C853)],
             colorStops: [0, 0.5, 1],
           ),
         ),

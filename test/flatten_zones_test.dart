@@ -6,11 +6,13 @@ import 'package:gauge_indicator/gauge_indicator.dart';
 void main() {
   group('GaugeAxis.flatten', () {
     test('passes non-overlapping zones through unchanged', () {
-      const axis = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 30, color: Color(0xFF111111)),
-        GaugeZone(from: 30, to: 60, color: Color(0xFF222222)),
-        GaugeZone(from: 60, to: 100, color: Color(0xFF333333)),
-      ]);
+      const axis = GaugeAxis(
+        zones: [
+          GaugeZone(from: 0, to: 30, color: Color(0xFF111111)),
+          GaugeZone(from: 30, to: 60, color: Color(0xFF222222)),
+          GaugeZone(from: 60, to: 100, color: Color(0xFF333333)),
+        ],
+      );
       final result = axis.flatten().zones;
       expect(result, hasLength(3));
       expect(result[0].from, equals(0));
@@ -22,10 +24,12 @@ void main() {
     });
 
     test('splits overlapping zones at break points', () {
-      const axis = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 60, color: Color(0xFF111111)),
-        GaugeZone(from: 40, to: 100, color: Color(0xFF222222)),
-      ]);
+      const axis = GaugeAxis(
+        zones: [
+          GaugeZone(from: 0, to: 60, color: Color(0xFF111111)),
+          GaugeZone(from: 40, to: 100, color: Color(0xFF222222)),
+        ],
+      );
       final result = axis.flatten().zones.toList();
       expect(result, hasLength(3));
       expect(result[0].from, equals(0));
@@ -36,18 +40,20 @@ void main() {
       expect(result[2].to, equals(100));
     });
 
-    test('with blendColors=false, overlap region takes the last zone color',
-        () {
-      const axis = GaugeAxis(
-        style: GaugeAxisStyle(blendColors: false),
-        zones: [
-          GaugeZone(from: 0, to: 60, color: Color(0xFFAA0000)),
-          GaugeZone(from: 40, to: 100, color: Color(0xFF00AA00)),
-        ],
-      );
-      final result = axis.flatten().zones.toList();
-      expect(result[1].color, equals(const Color(0xFF00AA00)));
-    });
+    test(
+      'with blendColors=false, overlap region takes the last zone color',
+      () {
+        const axis = GaugeAxis(
+          style: GaugeAxisStyle(blendColors: false),
+          zones: [
+            GaugeZone(from: 0, to: 60, color: Color(0xFFAA0000)),
+            GaugeZone(from: 40, to: 100, color: Color(0xFF00AA00)),
+          ],
+        );
+        final result = axis.flatten().zones.toList();
+        expect(result[1].color, equals(const Color(0xFF00AA00)));
+      },
+    );
 
     test('with blendColors=true, overlap region color is blended', () {
       const axis = GaugeAxis(

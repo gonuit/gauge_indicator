@@ -12,14 +12,12 @@ abstract class GaugeLabelProvider {
   const GaugeLabelProvider();
 
   /// Returns a numeric label for the provided value.
-  const factory GaugeLabelProvider.value({
-    int fractionDigits,
-  }) = ValueLabelProvider;
+  const factory GaugeLabelProvider.value({int fractionDigits}) =
+      ValueLabelProvider;
 
   /// Maps a numeric value to the label.
-  const factory GaugeLabelProvider.map({
-    required ToLabel toLabel,
-  }) = MapLabelProvider;
+  const factory GaugeLabelProvider.map({required ToLabel toLabel}) =
+      MapLabelProvider;
 
   /// Returns a label from the matching [LabelCategory]
   /// or a numeric label if no matching category is available.
@@ -39,9 +37,7 @@ class ValueLabelProvider extends GaugeLabelProvider {
   final int fractionDigits;
 
   /// Creates a numeric label provider.
-  const ValueLabelProvider({
-    this.fractionDigits = 0,
-  });
+  const ValueLabelProvider({this.fractionDigits = 0});
 
   @override
   String getLabel(double value) {
@@ -58,9 +54,7 @@ class MapLabelProvider extends GaugeLabelProvider {
   final ToLabel toLabel;
 
   /// Creates a label provider backed by [toLabel].
-  const MapLabelProvider({
-    required this.toLabel,
-  });
+  const MapLabelProvider({required this.toLabel});
 
   @override
   String getLabel(double value) {
@@ -98,10 +92,7 @@ class CategoryLabelProvider extends GaugeLabelProvider {
   final int fractionDigits;
 
   /// Creates a category-based label provider.
-  const CategoryLabelProvider(
-    this.categories, {
-    this.fractionDigits = 0,
-  });
+  const CategoryLabelProvider(this.categories, {this.fractionDigits = 0});
 
   @override
   String getLabel(double value) {

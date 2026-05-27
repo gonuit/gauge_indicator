@@ -19,9 +19,7 @@ void main() {
 
   group('MapLabelProvider', () {
     test('delegates to the provided function', () {
-      final provider = MapLabelProvider(
-        toLabel: (v) => 'value=$v',
-      );
+      final provider = MapLabelProvider(toLabel: (v) => 'value=$v');
       expect(provider.getLabel(42), equals('value=42.0'));
     });
   });
@@ -64,10 +62,7 @@ void main() {
     });
 
     test('fallback respects fractionDigits', () {
-      const provider = CategoryLabelProvider(
-        categories,
-        fractionDigits: 1,
-      );
+      const provider = CategoryLabelProvider(categories, fractionDigits: 1);
       expect(provider.getLabel(150), equals('150.0'));
     });
 

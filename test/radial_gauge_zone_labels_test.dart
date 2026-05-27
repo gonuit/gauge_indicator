@@ -61,29 +61,29 @@ void main() {
   }
 
   List<GaugeZone> twoZonesWithAlignment(GaugeZoneLabelAlignment alignment) => [
-        GaugeZone(
-          from: 0,
-          to: 50,
-          color: const Color(0xFF6FCF97),
-          label: GaugeZoneLabel(
-            text: 'LOW',
-            style: labelStyle,
-            alignment: alignment,
-            padding: 6,
-          ),
-        ),
-        GaugeZone(
-          from: 50,
-          to: 100,
-          color: const Color(0xFFEB5757),
-          label: GaugeZoneLabel(
-            text: 'HIGH',
-            style: labelStyle,
-            alignment: alignment,
-            padding: 6,
-          ),
-        ),
-      ];
+    GaugeZone(
+      from: 0,
+      to: 50,
+      color: const Color(0xFF6FCF97),
+      label: GaugeZoneLabel(
+        text: 'LOW',
+        style: labelStyle,
+        alignment: alignment,
+        padding: 6,
+      ),
+    ),
+    GaugeZone(
+      from: 50,
+      to: 100,
+      color: const Color(0xFFEB5757),
+      label: GaugeZoneLabel(
+        text: 'HIGH',
+        style: labelStyle,
+        alignment: alignment,
+        padding: 6,
+      ),
+    ),
+  ];
 
   testWidgets('alignment: start', (tester) async {
     await pumpGauge(
@@ -119,24 +119,20 @@ void main() {
   });
 
   List<GaugeZone> oneZoneWithRadial(double radialAlignment) => [
-        GaugeZone(
-          from: 0,
-          to: 100,
-          color: const Color(0xFF2D9CDB),
-          label: GaugeZoneLabel(
-            text: 'EDGE',
-            style: labelStyle,
-            radialAlignment: radialAlignment,
-          ),
-        ),
-      ];
+    GaugeZone(
+      from: 0,
+      to: 100,
+      color: const Color(0xFF2D9CDB),
+      label: GaugeZoneLabel(
+        text: 'EDGE',
+        style: labelStyle,
+        radialAlignment: radialAlignment,
+      ),
+    ),
+  ];
 
   testWidgets('radial alignment: inner (-1)', (tester) async {
-    await pumpGauge(
-      tester,
-      zones: oneZoneWithRadial(-1.0),
-      thickness: 36,
-    );
+    await pumpGauge(tester, zones: oneZoneWithRadial(-1.0), thickness: 36);
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/radial_gauge_zone_label_radial_inner.png'),
@@ -144,24 +140,17 @@ void main() {
   });
 
   testWidgets('radial alignment: centerline (0)', (tester) async {
-    await pumpGauge(
-      tester,
-      zones: oneZoneWithRadial(0.0),
-      thickness: 36,
-    );
+    await pumpGauge(tester, zones: oneZoneWithRadial(0.0), thickness: 36);
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile(
-          'goldens/radial_gauge_zone_label_radial_centerline.png'),
+        'goldens/radial_gauge_zone_label_radial_centerline.png',
+      ),
     );
   });
 
   testWidgets('radial alignment: outer (+1)', (tester) async {
-    await pumpGauge(
-      tester,
-      zones: oneZoneWithRadial(1.0),
-      thickness: 36,
-    );
+    await pumpGauge(tester, zones: oneZoneWithRadial(1.0), thickness: 36);
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/radial_gauge_zone_label_radial_outer.png'),
@@ -169,14 +158,17 @@ void main() {
   });
 
   testWidgets('content: text only', (tester) async {
-    await pumpGauge(tester, zones: const [
-      GaugeZone(
-        from: 0,
-        to: 100,
-        color: Color(0xFF6FCF97),
-        label: GaugeZoneLabel(text: 'TEXT', style: labelStyle),
-      ),
-    ]);
+    await pumpGauge(
+      tester,
+      zones: const [
+        GaugeZone(
+          from: 0,
+          to: 100,
+          color: Color(0xFF6FCF97),
+          label: GaugeZoneLabel(text: 'TEXT', style: labelStyle),
+        ),
+      ],
+    );
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/radial_gauge_zone_label_text_only.png'),
@@ -184,14 +176,17 @@ void main() {
   });
 
   testWidgets('content: icon only', (tester) async {
-    await pumpGauge(tester, zones: const [
-      GaugeZone(
-        from: 0,
-        to: 100,
-        color: Color(0xFFF2994A),
-        label: GaugeZoneLabel(icon: Icons.bolt, style: labelStyle),
-      ),
-    ]);
+    await pumpGauge(
+      tester,
+      zones: const [
+        GaugeZone(
+          from: 0,
+          to: 100,
+          color: Color(0xFFF2994A),
+          label: GaugeZoneLabel(icon: Icons.bolt, style: labelStyle),
+        ),
+      ],
+    );
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/radial_gauge_zone_label_icon_only.png'),
@@ -199,19 +194,22 @@ void main() {
   });
 
   testWidgets('content: icon and text', (tester) async {
-    await pumpGauge(tester, zones: const [
-      GaugeZone(
-        from: 0,
-        to: 100,
-        color: Color(0xFF9B51E0),
-        label: GaugeZoneLabel(
-          icon: Icons.star,
-          text: 'RATED',
-          iconGap: 4,
-          style: labelStyle,
+    await pumpGauge(
+      tester,
+      zones: const [
+        GaugeZone(
+          from: 0,
+          to: 100,
+          color: Color(0xFF9B51E0),
+          label: GaugeZoneLabel(
+            icon: Icons.star,
+            text: 'RATED',
+            iconGap: 4,
+            style: labelStyle,
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/radial_gauge_zone_label_icon_and_text.png'),
@@ -219,19 +217,22 @@ void main() {
   });
 
   testWidgets('overflow: long label clipped at narrow zone', (tester) async {
-    await pumpGauge(tester, zones: const [
-      GaugeZone(from: 0, to: 80, color: Color(0xFF828282)),
-      GaugeZone(
-        from: 80,
-        to: 100,
-        color: Color(0xFFEB5757),
-        label: GaugeZoneLabel(
-          text: 'OVERFLOW LABEL',
-          style: labelStyle,
-          padding: 2,
+    await pumpGauge(
+      tester,
+      zones: const [
+        GaugeZone(from: 0, to: 80, color: Color(0xFF828282)),
+        GaugeZone(
+          from: 80,
+          to: 100,
+          color: Color(0xFFEB5757),
+          label: GaugeZoneLabel(
+            text: 'OVERFLOW LABEL',
+            style: labelStyle,
+            padding: 2,
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/radial_gauge_zone_label_overflow_clipped.png'),

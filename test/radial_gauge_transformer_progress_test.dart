@@ -65,26 +65,29 @@ void main() {
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile(
-          'goldens/radial_gauge_progress_transformer_default.png'),
+        'goldens/radial_gauge_progress_transformer_default.png',
+      ),
     );
   });
 
   testWidgets(
-      'progress transformer with reversed: true recolors the upper side',
-      (tester) async {
-    await pumpGauge(
-      tester,
-      transformer: const GaugeAxisTransformer.progress(
-        color: Color(0xFF1976D2),
-        reversed: true,
-      ),
-    );
-    await expectLater(
-      find.byType(MaterialApp),
-      matchesGoldenFile(
-          'goldens/radial_gauge_progress_transformer_reversed.png'),
-    );
-  });
+    'progress transformer with reversed: true recolors the upper side',
+    (tester) async {
+      await pumpGauge(
+        tester,
+        transformer: const GaugeAxisTransformer.progress(
+          color: Color(0xFF1976D2),
+          reversed: true,
+        ),
+      );
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile(
+          'goldens/radial_gauge_progress_transformer_reversed.png',
+        ),
+      );
+    },
+  );
 
   testWidgets('progress transformer with blendColors: true', (tester) async {
     await pumpGauge(
@@ -98,7 +101,8 @@ void main() {
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile(
-          'goldens/radial_gauge_progress_transformer_blended.png'),
+        'goldens/radial_gauge_progress_transformer_blended.png',
+      ),
     );
   });
 }

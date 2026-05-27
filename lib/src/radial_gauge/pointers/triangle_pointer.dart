@@ -13,10 +13,10 @@ class TrianglePointer implements GaugePointer {
   Size get size => Size(width, height);
   @override
   Path get path => roundedPoly([
-        VertexDefinition(0, height), // bottom left
-        VertexDefinition(width, height), // bottom right
-        VertexDefinition(width / 2, 0), // top center
-      ], borderRadius);
+    VertexDefinition(0, height), // bottom left
+    VertexDefinition(width, height), // bottom right
+    VertexDefinition(width / 2, 0), // top center
+  ], borderRadius);
 
   /// {@macro gauge_indicator.GaugePointer.color}
   @override
@@ -53,10 +53,10 @@ class TrianglePointer implements GaugePointer {
     this.gradient,
     this.shadow,
   }) : assert(
-          (color != null && gradient == null) ||
-              (gradient != null && color == null),
-          'Either color or gradient must be provided.',
-        );
+         (color != null && gradient == null) ||
+             (gradient != null && color == null),
+         'Either color or gradient must be provided.',
+       );
 
   @override
   bool operator ==(Object other) {
@@ -75,13 +75,13 @@ class TrianglePointer implements GaugePointer {
 
   @override
   int get hashCode => Object.hash(
-        width,
-        height,
-        color,
-        border,
-        borderRadius,
-        position,
-        gradient,
-        shadow,
-      );
+    width,
+    height,
+    color,
+    border,
+    borderRadius,
+    position,
+    gradient,
+    shadow,
+  );
 }

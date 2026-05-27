@@ -45,12 +45,14 @@ void main() {
 
     test('differs on color order', () {
       expect(
-        const GaugeAxisGradient(
-          colors: [Color(0xFFAA0000), Color(0xFF00AA00)],
+        const GaugeAxisGradient(colors: [Color(0xFFAA0000), Color(0xFF00AA00)]),
+        isNot(
+          equals(
+            const GaugeAxisGradient(
+              colors: [Color(0xFF00AA00), Color(0xFFAA0000)],
+            ),
+          ),
         ),
-        isNot(equals(const GaugeAxisGradient(
-          colors: [Color(0xFF00AA00), Color(0xFFAA0000)],
-        ))),
       );
     });
 
@@ -60,20 +62,28 @@ void main() {
           colors: [Color(0xFFAA0000), Color(0xFF00AA00)],
           colorStops: [0.0, 1.0],
         ),
-        isNot(equals(const GaugeAxisGradient(
-          colors: [Color(0xFFAA0000), Color(0xFF00AA00)],
-          colorStops: [0.25, 0.75],
-        ))),
+        isNot(
+          equals(
+            const GaugeAxisGradient(
+              colors: [Color(0xFFAA0000), Color(0xFF00AA00)],
+              colorStops: [0.25, 0.75],
+            ),
+          ),
+        ),
       );
     });
 
     test('null colorStops vs non-null is not equal', () {
       expect(
         const GaugeAxisGradient(colors: [Color(0xFFAA0000)]),
-        isNot(equals(const GaugeAxisGradient(
-          colors: [Color(0xFFAA0000)],
-          colorStops: [0.5],
-        ))),
+        isNot(
+          equals(
+            const GaugeAxisGradient(
+              colors: [Color(0xFFAA0000)],
+              colorStops: [0.5],
+            ),
+          ),
+        ),
       );
     });
 
@@ -83,10 +93,14 @@ void main() {
           colors: [Color(0xFFAA0000)],
           tileMode: TileMode.clamp,
         ),
-        isNot(equals(const GaugeAxisGradient(
-          colors: [Color(0xFFAA0000)],
-          tileMode: TileMode.mirror,
-        ))),
+        isNot(
+          equals(
+            const GaugeAxisGradient(
+              colors: [Color(0xFFAA0000)],
+              tileMode: TileMode.mirror,
+            ),
+          ),
+        ),
       );
     });
   });
@@ -123,9 +137,13 @@ void main() {
     test('differs on border', () {
       expect(
         baseline,
-        isNot(equals(baseline.copyWith(
-          border: const GaugeBorder(color: Color(0xFF000000)),
-        ))),
+        isNot(
+          equals(
+            baseline.copyWith(
+              border: const GaugeBorder(color: Color(0xFF000000)),
+            ),
+          ),
+        ),
       );
     });
 
@@ -133,7 +151,8 @@ void main() {
       expect(
         baseline,
         isNot(
-            equals(baseline.copyWith(cornerRadius: const Radius.circular(8)))),
+          equals(baseline.copyWith(cornerRadius: const Radius.circular(8))),
+        ),
       );
     });
 
@@ -144,9 +163,9 @@ void main() {
     test('differs on shadow', () {
       expect(
         baseline,
-        isNot(equals(baseline.copyWith(
-          shadow: const BoxShadow(blurRadius: 4),
-        ))),
+        isNot(
+          equals(baseline.copyWith(shadow: const BoxShadow(blurRadius: 4))),
+        ),
       );
     });
   });
@@ -190,8 +209,9 @@ void main() {
     test('differs on zoneSpacingMode', () {
       expect(
         const GaugeAxisStyle(zoneSpacingMode: ZoneSpacingMode.uniform),
-        isNot(equals(
-            const GaugeAxisStyle(zoneSpacingMode: ZoneSpacingMode.local))),
+        isNot(
+          equals(const GaugeAxisStyle(zoneSpacingMode: ZoneSpacingMode.local)),
+        ),
       );
     });
 
@@ -226,24 +246,28 @@ void main() {
     });
 
     test('differs on zones (order matters)', () {
-      const a = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 50, color: Color(0xFF111111)),
-        GaugeZone(from: 50, to: 100, color: Color(0xFF222222)),
-      ]);
-      const b = GaugeAxis(zones: [
-        GaugeZone(from: 50, to: 100, color: Color(0xFF222222)),
-        GaugeZone(from: 0, to: 50, color: Color(0xFF111111)),
-      ]);
+      const a = GaugeAxis(
+        zones: [
+          GaugeZone(from: 0, to: 50, color: Color(0xFF111111)),
+          GaugeZone(from: 50, to: 100, color: Color(0xFF222222)),
+        ],
+      );
+      const b = GaugeAxis(
+        zones: [
+          GaugeZone(from: 50, to: 100, color: Color(0xFF222222)),
+          GaugeZone(from: 0, to: 50, color: Color(0xFF111111)),
+        ],
+      );
       expect(a, isNot(equals(b)));
     });
 
     test('equal when zone lists are structurally equal', () {
-      const a = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 50, color: Color(0xFF111111)),
-      ]);
-      const b = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 50, color: Color(0xFF111111)),
-      ]);
+      const a = GaugeAxis(
+        zones: [GaugeZone(from: 0, to: 50, color: Color(0xFF111111))],
+      );
+      const b = GaugeAxis(
+        zones: [GaugeZone(from: 0, to: 50, color: Color(0xFF111111))],
+      );
       expect(a, equals(b));
       expect(a.hashCode, equals(b.hashCode));
     });
@@ -253,9 +277,13 @@ void main() {
         const GaugeAxis(
           pointer: GaugePointer.circle(radius: 4, color: Color(0xFF000000)),
         ),
-        isNot(equals(const GaugeAxis(
-          pointer: GaugePointer.circle(radius: 8, color: Color(0xFF000000)),
-        ))),
+        isNot(
+          equals(
+            const GaugeAxis(
+              pointer: GaugePointer.circle(radius: 8, color: Color(0xFF000000)),
+            ),
+          ),
+        ),
       );
     });
 
@@ -264,9 +292,13 @@ void main() {
         const GaugeAxis(
           progressBar: GaugeProgressBar.basic(color: Color(0xFF111111)),
         ),
-        isNot(equals(const GaugeAxis(
-          progressBar: GaugeProgressBar.basic(color: Color(0xFF222222)),
-        ))),
+        isNot(
+          equals(
+            const GaugeAxis(
+              progressBar: GaugeProgressBar.basic(color: Color(0xFF222222)),
+            ),
+          ),
+        ),
       );
     });
   });
@@ -305,16 +337,18 @@ void main() {
     test('differs on color', () {
       expect(
         const GaugePointerBorder(color: Color(0xFF111111), width: 2),
-        isNot(equals(
-            const GaugePointerBorder(color: Color(0xFF222222), width: 2))),
+        isNot(
+          equals(const GaugePointerBorder(color: Color(0xFF222222), width: 2)),
+        ),
       );
     });
 
     test('differs on width', () {
       expect(
         const GaugePointerBorder(color: Color(0xFF111111), width: 1),
-        isNot(equals(
-            const GaugePointerBorder(color: Color(0xFF111111), width: 2))),
+        isNot(
+          equals(const GaugePointerBorder(color: Color(0xFF111111), width: 2)),
+        ),
       );
     });
   });
@@ -329,41 +363,49 @@ void main() {
     test('identical instances are equal', () {
       expect(
         baseline,
-        equals(const NeedlePointer(
-          width: 10,
-          height: 20,
-          color: Color(0xFF111111),
-        )),
+        equals(
+          const NeedlePointer(width: 10, height: 20, color: Color(0xFF111111)),
+        ),
       );
       expect(
         baseline.hashCode,
-        equals(const NeedlePointer(
-          width: 10,
-          height: 20,
-          color: Color(0xFF111111),
-        ).hashCode),
+        equals(
+          const NeedlePointer(
+            width: 10,
+            height: 20,
+            color: Color(0xFF111111),
+          ).hashCode,
+        ),
       );
     });
 
     test('differs on width', () {
       expect(
         baseline,
-        isNot(equals(const NeedlePointer(
-          width: 12,
-          height: 20,
-          color: Color(0xFF111111),
-        ))),
+        isNot(
+          equals(
+            const NeedlePointer(
+              width: 12,
+              height: 20,
+              color: Color(0xFF111111),
+            ),
+          ),
+        ),
       );
     });
 
     test('differs on height', () {
       expect(
         baseline,
-        isNot(equals(const NeedlePointer(
-          width: 10,
-          height: 22,
-          color: Color(0xFF111111),
-        ))),
+        isNot(
+          equals(
+            const NeedlePointer(
+              width: 10,
+              height: 22,
+              color: Color(0xFF111111),
+            ),
+          ),
+        ),
       );
     });
 
@@ -375,24 +417,32 @@ void main() {
           color: Color(0xFF111111),
           borderRadius: 2,
         ),
-        isNot(equals(const NeedlePointer(
-          width: 10,
-          height: 20,
-          color: Color(0xFF111111),
-          borderRadius: 4,
-        ))),
+        isNot(
+          equals(
+            const NeedlePointer(
+              width: 10,
+              height: 20,
+              color: Color(0xFF111111),
+              borderRadius: 4,
+            ),
+          ),
+        ),
       );
     });
 
     test('differs on shadow (regression: previously omitted)', () {
       expect(
         baseline,
-        isNot(equals(const NeedlePointer(
-          width: 10,
-          height: 20,
-          color: Color(0xFF111111),
-          shadow: Shadow(blurRadius: 2),
-        ))),
+        isNot(
+          equals(
+            const NeedlePointer(
+              width: 10,
+              height: 20,
+              color: Color(0xFF111111),
+              shadow: Shadow(blurRadius: 2),
+            ),
+          ),
+        ),
       );
     });
 
@@ -405,13 +455,17 @@ void main() {
             colors: [Color(0xFF000000), Color(0xFFFFFFFF)],
           ),
         ),
-        isNot(equals(const NeedlePointer(
-          width: 10,
-          height: 20,
-          gradient: LinearGradient(
-            colors: [Color(0xFFFFFFFF), Color(0xFF000000)],
+        isNot(
+          equals(
+            const NeedlePointer(
+              width: 10,
+              height: 20,
+              gradient: LinearGradient(
+                colors: [Color(0xFFFFFFFF), Color(0xFF000000)],
+              ),
+            ),
           ),
-        ))),
+        ),
       );
     });
   });
@@ -427,7 +481,8 @@ void main() {
       expect(
         baseline.hashCode,
         equals(
-            const CirclePointer(radius: 5, color: Color(0xFF111111)).hashCode),
+          const CirclePointer(radius: 5, color: Color(0xFF111111)).hashCode,
+        ),
       );
     });
 
@@ -448,11 +503,15 @@ void main() {
     test('differs on shadow', () {
       expect(
         baseline,
-        isNot(equals(const CirclePointer(
-          radius: 5,
-          color: Color(0xFF111111),
-          shadow: Shadow(blurRadius: 2),
-        ))),
+        isNot(
+          equals(
+            const CirclePointer(
+              radius: 5,
+              color: Color(0xFF111111),
+              shadow: Shadow(blurRadius: 2),
+            ),
+          ),
+        ),
       );
     });
   });
@@ -467,31 +526,39 @@ void main() {
     test('identical instances are equal', () {
       expect(
         baseline,
-        equals(const TrianglePointer(
-          width: 10,
-          height: 20,
-          color: Color(0xFF111111),
-        )),
+        equals(
+          const TrianglePointer(
+            width: 10,
+            height: 20,
+            color: Color(0xFF111111),
+          ),
+        ),
       );
       expect(
         baseline.hashCode,
-        equals(const TrianglePointer(
-          width: 10,
-          height: 20,
-          color: Color(0xFF111111),
-        ).hashCode),
+        equals(
+          const TrianglePointer(
+            width: 10,
+            height: 20,
+            color: Color(0xFF111111),
+          ).hashCode,
+        ),
       );
     });
 
     test('differs on shadow (regression: previously omitted)', () {
       expect(
         baseline,
-        isNot(equals(const TrianglePointer(
-          width: 10,
-          height: 20,
-          color: Color(0xFF111111),
-          shadow: Shadow(blurRadius: 2),
-        ))),
+        isNot(
+          equals(
+            const TrianglePointer(
+              width: 10,
+              height: 20,
+              color: Color(0xFF111111),
+              shadow: Shadow(blurRadius: 2),
+            ),
+          ),
+        ),
       );
     });
 
@@ -504,30 +571,36 @@ void main() {
             colors: [Color(0xFF000000), Color(0xFFFFFFFF)],
           ),
         ),
-        isNot(equals(const TrianglePointer(
-          width: 10,
-          height: 20,
-          gradient: LinearGradient(
-            colors: [Color(0xFFFFFFFF), Color(0xFF000000)],
+        isNot(
+          equals(
+            const TrianglePointer(
+              width: 10,
+              height: 20,
+              gradient: LinearGradient(
+                colors: [Color(0xFFFFFFFF), Color(0xFF000000)],
+              ),
+            ),
           ),
-        ))),
+        ),
       );
     });
 
-    test('NeedlePointer and TrianglePointer with same fields are not equal',
-        () {
-      const needle = NeedlePointer(
-        width: 10,
-        height: 20,
-        color: Color(0xFF111111),
-      );
-      const triangle = TrianglePointer(
-        width: 10,
-        height: 20,
-        color: Color(0xFF111111),
-      );
-      expect(needle, isNot(equals(triangle)));
-    });
+    test(
+      'NeedlePointer and TrianglePointer with same fields are not equal',
+      () {
+        const needle = NeedlePointer(
+          width: 10,
+          height: 20,
+          color: Color(0xFF111111),
+        );
+        const triangle = TrianglePointer(
+          width: 10,
+          height: 20,
+          color: Color(0xFF111111),
+        );
+        expect(needle, isNot(equals(triangle)));
+      },
+    );
   });
 
   group('GaugeBasicProgressBar ==/hashCode', () {
@@ -551,10 +624,14 @@ void main() {
           color: Color(0xFF111111),
           placement: GaugeProgressPlacement.over,
         ),
-        isNot(equals(const GaugeBasicProgressBar(
-          color: Color(0xFF111111),
-          placement: GaugeProgressPlacement.inside,
-        ))),
+        isNot(
+          equals(
+            const GaugeBasicProgressBar(
+              color: Color(0xFF111111),
+              placement: GaugeProgressPlacement.inside,
+            ),
+          ),
+        ),
       );
     });
 
@@ -580,10 +657,14 @@ void main() {
           color: Color(0xFF111111),
           placement: GaugeProgressPlacement.over,
         ),
-        isNot(equals(const GaugeRoundedProgressBar(
-          color: Color(0xFF111111),
-          placement: GaugeProgressPlacement.inside,
-        ))),
+        isNot(
+          equals(
+            const GaugeRoundedProgressBar(
+              color: Color(0xFF111111),
+              placement: GaugeProgressPlacement.inside,
+            ),
+          ),
+        ),
       );
     });
   });

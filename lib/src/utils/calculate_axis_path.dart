@@ -36,40 +36,43 @@ Path calculateAxisPath(
   final axisStartAngle = toRadians(startAngle);
   final axisEndAngle = toRadians(endAngle);
 
-  final startOuterPoint =
-      getPointOnCircle(circleCenter, axisStartAngle, outerRadius);
-  final endOuterPoint =
-      getPointOnCircle(circleCenter, axisEndAngle, outerRadius);
-  final endInnerPoint =
-      getPointOnCircle(circleCenter, axisEndAngle, innerRadius);
-  final startInnerPoint =
-      getPointOnCircle(circleCenter, axisStartAngle, innerRadius);
+  final startOuterPoint = getPointOnCircle(
+    circleCenter,
+    axisStartAngle,
+    outerRadius,
+  );
+  final endOuterPoint = getPointOnCircle(
+    circleCenter,
+    axisEndAngle,
+    outerRadius,
+  );
+  final endInnerPoint = getPointOnCircle(
+    circleCenter,
+    axisEndAngle,
+    innerRadius,
+  );
+  final startInnerPoint = getPointOnCircle(
+    circleCenter,
+    axisStartAngle,
+    innerRadius,
+  );
 
   final axisSurface = Path()
-    ..moveTo(
-      startOuterPoint.dx,
-      startOuterPoint.dy,
-    )
+    ..moveTo(startOuterPoint.dx, startOuterPoint.dy)
     ..arcToPoint(
       endOuterPoint,
       largeArc: useDegrees > largeArcMinAngle,
       radius: Radius.circular(outerRadius),
       clockwise: from < to,
     )
-    ..lineTo(
-      endInnerPoint.dx,
-      endInnerPoint.dy,
-    )
+    ..lineTo(endInnerPoint.dx, endInnerPoint.dy)
     ..arcToPoint(
       startInnerPoint,
       largeArc: useDegrees > largeArcMinAngle,
       radius: Radius.circular(innerRadius),
       clockwise: from > to,
     )
-    ..lineTo(
-      startOuterPoint.dx,
-      startOuterPoint.dy,
-    );
+    ..lineTo(startOuterPoint.dx, startOuterPoint.dy);
 
   return axisSurface;
 }

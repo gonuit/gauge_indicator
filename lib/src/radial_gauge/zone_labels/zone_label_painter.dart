@@ -23,16 +23,20 @@ void paintGaugeZoneLabel({
 
   // Arc spans [-180 - shift, 0 + shift]; gauge top sits at -90°.
   final angleShift = (sweepDegrees - 180) / 2;
-  final fromTheta = toRadians(_interpolate(
-    -180.0 - angleShift,
-    0.0 + angleShift,
-    ((zone.from - axisMin) / range).clamp(0.0, 1.0),
-  ));
-  final toTheta = toRadians(_interpolate(
-    -180.0 - angleShift,
-    0.0 + angleShift,
-    ((zone.to - axisMin) / range).clamp(0.0, 1.0),
-  ));
+  final fromTheta = toRadians(
+    _interpolate(
+      -180.0 - angleShift,
+      0.0 + angleShift,
+      ((zone.from - axisMin) / range).clamp(0.0, 1.0),
+    ),
+  );
+  final toTheta = toRadians(
+    _interpolate(
+      -180.0 - angleShift,
+      0.0 + angleShift,
+      ((zone.to - axisMin) / range).clamp(0.0, 1.0),
+    ),
+  );
 
   final glyphs = _buildGlyphs(label);
   if (glyphs.isEmpty) return;

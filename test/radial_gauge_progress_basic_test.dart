@@ -45,8 +45,9 @@ void main() {
     );
   }
 
-  testWidgets('basic progress at value 0 paints nothing on the bar',
-      (tester) async {
+  testWidgets('basic progress at value 0 paints nothing on the bar', (
+    tester,
+  ) async {
     await pumpGauge(
       tester,
       value: 0,
@@ -88,11 +89,7 @@ void main() {
       value: 70,
       progressBar: const GaugeProgressBar.basic(
         gradient: GaugeAxisGradient(
-          colors: [
-            Color(0xFF00C853),
-            Color(0xFFFFEB3B),
-            Color(0xFFD50000),
-          ],
+          colors: [Color(0xFF00C853), Color(0xFFFFEB3B), Color(0xFFD50000)],
           colorStops: [0, 0.5, 1],
         ),
       ),

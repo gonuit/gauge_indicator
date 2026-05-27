@@ -5,9 +5,9 @@ import 'package:gauge_indicator/gauge_indicator.dart';
 void main() {
   group('GaugeAxisTransformer.noTransform', () {
     const transformer = GaugeAxisTransformer.noTransform();
-    const axis = GaugeAxis(zones: [
-      GaugeZone(from: 0, to: 100, color: Color(0xFF111111)),
-    ]);
+    const axis = GaugeAxis(
+      zones: [GaugeZone(from: 0, to: 100, color: Color(0xFF111111))],
+    );
     const range = GaugeRange(0, 100);
 
     test('returns the axis unchanged regardless of progress', () {
@@ -22,9 +22,9 @@ void main() {
       interval: Interval(0, 1),
     );
     const range = GaugeRange(0, 100);
-    const axis = GaugeAxis(zones: [
-      GaugeZone(from: 0, to: 100, color: Color(0xFFFF0000)),
-    ]);
+    const axis = GaugeAxis(
+      zones: [GaugeZone(from: 0, to: 100, color: Color(0xFFFF0000))],
+    );
 
     test('fades zone colors toward transparent during initial animation', () {
       final mid = transformer.transform(axis, range, 0.5, 50, true);
@@ -52,19 +52,14 @@ void main() {
       const axis = GaugeAxis();
       final result = transformer.transform(axis, range, 0.5, 50, false);
       expect(result.zones, isNotEmpty);
-      expect(
-        result.zones.any((z) => z.color == overlayColor),
-        isTrue,
-      );
+      expect(result.zones.any((z) => z.color == overlayColor), isTrue);
     });
 
     test('overlays the recolored portion of each zone', () {
       const transformer = GaugeAxisTransformer.progress(color: overlayColor);
       const axis = GaugeAxis(
         style: GaugeAxisStyle(blendColors: false),
-        zones: [
-          GaugeZone(from: 0, to: 100, color: Color(0xFF111111)),
-        ],
+        zones: [GaugeZone(from: 0, to: 100, color: Color(0xFF111111))],
       );
       final result = transformer.transform(axis, range, 0.5, 50, false);
       // The portion [0, 50] should be recolored to the overlay color,
@@ -86,9 +81,7 @@ void main() {
       );
       const axis = GaugeAxis(
         style: GaugeAxisStyle(blendColors: false),
-        zones: [
-          GaugeZone(from: 0, to: 100, color: Color(0xFF111111)),
-        ],
+        zones: [GaugeZone(from: 0, to: 100, color: Color(0xFF111111))],
       );
       final result = transformer.transform(axis, range, 0.5, 50, false);
       final recolored = result.zones.firstWhere(
@@ -99,14 +92,11 @@ void main() {
 
     test('value at min produces no recolored overlay', () {
       const transformer = GaugeAxisTransformer.progress(color: overlayColor);
-      const axis = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 100, color: Color(0xFF111111)),
-      ]);
-      final result = transformer.transform(axis, range, 0, 0, false);
-      expect(
-        result.zones.every((z) => z.color != overlayColor),
-        isTrue,
+      const axis = GaugeAxis(
+        zones: [GaugeZone(from: 0, to: 100, color: Color(0xFF111111))],
       );
+      final result = transformer.transform(axis, range, 0, 0, false);
+      expect(result.zones.every((z) => z.color != overlayColor), isTrue);
     });
   });
 }

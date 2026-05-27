@@ -31,10 +31,7 @@ class CirclePointer implements GaugePointer {
   Size get size => Size.fromRadius(radius);
   @override
   Path get path => Path()
-    ..addOval(Rect.fromCircle(
-      center: Offset(radius, radius),
-      radius: radius,
-    ));
+    ..addOval(Rect.fromCircle(center: Offset(radius, radius), radius: radius));
 
   /// Creates a circle pointer. Exactly one of [color] or [gradient] must
   /// be provided.
@@ -46,10 +43,10 @@ class CirclePointer implements GaugePointer {
     this.gradient,
     this.shadow,
   }) : assert(
-          (color != null && gradient == null) ||
-              (gradient != null && color == null),
-          'Either color or gradient must be provided.',
-        );
+         (color != null && gradient == null) ||
+             (gradient != null && color == null),
+         'Either color or gradient must be provided.',
+       );
 
   @override
   bool operator ==(Object other) {
@@ -65,12 +62,6 @@ class CirclePointer implements GaugePointer {
   }
 
   @override
-  int get hashCode => Object.hash(
-        radius,
-        color,
-        border,
-        position,
-        gradient,
-        shadow,
-      );
+  int get hashCode =>
+      Object.hash(radius, color, border, position, gradient, shadow);
 }

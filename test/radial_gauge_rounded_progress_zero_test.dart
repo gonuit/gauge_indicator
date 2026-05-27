@@ -118,13 +118,7 @@ class _Gauge extends StatelessWidget {
             placement: placement,
             color: const Color(0xFF4CAF50),
           ),
-          zones: const [
-            GaugeZone(
-              from: 0,
-              to: 150,
-              color: Color(0xFFDFE2EC),
-            ),
-          ],
+          zones: const [GaugeZone(from: 0, to: 150, color: Color(0xFFDFE2EC))],
         ),
       ),
     );

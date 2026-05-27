@@ -18,27 +18,27 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     Widget gauge(List<GaugeZone> zones, {double zoneSpacing = 5}) => SizedBox(
-          width: 200,
-          height: 140,
-          child: RadialGauge(
-            value: 0,
-            axis: GaugeAxis(
-              min: 0,
-              max: 100,
-              sweepDegrees: 180,
-              pointer: null,
-              progressBar: null,
-              style: GaugeAxisStyle(
-                thickness: 18,
-                background: const Color(0xFF000000),
-                cornerRadius: const Radius.circular(9),
-                zoneSpacing: zoneSpacing,
-                zoneSpacingMode: mode,
-              ),
-              zones: zones,
-            ),
+      width: 200,
+      height: 140,
+      child: RadialGauge(
+        value: 0,
+        axis: GaugeAxis(
+          min: 0,
+          max: 100,
+          sweepDegrees: 180,
+          pointer: null,
+          progressBar: null,
+          style: GaugeAxisStyle(
+            thickness: 18,
+            background: const Color(0xFF000000),
+            cornerRadius: const Radius.circular(9),
+            zoneSpacing: zoneSpacing,
+            zoneSpacingMode: mode,
           ),
-        );
+          zones: zones,
+        ),
+      ),
+    );
 
     await tester.pumpWidget(
       MaterialApp(
@@ -56,24 +56,18 @@ void main() {
                   GaugeZone(from: 50, to: 75, color: Color(0xFFEB5757)),
                   GaugeZone(from: 75, to: 100, color: Color(0xFF2D9CDB)),
                 ]),
-                gauge(
-                  const [
-                    GaugeZone(from: 0, to: 30, color: Color(0xFF6FCF97)),
-                    GaugeZone(from: 30, to: 50, color: Color(0xFFF2C94C)),
-                    GaugeZone(from: 50, to: 51, color: Color(0xFFEB5757)),
-                    GaugeZone(from: 51, to: 100, color: Color(0xFF2D9CDB)),
-                  ],
-                  zoneSpacing: 10,
-                ),
-                gauge(
-                  const [
-                    GaugeZone(from: 0, to: 4, color: Color(0xFF6FCF97)),
-                    GaugeZone(from: 4, to: 36, color: Color(0xFFF2C94C)),
-                    GaugeZone(from: 36, to: 68, color: Color(0xFFEB5757)),
-                    GaugeZone(from: 68, to: 100, color: Color(0xFF2D9CDB)),
-                  ],
-                  zoneSpacing: 15,
-                ),
+                gauge(const [
+                  GaugeZone(from: 0, to: 30, color: Color(0xFF6FCF97)),
+                  GaugeZone(from: 30, to: 50, color: Color(0xFFF2C94C)),
+                  GaugeZone(from: 50, to: 51, color: Color(0xFFEB5757)),
+                  GaugeZone(from: 51, to: 100, color: Color(0xFF2D9CDB)),
+                ], zoneSpacing: 10),
+                gauge(const [
+                  GaugeZone(from: 0, to: 4, color: Color(0xFF6FCF97)),
+                  GaugeZone(from: 4, to: 36, color: Color(0xFFF2C94C)),
+                  GaugeZone(from: 36, to: 68, color: Color(0xFFEB5757)),
+                  GaugeZone(from: 68, to: 100, color: Color(0xFF2D9CDB)),
+                ], zoneSpacing: 15),
                 gauge(const [
                   GaugeZone(from: 0, to: 32, color: Color(0xFF6FCF97)),
                   GaugeZone(from: 32, to: 64, color: Color(0xFFF2C94C)),
@@ -88,8 +82,9 @@ void main() {
     );
   }
 
-  testWidgets('Zone spacing mode: uniform — narrow zone tightens every gap',
-      (tester) async {
+  testWidgets('Zone spacing mode: uniform — narrow zone tightens every gap', (
+    tester,
+  ) async {
     await pumpRow(tester, ZoneSpacingMode.uniform);
 
     await expectLater(
@@ -98,8 +93,9 @@ void main() {
     );
   });
 
-  testWidgets('Zone spacing mode: local — only adjacent gaps tighten',
-      (tester) async {
+  testWidgets('Zone spacing mode: local — only adjacent gaps tighten', (
+    tester,
+  ) async {
     await pumpRow(tester, ZoneSpacingMode.local);
 
     await expectLater(

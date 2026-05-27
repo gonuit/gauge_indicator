@@ -5,11 +5,8 @@ import 'package:gauge_indicator/src/internal.dart';
 /// Builds the centered content of an [AnimatedRadialGauge] with access to
 /// the current animated [value]. The [child] is the gauge's optional child
 /// widget, passed through unchanged.
-typedef GaugeLabelBuilder = Widget Function(
-  BuildContext context,
-  Widget? child,
-  double value,
-);
+typedef GaugeLabelBuilder =
+    Widget Function(BuildContext context, Widget? child, double value);
 
 /// Animated version of [RadialGauge] that gradually changes its values over
 /// a period of time.
@@ -124,34 +121,32 @@ class _AnimatedRadialGaugeState
 
   @override
   void forEachTween(TweenVisitor<dynamic> visitor) {
-    _axisTween = visitor(
-      _axisTween,
-      widget.axis,
-      (dynamic value) => GaugeAxisTween(
-        begin: value as GaugeAxis,
-        end: value,
-      ),
-    ) as GaugeAxisTween;
-    _valueTween = visitor(
-      _valueTween,
-      widget.value,
-      (dynamic value) => Tween<double>(
-        begin: widget.initialValue,
-        end: widget.value,
-      ),
-    ) as Tween<double>;
+    _axisTween =
+        visitor(
+              _axisTween,
+              widget.axis,
+              (dynamic value) =>
+                  GaugeAxisTween(begin: value as GaugeAxis, end: value),
+            )
+            as GaugeAxisTween;
+    _valueTween =
+        visitor(
+              _valueTween,
+              widget.value,
+              (dynamic value) =>
+                  Tween<double>(begin: widget.initialValue, end: widget.value),
+            )
+            as Tween<double>;
 
     _radiusTween = widget.radius == null
         // If the radius is not specified, its animation is disabled.
         ? NullTween()
         : visitor(
-            _radiusTween,
-            widget.radius,
-            (dynamic value) => Tween<double?>(
-              begin: value,
-              end: value,
-            ),
-          ) as Tween<double?>;
+                _radiusTween,
+                widget.radius,
+                (dynamic value) => Tween<double?>(begin: value, end: value),
+              )
+              as Tween<double?>;
   }
 
   @override
@@ -159,10 +154,9 @@ class _AnimatedRadialGaugeState
     return RepaintBoundary(
       child: Builder(
         builder: (context) {
-          final value = _valueTween!.evaluate(animation).clamp(
-                widget.axis.min,
-                widget.axis.max,
-              );
+          final value = _valueTween!
+              .evaluate(animation)
+              .clamp(widget.axis.min, widget.axis.max);
 
           final radius = _radiusTween!.evaluate(animation);
           final computedAxis = _axisTween!.evaluate(animation)!.flatten();
@@ -181,7 +175,8 @@ class _AnimatedRadialGaugeState
             alignment: widget.alignment,
             axis: axis,
             repaint: widget.repaint,
-            child: widget.builder?.call(context, widget.child, value) ??
+            child:
+                widget.builder?.call(context, widget.child, value) ??
                 widget.child,
           );
         },

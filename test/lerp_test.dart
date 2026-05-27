@@ -29,12 +29,11 @@ void main() {
       )!;
       expect(result.width, equals(5));
       expect(
-          result.color,
-          equals(Color.lerp(
-            const Color(0xFF000000),
-            const Color(0xFFFFFFFF),
-            0.5,
-          )));
+        result.color,
+        equals(
+          Color.lerp(const Color(0xFF000000), const Color(0xFFFFFFFF), 0.5),
+        ),
+      );
     });
 
     test('returns begin values at t=0', () {
@@ -216,54 +215,54 @@ void main() {
     });
 
     test('returns begin zones list at t=0', () {
-      const begin = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 50, color: Color(0xFF111111)),
-      ]);
-      const end = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 50, color: Color(0xFF222222)),
-      ]);
+      const begin = GaugeAxis(
+        zones: [GaugeZone(from: 0, to: 50, color: Color(0xFF111111))],
+      );
+      const end = GaugeAxis(
+        zones: [GaugeZone(from: 0, to: 50, color: Color(0xFF222222))],
+      );
       final result = GaugeAxis.lerp(begin, end, 0)!;
       expect(result.zones, same(begin.zones));
     });
 
     test('returns end zones list at t=1', () {
-      const begin = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 50, color: Color(0xFF111111)),
-      ]);
-      const end = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 50, color: Color(0xFF222222)),
-      ]);
+      const begin = GaugeAxis(
+        zones: [GaugeZone(from: 0, to: 50, color: Color(0xFF111111))],
+      );
+      const end = GaugeAxis(
+        zones: [GaugeZone(from: 0, to: 50, color: Color(0xFF222222))],
+      );
       final result = GaugeAxis.lerp(begin, end, 1)!;
       expect(result.zones, same(end.zones));
     });
 
     test('interpolates zones element-wise at intermediate t', () {
-      const begin = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 100, color: Color(0xFF000000)),
-      ]);
-      const end = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 100, color: Color(0xFFFFFFFF)),
-      ]);
+      const begin = GaugeAxis(
+        zones: [GaugeZone(from: 0, to: 100, color: Color(0xFF000000))],
+      );
+      const end = GaugeAxis(
+        zones: [GaugeZone(from: 0, to: 100, color: Color(0xFFFFFFFF))],
+      );
       final result = GaugeAxis.lerp(begin, end, 0.5)!;
       expect(result.zones.length, equals(1));
       expect(
         result.zones.first.color,
-        equals(Color.lerp(
-          const Color(0xFF000000),
-          const Color(0xFFFFFFFF),
-          0.5,
-        )),
+        equals(
+          Color.lerp(const Color(0xFF000000), const Color(0xFFFFFFFF), 0.5),
+        ),
       );
     });
 
     test('handles differing zone counts by collapsing missing ends', () {
-      const begin = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 50, color: Color(0xFF111111)),
-        GaugeZone(from: 50, to: 100, color: Color(0xFF222222)),
-      ]);
-      const end = GaugeAxis(zones: [
-        GaugeZone(from: 0, to: 80, color: Color(0xFFAAAAAA)),
-      ]);
+      const begin = GaugeAxis(
+        zones: [
+          GaugeZone(from: 0, to: 50, color: Color(0xFF111111)),
+          GaugeZone(from: 50, to: 100, color: Color(0xFF222222)),
+        ],
+      );
+      const end = GaugeAxis(
+        zones: [GaugeZone(from: 0, to: 80, color: Color(0xFFAAAAAA))],
+      );
       final result = GaugeAxis.lerp(begin, end, 0.5)!;
       expect(result.zones.length, equals(2));
     });

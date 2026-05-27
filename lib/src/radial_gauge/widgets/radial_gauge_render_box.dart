@@ -116,13 +116,13 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     required final double? radius,
     Listenable? repaint,
     RenderBox? child,
-  })  : _value = value,
-        _axis = axis,
-        _alignment = alignment,
-        _radius = radius,
-        _debug = debug,
-        _repaint = repaint,
-        super(child);
+  }) : _value = value,
+       _axis = axis,
+       _alignment = alignment,
+       _radius = radius,
+       _debug = debug,
+       _repaint = repaint,
+       super(child);
 
   @override
   bool get sizedByParent => false;
@@ -143,8 +143,10 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     );
     size = _computedLayout.sourceRect.size;
 
-    _axisDefinition =
-        RadialGaugeAxisDefinition.calculate(_computedLayout, axis);
+    _axisDefinition = RadialGaugeAxisDefinition.calculate(
+      _computedLayout,
+      axis,
+    );
 
     if (child != null) {
       final innerCircleRadius =
@@ -213,7 +215,8 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
 
     final progressBar = axis.progressBar;
 
-    final hasProgressBarInside = progressBar != null &&
+    final hasProgressBarInside =
+        progressBar != null &&
         progressBar.placement == GaugeProgressPlacement.inside;
 
     if (hasProgressBarInside) {
@@ -249,9 +252,9 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
           gradient.tileMode,
           0.0,
           zone.sweepAngle,
-          GradientRotation(zone.startAngle)
-              .transform(layout.circleRect)
-              .storage,
+          GradientRotation(
+            zone.startAngle,
+          ).transform(layout.circleRect).storage,
         );
       } else if (zone.color != null) {
         paint.color = zone.color!;
@@ -334,10 +337,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
         break;
     }
 
-    final origin = Offset(
-      size.width / 2 - offset.dx,
-      originDY,
-    );
+    final origin = Offset(size.width / 2 - offset.dx, originDY);
 
     final rotation = _valueProgress * degrees - degrees / 2;
     final transformation = rotateOverOrigin(

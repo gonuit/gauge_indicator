@@ -67,8 +67,7 @@ class _NoTransform extends GaugeAxisTransformer {
     double progress,
     double value,
     bool isInitial,
-  ) =>
-      axis;
+  ) => axis;
 }
 
 class _ColorFadeIn extends GaugeAxisTransformer {
@@ -91,12 +90,14 @@ class _ColorFadeIn extends GaugeAxisTransformer {
     if (isInitial) {
       final value = interval.transform(progress);
       final updatedZones = axis.zones
-          .map((s) => s.copyWith(
-                color: Color.alphaBlend(
-                  s.color.withValues(alpha: value),
-                  background,
-                ),
-              ))
+          .map(
+            (s) => s.copyWith(
+              color: Color.alphaBlend(
+                s.color.withValues(alpha: value),
+                background,
+              ),
+            ),
+          )
           .toList();
       return axis.copyWith(zones: updatedZones);
     } else {
@@ -142,18 +143,16 @@ class _ProgressTransformer extends GaugeAxisTransformer {
         final overlayFrom = reversed ? math.max(value, zone.from) : zone.from;
         final overlayTo = reversed ? zone.to : math.min(value, zone.to);
         if (overlayTo <= overlayFrom) continue;
-        overlays.add(zone.copyWith(
-          from: overlayFrom,
-          to: overlayTo,
-          color: color,
-        ));
+        overlays.add(
+          zone.copyWith(from: overlayFrom, to: overlayTo, color: color),
+        );
       }
     }
 
-    final zones = flattenZones(
-      [...axis.zones, ...overlays],
-      colorBlending: blendColors,
-    ).toList();
+    final zones = flattenZones([
+      ...axis.zones,
+      ...overlays,
+    ], colorBlending: blendColors).toList();
 
     return axis.copyWith(zones: zones);
   }

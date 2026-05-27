@@ -67,39 +67,38 @@ class GaugeZone {
     GaugeZoneLabel? label,
     BoxShadow? shadow,
     double? thickness,
-  }) =>
-      GaugeZone(
-        from: from ?? this.from,
-        to: to ?? this.to,
-        color: color ?? this.color,
-        gradient: gradient ?? this.gradient,
-        shader: shader ?? this.shader,
-        border: border ?? this.border,
-        cornerRadius: cornerRadius ?? this.cornerRadius,
-        label: label ?? this.label,
-        shadow: shadow ?? this.shadow,
-        thickness: thickness ?? this.thickness,
-      );
+  }) => GaugeZone(
+    from: from ?? this.from,
+    to: to ?? this.to,
+    color: color ?? this.color,
+    gradient: gradient ?? this.gradient,
+    shader: shader ?? this.shader,
+    border: border ?? this.border,
+    cornerRadius: cornerRadius ?? this.cornerRadius,
+    label: label ?? this.label,
+    shadow: shadow ?? this.shadow,
+    thickness: thickness ?? this.thickness,
+  );
 
   /// Linearly interpolates between two zones at fraction [t].
   static GaugeZone lerp(GaugeZone begin, GaugeZone end, double t) => GaugeZone(
-        from: lerpDouble(begin.from, end.from, t),
-        to: lerpDouble(begin.to, end.to, t),
-        color: Color.lerp(begin.color, end.color, t)!,
-        gradient: end.gradient,
-        shader: end.shader,
-        border: GaugeBorder.lerp(begin.border, end.border, t),
-        cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t)!,
-        label: end.label,
-        shadow: BoxShadow.lerp(begin.shadow, end.shadow, t),
-        thickness: begin.thickness == null && end.thickness == null
-            ? null
-            : lerpDouble(
-                begin.thickness ?? end.thickness!,
-                end.thickness ?? begin.thickness!,
-                t,
-              ),
-      );
+    from: lerpDouble(begin.from, end.from, t),
+    to: lerpDouble(begin.to, end.to, t),
+    color: Color.lerp(begin.color, end.color, t)!,
+    gradient: end.gradient,
+    shader: end.shader,
+    border: GaugeBorder.lerp(begin.border, end.border, t),
+    cornerRadius: Radius.lerp(begin.cornerRadius, end.cornerRadius, t)!,
+    label: end.label,
+    shadow: BoxShadow.lerp(begin.shadow, end.shadow, t),
+    thickness: begin.thickness == null && end.thickness == null
+        ? null
+        : lerpDouble(
+            begin.thickness ?? end.thickness!,
+            end.thickness ?? begin.thickness!,
+            t,
+          ),
+  );
 
   @override
   bool operator ==(Object other) {
@@ -120,15 +119,15 @@ class GaugeZone {
 
   @override
   int get hashCode => Object.hash(
-        from,
-        to,
-        color,
-        gradient,
-        shader,
-        cornerRadius,
-        border,
-        label,
-        shadow,
-        thickness,
-      );
+    from,
+    to,
+    color,
+    gradient,
+    shader,
+    cornerRadius,
+    border,
+    label,
+    shadow,
+    thickness,
+  );
 }

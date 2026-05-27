@@ -10,21 +10,22 @@ Iterable<GaugeZone> flattenZones(
   final List<GaugeZone> zones, {
   bool colorBlending = true,
 }) sync* {
-  final points = zones.fold<Set<double>>(
-    <double>{},
-    (set, zone) => set
-      ..add(zone.from)
-      ..add(zone.to),
-  ).toList()
-    ..sort((a, b) => a.compareTo(b));
+  final points =
+      zones
+          .fold<Set<double>>(
+            <double>{},
+            (set, zone) => set
+              ..add(zone.from)
+              ..add(zone.to),
+          )
+          .toList()
+        ..sort((a, b) => a.compareTo(b));
 
   for (var i = 0; i < points.length - 1; i++) {
     final start = points[i];
     final end = points[i + 1];
 
-    final includedZones = zones.where(
-      (s) => start >= s.from && end <= s.to,
-    );
+    final includedZones = zones.where((s) => start >= s.from && end <= s.to);
 
     if (includedZones.isEmpty) continue;
 
@@ -32,12 +33,13 @@ Iterable<GaugeZone> flattenZones(
 
     final color = colorBlending
         ? includedZones
-            .skip(1)
-            .fold<HSVColor>(
+              .skip(1)
+              .fold<HSVColor>(
                 HSVColor.fromColor(includedZones.first.color),
                 (val, next) =>
-                    HSVColor.lerp(val, HSVColor.fromColor(next.color), 0.5)!)
-            .toColor()
+                    HSVColor.lerp(val, HSVColor.fromColor(next.color), 0.5)!,
+              )
+              .toColor()
         : lastZone.color;
 
     yield GaugeZone(

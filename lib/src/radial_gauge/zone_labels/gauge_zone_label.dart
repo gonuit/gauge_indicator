@@ -52,9 +52,9 @@ class GaugeZoneLabel {
     this.radialAlignment = 0,
     this.padding = 4,
   }) : assert(
-          text != null || icon != null,
-          'GaugeZoneLabel requires text or icon (or both).',
-        );
+         text != null || icon != null,
+         'GaugeZoneLabel requires text or icon (or both).',
+       );
 
   @override
   bool operator ==(Object other) {
@@ -71,12 +71,12 @@ class GaugeZoneLabel {
 
   @override
   int get hashCode => Object.hash(
-        text,
-        icon,
-        iconGap,
-        style,
-        alignment,
-        radialAlignment,
-        padding,
-      );
+    text,
+    icon,
+    iconGap,
+    style,
+    alignment,
+    radialAlignment,
+    padding,
+  );
 }

@@ -92,10 +92,7 @@ void main() {
       pointer: const CirclePointer(
         radius: 12,
         color: Color(0xFF00C853),
-        border: GaugePointerBorder(
-          color: Color(0xFF002E5F),
-          width: 2,
-        ),
+        border: GaugePointerBorder(color: Color(0xFF002E5F), width: 2),
       ),
     );
     await expectLater(

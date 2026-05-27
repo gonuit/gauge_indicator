@@ -8,12 +8,11 @@ Path calculateRoundedArcPath(
   double to = 1.0,
   double degrees = 180.0,
   double thickness = 10.0,
-}) =>
-    calculateRadiusArcPath(
-      rect,
-      cornerRadius: Radius.circular(thickness / 2),
-      from: from < to ? from : to,
-      to: from < to ? to : from,
-      degrees: degrees,
-      thickness: thickness,
-    );
+}) => calculateRadiusArcPath(
+  rect,
+  cornerRadius: Radius.circular(thickness / 2),
+  from: from < to ? from : to,
+  to: from < to ? to : from,
+  degrees: degrees,
+  thickness: thickness,
+);

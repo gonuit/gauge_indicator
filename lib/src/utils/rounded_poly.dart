@@ -9,11 +9,8 @@ class VertexDefinition {
 
   final double distance;
 
-  VertexDefinition(
-    this.x,
-    this.y, {
-    this.radius,
-  }) : distance = math.sqrt(x * x + y * y);
+  VertexDefinition(this.x, this.y, {this.radius})
+    : distance = math.sqrt(x * x + y * y);
 
   double get nx {
     return x / distance;
@@ -32,10 +29,7 @@ class VertexDefinition {
 }
 
 /// Returns a [Path] that describes the rounded polygon.
-Path roundedPoly(
-  List<VertexDefinition> vertices,
-  double radiusAll,
-) {
+Path roundedPoly(List<VertexDefinition> vertices, double radiusAll) {
   var radius = radiusAll;
   late double cRadius;
 
@@ -51,11 +45,13 @@ Path roundedPoly(
     final v2 = p3 - p2;
     final sinA = v1.nx * v2.ny - v1.ny * v2.nx;
     final sinA90 = v1.nx * v2.nx - v1.ny * -v2.ny;
-    var angle = math.asin(sinA < -1
-        ? -1
-        : sinA > 1
-            ? 1
-            : sinA);
+    var angle = math.asin(
+      sinA < -1
+          ? -1
+          : sinA > 1
+          ? 1
+          : sinA,
+    );
 
     int radDirection = 1;
     bool drawDirection = false;
@@ -130,10 +126,7 @@ Path roundedPoly(
   return path;
 }
 
-Path roundedPath(
-  List<VertexDefinition> vertices,
-  double radiusAll,
-) {
+Path roundedPath(List<VertexDefinition> vertices, double radiusAll) {
   var radius = radiusAll;
   late double cRadius;
 
@@ -149,11 +142,13 @@ Path roundedPath(
     final v2 = p3 - p2;
     final sinA = v1.nx * v2.ny - v1.ny * v2.nx;
     final sinA90 = v1.nx * v2.nx - v1.ny * -v2.ny;
-    var angle = math.asin(sinA < -1
-        ? -1
-        : sinA > 1
-            ? 1
-            : sinA);
+    var angle = math.asin(
+      sinA < -1
+          ? -1
+          : sinA > 1
+          ? 1
+          : sinA,
+    );
 
     int radDirection = 1;
     bool drawDirection = false;

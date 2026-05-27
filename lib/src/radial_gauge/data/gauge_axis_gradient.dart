@@ -32,8 +32,8 @@ class GaugeAxisGradient {
 
   @override
   int get hashCode => Object.hash(
-        Object.hashAll(colors),
-        colorStops == null ? null : Object.hashAll(colorStops!),
-        tileMode,
-      );
+    Object.hashAll(colors),
+    colorStops == null ? null : Object.hashAll(colorStops!),
+    tileMode,
+  );
 }

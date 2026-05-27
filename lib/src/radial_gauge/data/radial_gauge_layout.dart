@@ -70,9 +70,7 @@ class RadialGaugeLayout {
         final sourceRect = Offset.zero & sourceSize;
 
         if (!sourceRect.isFinite) {
-          throw StateError(
-            'Wrap a gauge widget with a SizedBox.',
-          );
+          throw StateError('Wrap a gauge widget with a SizedBox.');
         }
 
         /// Rect of a visible gauge part
@@ -98,16 +96,10 @@ class RadialGaugeLayout {
       sourceSize = constraints.smallest;
     } else if (constraints.hasTightHeight) {
       final height = constraints.minHeight;
-      sourceSize = constraints.constrain(Size(
-        ratios.getWidth(height),
-        height,
-      ));
+      sourceSize = constraints.constrain(Size(ratios.getWidth(height), height));
     } else if (constraints.hasTightWidth) {
       final width = constraints.minWidth;
-      sourceSize = constraints.constrain(Size(
-        width,
-        ratios.getHeight(width),
-      ));
+      sourceSize = constraints.constrain(Size(width, ratios.getHeight(width)));
     } else {
       // For infinite dimensions the [radius] needs to be specified.
       sourceSize = constraints.constrain(preferredSize ?? Size.zero);
@@ -115,9 +107,7 @@ class RadialGaugeLayout {
 
     final sourceRect = Offset.zero & sourceSize;
     if (!sourceRect.isFinite) {
-      throw StateError(
-        'Wrap a gauge widget with a SizedBox.',
-      );
+      throw StateError('Wrap a gauge widget with a SizedBox.');
     }
 
     final Size targetSize;
@@ -155,9 +145,9 @@ class RadialGaugeLayout {
   /// Shift the layout by the provided [offset].
   /// This is used during the paint.
   RadialGaugeLayout shift(Offset offset) => RadialGaugeLayout(
-        circleRect: circleRect.shift(offset),
-        targetRect: targetRect.shift(offset),
-        sourceRect: sourceRect.shift(offset),
-        radius: radius,
-      );
+    circleRect: circleRect.shift(offset),
+    targetRect: targetRect.shift(offset),
+    sourceRect: sourceRect.shift(offset),
+    radius: radius,
+  );
 }

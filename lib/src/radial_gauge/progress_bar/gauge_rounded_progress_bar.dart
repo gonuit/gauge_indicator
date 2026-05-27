@@ -35,9 +35,9 @@ class GaugeRoundedProgressBar implements GaugeProgressBar {
     this.shader,
     this.placement = GaugeProgressPlacement.over,
   }) : assert(
-          color != null || gradient != null || shader != null,
-          'color, gradient or shader is required',
-        );
+         color != null || gradient != null || shader != null,
+         'color, gradient or shader is required',
+       );
 
   @override
   void paint(

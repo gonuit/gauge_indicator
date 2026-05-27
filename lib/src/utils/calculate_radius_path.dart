@@ -60,8 +60,8 @@ Path calculateRadiusArcPath(
   final isFullRing = degrees > 359.0;
   final emptyScale =
       isFullRing && totalCornerX > emptyArcLength && totalCornerX > 0
-          ? (emptyArcLength / totalCornerX).clamp(0.0, 1.0)
-          : 1.0;
+      ? (emptyArcLength / totalCornerX).clamp(0.0, 1.0)
+      : 1.0;
 
   final scale = emptyScale < inSegmentScale ? emptyScale : inSegmentScale;
   startCorner = Radius.elliptical(
@@ -86,22 +86,46 @@ Path calculateRadiusArcPath(
   final axisStartAngle = centerAxisStartAngle + startCornerAngle;
   final axisEndAngle = centerAxisEndAngle - endCornerAngle;
 
-  final startOuterPoint =
-      getPointOnCircle(circleCenter, axisStartAngle, outerRadius);
-  final endOuterPoint =
-      getPointOnCircle(circleCenter, axisEndAngle, outerRadius);
+  final startOuterPoint = getPointOnCircle(
+    circleCenter,
+    axisStartAngle,
+    outerRadius,
+  );
+  final endOuterPoint = getPointOnCircle(
+    circleCenter,
+    axisEndAngle,
+    outerRadius,
+  );
   final endOuterCenterPoint = getPointOnCircle(
-      circleCenter, centerAxisEndAngle, outerRadius - endCorner.y);
+    circleCenter,
+    centerAxisEndAngle,
+    outerRadius - endCorner.y,
+  );
   final endInnerCenterPoint = getPointOnCircle(
-      circleCenter, centerAxisEndAngle, innerRadius + endCorner.y);
-  final endInnerPoint =
-      getPointOnCircle(circleCenter, axisEndAngle, innerRadius);
+    circleCenter,
+    centerAxisEndAngle,
+    innerRadius + endCorner.y,
+  );
+  final endInnerPoint = getPointOnCircle(
+    circleCenter,
+    axisEndAngle,
+    innerRadius,
+  );
   final startOuterCenterPoint = getPointOnCircle(
-      circleCenter, centerAxisStartAngle, outerRadius - startCorner.y);
+    circleCenter,
+    centerAxisStartAngle,
+    outerRadius - startCorner.y,
+  );
   final startInnerCenterPoint = getPointOnCircle(
-      circleCenter, centerAxisStartAngle, innerRadius + startCorner.y);
-  final startInnerPoint =
-      getPointOnCircle(circleCenter, axisStartAngle, innerRadius);
+    circleCenter,
+    centerAxisStartAngle,
+    innerRadius + startCorner.y,
+  );
+  final startInnerPoint = getPointOnCircle(
+    circleCenter,
+    axisStartAngle,
+    innerRadius,
+  );
 
   assert(
     (() {
@@ -137,17 +161,9 @@ Path calculateRadiusArcPath(
       largeArc: useDegrees > largeArcMinAngle,
       radius: Radius.circular(outerRadius),
     )
-    ..arcToPoint(
-      endOuterCenterPoint,
-      radius: endCorner,
-      rotation: endRotation,
-    )
+    ..arcToPoint(endOuterCenterPoint, radius: endCorner, rotation: endRotation)
     ..lineTo(endInnerCenterPoint.dx, endInnerCenterPoint.dy)
-    ..arcToPoint(
-      endInnerPoint,
-      radius: endCorner,
-      rotation: endRotation,
-    )
+    ..arcToPoint(endInnerPoint, radius: endCorner, rotation: endRotation)
     ..arcToPoint(
       startInnerPoint,
       largeArc: useDegrees > largeArcMinAngle,
@@ -160,9 +176,5 @@ Path calculateRadiusArcPath(
       rotation: startRotation,
     )
     ..lineTo(startOuterCenterPoint.dx, startOuterCenterPoint.dy)
-    ..arcToPoint(
-      startOuterPoint,
-      radius: startCorner,
-      rotation: startRotation,
-    );
+    ..arcToPoint(startOuterPoint, radius: startCorner, rotation: startRotation);
 }

@@ -10,10 +10,7 @@ class GaugeBorder {
   final double width;
 
   /// Creates a zone border.
-  const GaugeBorder({
-    required this.color,
-    this.width = 1.0,
-  });
+  const GaugeBorder({required this.color, this.width = 1.0});
 
   @override
   bool operator ==(Object other) {

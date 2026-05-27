@@ -38,10 +38,10 @@ class NeedlePointer implements GaugePointer {
   Size get size => Size(width, height);
   @override
   Path get path => roundedPoly([
-        VertexDefinition(0, height), // bottom left
-        VertexDefinition(width, height), // bottom right
-        VertexDefinition(width / 2, 0, radius: 0), // top center
-      ], borderRadius);
+    VertexDefinition(0, height), // bottom left
+    VertexDefinition(width, height), // bottom right
+    VertexDefinition(width / 2, 0, radius: 0), // top center
+  ], borderRadius);
 
   /// Creates a needle pointer. Exactly one of [color] or [gradient] must
   /// be provided.
@@ -54,11 +54,12 @@ class NeedlePointer implements GaugePointer {
     double? borderRadius,
     this.gradient,
     this.shadow,
-  })  : borderRadius = borderRadius ?? width / 2,
-        assert(
-            (color != null && gradient == null) ||
-                (gradient != null && color == null),
-            'Either color or gradient must be provided.');
+  }) : borderRadius = borderRadius ?? width / 2,
+       assert(
+         (color != null && gradient == null) ||
+             (gradient != null && color == null),
+         'Either color or gradient must be provided.',
+       );
 
   @override
   bool operator ==(Object other) {
@@ -77,13 +78,13 @@ class NeedlePointer implements GaugePointer {
 
   @override
   int get hashCode => Object.hash(
-        width,
-        height,
-        color,
-        border,
-        position,
-        borderRadius,
-        gradient,
-        shadow,
-      );
+    width,
+    height,
+    color,
+    border,
+    position,
+    borderRadius,
+    gradient,
+    shadow,
+  );
 }

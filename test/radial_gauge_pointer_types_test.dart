@@ -45,8 +45,9 @@ void main() {
     );
   }
 
-  testWidgets('NeedlePointer renders a tapered needle at center anchor',
-      (tester) async {
+  testWidgets('NeedlePointer renders a tapered needle at center anchor', (
+    tester,
+  ) async {
     await pumpGauge(
       tester,
       pointer: const NeedlePointer(
@@ -62,8 +63,9 @@ void main() {
     );
   });
 
-  testWidgets('TrianglePointer renders the default surface-anchored triangle',
-      (tester) async {
+  testWidgets('TrianglePointer renders the default surface-anchored triangle', (
+    tester,
+  ) async {
     await pumpGauge(
       tester,
       pointer: const TrianglePointer(
@@ -80,14 +82,12 @@ void main() {
     );
   });
 
-  testWidgets('CirclePointer renders a filled circle on the axis surface',
-      (tester) async {
+  testWidgets('CirclePointer renders a filled circle on the axis surface', (
+    tester,
+  ) async {
     await pumpGauge(
       tester,
-      pointer: const CirclePointer(
-        radius: 10,
-        color: Color(0xFF002E5F),
-      ),
+      pointer: const CirclePointer(radius: 10, color: Color(0xFF002E5F)),
     );
     await expectLater(
       find.byType(MaterialApp),

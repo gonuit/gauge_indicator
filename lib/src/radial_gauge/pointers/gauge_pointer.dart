@@ -33,9 +33,8 @@ class GaugePointerPosition {
   });
 
   /// Places the pointer in the center of the indicator widget.
-  const GaugePointerPosition.center({
-    this.offset = Offset.zero,
-  }) : anchor = GaugePointerAnchor.center;
+  const GaugePointerPosition.center({this.offset = Offset.zero})
+    : anchor = GaugePointerAnchor.center;
 
   /// Places the pointer above the surface of the indicator zones.
   ///
@@ -49,9 +48,8 @@ class GaugePointerPosition {
   ///   offset: Offset(0.0, -axisThickness), // above the zones
   /// )
   /// ```
-  const GaugePointerPosition.surface({
-    this.offset = Offset.zero,
-  }) : anchor = GaugePointerAnchor.surface;
+  const GaugePointerPosition.surface({this.offset = Offset.zero})
+    : anchor = GaugePointerAnchor.surface;
 
   @override
   bool operator ==(Object other) {
@@ -76,10 +74,8 @@ class GaugePointerBorder {
   final double width;
 
   /// Creates a pointer border with the given [color] and [width].
-  const GaugePointerBorder({
-    required this.color,
-    required this.width,
-  }) : assert(width > 0, 'Width must be larger than 0.');
+  const GaugePointerBorder({required this.color, required this.width})
+    : assert(width > 0, 'Width must be larger than 0.');
 
   @override
   bool operator ==(Object other) {

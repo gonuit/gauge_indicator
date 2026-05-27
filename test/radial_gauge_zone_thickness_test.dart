@@ -200,7 +200,8 @@ void main() {
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile(
-          'goldens/radial_gauge_zone_thickness_progress_inside.png'),
+        'goldens/radial_gauge_zone_thickness_progress_inside.png',
+      ),
     );
   });
 
@@ -256,7 +257,8 @@ void main() {
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile(
-          'goldens/radial_gauge_zone_thickness_progress_over.png'),
+        'goldens/radial_gauge_zone_thickness_progress_over.png',
+      ),
     );
   });
 

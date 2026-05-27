@@ -30,17 +30,17 @@ class GaugeZoneDefinition {
   });
 
   GaugeZoneDefinition shift(Offset offset) => GaugeZoneDefinition(
-        startAngle: startAngle,
-        sweepAngle: sweepAngle,
-        path: path.shift(offset),
-        color: color,
-        gradient: gradient,
-        border: border,
-        shader: shader,
-        shadow: shadow,
-        label: label,
-        thickness: thickness,
-      );
+    startAngle: startAngle,
+    sweepAngle: sweepAngle,
+    path: path.shift(offset),
+    color: color,
+    gradient: gradient,
+    border: border,
+    shader: shader,
+    shadow: shadow,
+    label: label,
+    thickness: thickness,
+  );
 }
 
 class RadialGaugeAxisDefinition {
@@ -67,11 +67,11 @@ class RadialGaugeAxisDefinition {
   });
 
   RadialGaugeAxisDefinition shift(Offset offset) => RadialGaugeAxisDefinition(
-        surface: surface.shift(offset),
-        rect: rect.shift(offset),
-        zones: zones.map((s) => s.shift(offset)).toList(),
-        thickness: thickness,
-      );
+    surface: surface.shift(offset),
+    rect: rect.shift(offset),
+    zones: zones.map((s) => s.shift(offset)).toList(),
+    thickness: thickness,
+  );
 
   factory RadialGaugeAxisDefinition.calculate(
     RadialGaugeLayout layout,
@@ -153,8 +153,9 @@ class RadialGaugeAxisDefinition {
     final desiredSeparator = separatorAngle / toRadians(axis.sweepDegrees);
     // Reserve a minimum rendered width per zone so they don't disappear.
     final axisArcLength = radius * toRadians(axis.sweepDegrees);
-    final minZoneFraction =
-        axisArcLength > 0 ? _minZonePx / axisArcLength : 0.0;
+    final minZoneFraction = axisArcLength > 0
+        ? _minZonePx / axisArcLength
+        : 0.0;
     final separators = _resolveSeparators(
       axis,
       desiredSeparator,
@@ -184,11 +185,14 @@ class RadialGaugeAxisDefinition {
       final trimEnd = isLast ? 0.0 : separators[i];
 
       // Clamp so a zone never extends past the axis surface.
-      final zoneThickness =
-          (zone.thickness ?? styleThickness).clamp(0.0, styleThickness);
+      final zoneThickness = (zone.thickness ?? styleThickness).clamp(
+        0.0,
+        styleThickness,
+      );
       final zoneHalfThickness = zoneThickness / 2;
-      final zoneExternalRect =
-          EdgeInsets.all(zoneHalfThickness).inflateRect(axisRect);
+      final zoneExternalRect = EdgeInsets.all(
+        zoneHalfThickness,
+      ).inflateRect(axisRect);
 
       final clampedFrom = (from + trimStart).clamp(0.0, 1.0);
       final clampedTo = (to - trimEnd).clamp(0.0, 1.0);
