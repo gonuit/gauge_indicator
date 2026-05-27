@@ -83,12 +83,9 @@ void main() {
                           background: Color(0xFFE0E4EE),
                         ),
                         zones: [
-                          GaugeZone(
-                              from: 0, to: 25, color: Color(0xFF2196F3)),
-                          GaugeZone(
-                              from: 25, to: 50, color: Color(0xFF4CAF50)),
-                          GaugeZone(
-                              from: 50, to: 75, color: Color(0xFFFFEB3B)),
+                          GaugeZone(from: 0, to: 25, color: Color(0xFF2196F3)),
+                          GaugeZone(from: 25, to: 50, color: Color(0xFF4CAF50)),
+                          GaugeZone(from: 50, to: 75, color: Color(0xFFFFEB3B)),
                           GaugeZone(
                               from: 75, to: 100, color: Color(0xFFF44336)),
                         ],
@@ -110,12 +107,9 @@ void main() {
                           background: Color(0xFFE0E4EE),
                         ),
                         zones: [
-                          GaugeZone(
-                              from: 0, to: 30, color: Color(0xFF9C27B0)),
-                          GaugeZone(
-                              from: 30, to: 60, color: Color(0xFFFF9800)),
-                          GaugeZone(
-                              from: 60, to: 90, color: Color(0xFFE91E63)),
+                          GaugeZone(from: 0, to: 30, color: Color(0xFF9C27B0)),
+                          GaugeZone(from: 30, to: 60, color: Color(0xFFFF9800)),
+                          GaugeZone(from: 60, to: 90, color: Color(0xFFE91E63)),
                           GaugeZone(
                               from: 90, to: 120, color: Color(0xFF009688)),
                         ],

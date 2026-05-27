@@ -37,10 +37,7 @@ class SourceCodeDialog extends StatefulWidget {
         useSafeArea: true,
         builder: (_) => FractionallySizedBox(
           heightFactor: 0.9,
-          child: SourceCodeDialog(
-            title: title,
-            sourcePath: sourcePath,
-          ),
+          child: SourceCodeDialog(title: title, sourcePath: sourcePath),
         ),
       );
     }
@@ -50,15 +47,10 @@ class SourceCodeDialog extends StatefulWidget {
       builder: (_) => Dialog(
         insetPadding: const EdgeInsets.all(24),
         clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 960, maxHeight: 720),
-          child: SourceCodeDialog(
-            title: title,
-            sourcePath: sourcePath,
-          ),
+          child: SourceCodeDialog(title: title, sourcePath: sourcePath),
         ),
       ),
     );
@@ -160,9 +152,7 @@ class _Header extends StatelessWidget {
       ),
       decoration: const BoxDecoration(
         color: Color(0xFFF8FAFD),
-        border: Border(
-          bottom: BorderSide(color: Color(0xFFE3E8F2)),
-        ),
+        border: Border(bottom: BorderSide(color: Color(0xFFE3E8F2))),
       ),
       child: Row(
         children: [
@@ -285,8 +275,7 @@ class _CodeViewState extends State<_CodeView> {
                   controller: _hController,
                   scrollDirection: Axis.horizontal,
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minWidth: constraints.maxWidth),
+                    constraints: BoxConstraints(minWidth: constraints.maxWidth),
                     child: SelectionArea(
                       child: HighlightView(
                         widget.code,

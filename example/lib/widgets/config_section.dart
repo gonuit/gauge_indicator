@@ -155,10 +155,7 @@ class LabeledDropdown<T> extends StatelessWidget {
                 style: const TextStyle(fontSize: 13, color: Colors.black87),
                 items: [
                   for (final item in items)
-                    DropdownMenuItem(
-                      value: item,
-                      child: Text(itemLabel(item)),
-                    ),
+                    DropdownMenuItem(value: item, child: Text(itemLabel(item))),
                 ],
                 onChanged: (v) {
                   if (v == null) return;

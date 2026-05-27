@@ -276,8 +276,7 @@ class GaugeAxis {
           (index) {
             final beginZone =
                 index < begin.zones.length ? begin.zones[index] : null;
-            final endZone =
-                index < end.zones.length ? end.zones[index] : null;
+            final endZone = index < end.zones.length ? end.zones[index] : null;
 
             /// One zone is always present.
             return GaugeZone.lerp(

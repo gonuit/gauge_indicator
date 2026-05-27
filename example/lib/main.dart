@@ -21,9 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'Radial gauge',
       theme: ThemeData(
         colorSchemeSeed: Colors.blue,
-        tabBarTheme: const TabBarThemeData(
-          labelColor: Colors.black,
-        ),
+        tabBarTheme: const TabBarThemeData(labelColor: Colors.black),
       ),
       routerConfig: router,
       builder: (context, child) => ColoredBox(

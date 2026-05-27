@@ -348,12 +348,7 @@ class GaugeDataController extends ChangeNotifier {
     final color = colors[random.nextInt(colors.length)];
     if (zones.isEmpty) {
       zones = [
-        GaugeZone(
-          from: 0,
-          to: 100,
-          color: color,
-          cornerRadius: Radius.zero,
-        ),
+        GaugeZone(from: 0, to: 100, color: color, cornerRadius: Radius.zero),
       ];
       return;
     }
@@ -369,12 +364,9 @@ class GaugeDataController extends ChangeNotifier {
       next.add(s.copyWith(from: cursor, to: cursor + newSize));
       cursor += newSize;
     }
-    next.add(GaugeZone(
-      from: cursor,
-      to: end,
-      color: color,
-      cornerRadius: Radius.zero,
-    ));
+    next.add(
+      GaugeZone(from: cursor, to: end, color: color, cornerRadius: Radius.zero),
+    );
     zones = next;
   }
 
@@ -425,9 +417,7 @@ class GaugeDataController extends ChangeNotifier {
   void setZoneColor(int index, Color color) {
     RangeError.checkValidIndex(index, zones);
 
-    zones[index] = zones[index].copyWith(
-      color: color,
-    );
+    zones[index] = zones[index].copyWith(color: color);
 
     notifyListeners();
   }

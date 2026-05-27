@@ -19,8 +19,7 @@ String generateGaugeCode(GaugeDataController c) {
       b.line('curve: Curves.${c.curveName},');
       b.line('value: ${_d(c.value)},');
 
-      final showLabel =
-          !(c.hasPointer && c.pointerType == PointerType.needle);
+      final showLabel = !(c.hasPointer && c.pointerType == PointerType.needle);
       if (showLabel) {
         b.line('builder: (context, _, value) => RadialGaugeLabel(');
         b.indent(() {
@@ -173,8 +172,7 @@ String _d(double v) {
 }
 
 String _color(Color c) {
-  final hex =
-      c.toARGB32().toRadixString(16).toUpperCase().padLeft(8, '0');
+  final hex = c.toARGB32().toRadixString(16).toUpperCase().padLeft(8, '0');
   return 'Color(0x$hex)';
 }
 

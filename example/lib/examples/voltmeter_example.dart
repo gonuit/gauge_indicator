@@ -55,6 +55,7 @@ class _Gauge extends StatelessWidget {
         axis: const GaugeAxis(
           min: -50,
           max: 50,
+
           /// Anchor the progress bar at the centre of the axis.
           origin: 0,
           sweepDegrees: 180,

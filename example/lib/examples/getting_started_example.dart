@@ -56,18 +56,13 @@ class _Gauge extends StatelessWidget {
           min: 0,
           max: 100,
           sweepDegrees: 180,
-          style: GaugeAxisStyle(
-            thickness: 20,
-            background: Color(0xFFDFE2EC),
-          ),
+          style: GaugeAxisStyle(thickness: 20, background: Color(0xFFDFE2EC)),
           pointer: GaugePointer.needle(
             width: 16,
             height: 100,
             color: Color(0xFF193663),
           ),
-          progressBar: GaugeProgressBar.rounded(
-            color: Color(0xFFB4C2F8),
-          ),
+          progressBar: GaugeProgressBar.rounded(color: Color(0xFFB4C2F8)),
         ),
       ),
     );

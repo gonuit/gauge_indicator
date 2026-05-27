@@ -28,10 +28,8 @@ class _LiveHeartRateExampleState extends State<LiveHeartRateExample>
   @override
   void initState() {
     super.initState();
-    _pulse = AnimationController(
-      vsync: this,
-      duration: _pulseDurationFor(_bpm),
-    )..repeat(reverse: true);
+    _pulse = AnimationController(vsync: this, duration: _pulseDurationFor(_bpm))
+      ..repeat(reverse: true);
 
     _timer = Timer.periodic(const Duration(milliseconds: 1500), (_) {
       final delta = (_random.nextDouble() - 0.5) * 40;
@@ -124,11 +122,7 @@ class _Gauge extends StatelessWidget {
           progressBar: GaugeProgressBar.rounded(
             placement: GaugeProgressPlacement.inside,
             gradient: GaugeAxisGradient(
-              colors: [
-                Color(0xFF34D399),
-                Color(0xFFF59E0B),
-                Color(0xFFFA114F),
-              ],
+              colors: [Color(0xFF34D399), Color(0xFFF59E0B), Color(0xFFFA114F)],
 
               /// Stops align with the 90/130 BPM zone boundaries on the
               /// 50–180 axis: (90 - 50) / 130 ≈ 0.31, (130 - 50) / 130 ≈ 0.62.

@@ -75,11 +75,7 @@ class _CardHeader extends StatelessWidget {
             color: const Color(0xFF1F2547),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Icon(
-            Icons.air,
-            size: 20,
-            color: Color(0xFF8EA0FF),
-          ),
+          child: const Icon(Icons.air, size: 20, color: Color(0xFF8EA0FF)),
         ),
         const SizedBox(width: 12),
         const Expanded(
@@ -108,11 +104,7 @@ class _CardHeader extends StatelessWidget {
             ],
           ),
         ),
-        const Icon(
-          Icons.more_horiz,
-          color: Color(0xFF6470A0),
-          size: 20,
-        ),
+        const Icon(Icons.more_horiz, color: Color(0xFF6470A0), size: 20),
       ],
     );
   }
@@ -141,10 +133,7 @@ class _Gauge extends StatelessWidget {
           pointer: GaugePointer.circle(
             radius: 9,
             color: category.color,
-            border: const GaugePointerBorder(
-              color: Colors.white,
-              width: 3,
-            ),
+            border: const GaugePointerBorder(color: Colors.white, width: 3),
             shadow: Shadow(
               color: category.color.withValues(alpha: 0.9),
               blurRadius: 16,
@@ -207,9 +196,7 @@ class _CategoryPill extends StatelessWidget {
       decoration: BoxDecoration(
         color: category.color.withValues(alpha: 0.16),
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(
-          color: category.color.withValues(alpha: 0.45),
-        ),
+        border: Border.all(color: category.color.withValues(alpha: 0.45)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -267,12 +254,7 @@ class _ValueSlider extends StatelessWidget {
         thumbColor: accent,
         overlayColor: accent.withValues(alpha: 0.16),
       ),
-      child: Slider(
-        value: value,
-        min: 0,
-        max: 500,
-        onChanged: onChanged,
-      ),
+      child: Slider(value: value, min: 0, max: 500, onChanged: onChanged),
     );
   }
 }

@@ -75,10 +75,7 @@ class _Gauge extends StatelessWidget {
           max: 60,
           sweepDegrees: 240,
           progressBar: null,
-          style: GaugeAxisStyle(
-            background: Colors.transparent,
-            thickness: 22,
-          ),
+          style: GaugeAxisStyle(background: Colors.transparent, thickness: 22),
           pointer: GaugePointer.triangle(
             width: 28,
             height: 28,

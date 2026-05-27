@@ -38,8 +38,7 @@ void paintGaugeZoneLabel({
   if (glyphs.isEmpty) return;
 
   final paddingTheta = label.padding / centerlineRadius;
-  final radialOffset =
-      label.radialAlignment.clamp(-1.0, 1.0) * thickness / 2;
+  final radialOffset = label.radialAlignment.clamp(-1.0, 1.0) * thickness / 2;
   final glyphRadius = centerlineRadius + radialOffset;
 
   final advances = glyphs.map((g) => g.width / centerlineRadius).toList();

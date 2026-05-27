@@ -164,10 +164,7 @@ class ExamplesGalleryShell extends StatelessWidget {
       onPressed: () => context.go('/'),
     );
 
-    final list = _ExamplesList(
-      examples: examples,
-      currentSlug: currentSlug,
-    );
+    final list = _ExamplesList(examples: examples, currentSlug: currentSlug);
 
     final currentEntry = examples.firstWhere(
       (e) => e.path == currentSlug,
@@ -275,10 +272,7 @@ class _ExamplesList extends StatelessWidget {
   final List<ExampleEntry> examples;
   final String? currentSlug;
 
-  const _ExamplesList({
-    required this.examples,
-    required this.currentSlug,
-  });
+  const _ExamplesList({required this.examples, required this.currentSlug});
 
   @override
   Widget build(BuildContext context) {
@@ -287,10 +281,7 @@ class _ExamplesList extends StatelessWidget {
       itemCount: examples.length,
       itemBuilder: (context, i) {
         final entry = examples[i];
-        return _ExampleTile(
-          entry: entry,
-          selected: entry.path == currentSlug,
-        );
+        return _ExampleTile(entry: entry, selected: entry.path == currentSlug);
       },
     );
   }
@@ -300,10 +291,7 @@ class _ExampleTile extends StatelessWidget {
   final ExampleEntry entry;
   final bool selected;
 
-  const _ExampleTile({
-    required this.entry,
-    required this.selected,
-  });
+  const _ExampleTile({required this.entry, required this.selected});
 
   static const _borderColor = Color(0xFFE3E8F2);
   static const _selectedBorder = Color(0xFF002E5F);
@@ -338,11 +326,7 @@ class _ExampleTile extends StatelessWidget {
                         : const Color(0xFFF4F6FB),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(
-                    entry.icon,
-                    size: 18,
-                    color: _primaryText,
-                  ),
+                  child: Icon(entry.icon, size: 18, color: _primaryText),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -354,8 +338,9 @@ class _ExampleTile extends StatelessWidget {
                         entry.name,
                         style: TextStyle(
                           fontSize: 14,
-                          fontWeight:
-                              selected ? FontWeight.w600 : FontWeight.w500,
+                          fontWeight: selected
+                              ? FontWeight.w600
+                              : FontWeight.w500,
                           color: _primaryText,
                           height: 1.2,
                         ),

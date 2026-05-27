@@ -111,6 +111,7 @@ class _Gauge extends StatelessWidget {
             zoneSpacing: 4,
             zoneSpacingMode: ZoneSpacingMode.local,
           ),
+
           /// Overlay neutral grey on the un-reached portion so completed
           /// tiers keep their colour and future tiers read as placeholders.
           transformer: GaugeAxisTransformer.progress(

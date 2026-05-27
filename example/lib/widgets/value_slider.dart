@@ -33,10 +33,7 @@ class ValueSlider extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
-                    label,
-                    style: const TextStyle(fontSize: 13),
-                  ),
+                  child: Text(label, style: const TextStyle(fontSize: 13)),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(

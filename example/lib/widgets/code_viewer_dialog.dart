@@ -125,8 +125,7 @@ class _CodeBlockState extends State<_CodeBlock> {
                   controller: _hController,
                   scrollDirection: Axis.horizontal,
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minWidth: constraints.maxWidth),
+                    constraints: BoxConstraints(minWidth: constraints.maxWidth),
                     child: SelectionArea(
                       child: HighlightView(
                         widget.code,

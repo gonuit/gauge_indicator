@@ -63,21 +63,23 @@ class _ZoneRangeEditorState extends State<ZoneRangeEditor> {
                     child: Stack(
                       children: [
                         for (var i = 0; i < zones.length; i++)
-                          Builder(builder: (_) {
-                            final from = i == 0
-                                ? zones[0].from
-                                : _boundary(i - 1);
-                            final to = i == zones.length - 1
-                                ? zones[i].to
-                                : _boundary(i);
-                            return Positioned(
-                              left: xFor(from),
-                              width: xFor(to) - xFor(from),
-                              top: 0,
-                              bottom: 0,
-                              child: Container(color: zones[i].color),
-                            );
-                          }),
+                          Builder(
+                            builder: (_) {
+                              final from = i == 0
+                                  ? zones[0].from
+                                  : _boundary(i - 1);
+                              final to = i == zones.length - 1
+                                  ? zones[i].to
+                                  : _boundary(i);
+                              return Positioned(
+                                left: xFor(from),
+                                width: xFor(to) - xFor(from),
+                                top: 0,
+                                bottom: 0,
+                                child: Container(color: zones[i].color),
+                              );
+                            },
+                          ),
                       ],
                     ),
                   ),
@@ -100,8 +102,7 @@ class _ZoneRangeEditorState extends State<ZoneRangeEditor> {
                         final delta = dx / width * span;
                         final lo = zones[i].from + 1;
                         final hi = zones[i + 1].to - 1;
-                        final next =
-                            (_draggingPosition! + delta).clamp(lo, hi);
+                        final next = (_draggingPosition! + delta).clamp(lo, hi);
                         setState(() {
                           _draggingPosition = next;
                         });

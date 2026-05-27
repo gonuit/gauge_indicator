@@ -27,10 +27,7 @@ CustomTransitionPage<void> _fadeThroughPage({
       );
       return FadeTransition(
         opacity: fadeOut,
-        child: FadeTransition(
-          opacity: fadeIn,
-          child: child,
-        ),
+        child: FadeTransition(opacity: fadeIn, child: child),
       );
     },
   );

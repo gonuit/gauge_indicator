@@ -29,24 +29,24 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
     final isMobile = viewSize.width < 700;
 
     return Scaffold(
-      body: Builder(builder: (context) {
-        final gaugeWidget = Center(
-          child: AnimatedBuilder(
-            animation: _controller,
-            builder: (context, _) => Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: const Color(0xFFEFEFEF),
+      body: Builder(
+        builder: (context) {
+          final gaugeWidget = Center(
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, _) => Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xFFEFEFEF)),
                 ),
-              ),
-              width: _controller.parentWidth,
-              height: _controller.parentHeight,
-              child: AnimatedRadialGauge(
-                radius: _controller.gaugeRadius,
-                builder: _controller.hasPointer &&
-                        _controller.pointerType == PointerType.needle
-                    ? null
-                    : (context, _, value) => RadialGaugeLabel(
+                width: _controller.parentWidth,
+                height: _controller.parentHeight,
+                child: AnimatedRadialGauge(
+                  radius: _controller.gaugeRadius,
+                  builder:
+                      _controller.hasPointer &&
+                          _controller.pointerType == PointerType.needle
+                      ? null
+                      : (context, _, value) => RadialGaugeLabel(
                           style: TextStyle(
                             color: const Color(0xFF002E5F),
                             fontSize: _controller.fontSize,
@@ -54,111 +54,114 @@ class _RadialGaugeExamplePageState extends State<RadialGaugeExamplePage> {
                           ),
                           value: value,
                         ),
-                duration: _controller.duration,
-                curve: _controller.curve,
-                value: _controller.value,
-                axis: GaugeAxis(
-                  min: 0,
-                  max: 100,
-                  sweepDegrees: _controller.degree,
-                  pointer: _controller.hasPointer
-                      ? _controller.getPointer(_controller.pointerType)
-                      : null,
-                  progressBar: _controller.hasProgressBar
-                      ? _controller.getProgressBar(_controller.progressBarType)
-                      : null,
-                  transformer: const GaugeAxisTransformer.colorFadeIn(
-                    interval: Interval(0.0, 0.3),
-                    background: Color(0xFFD9DEEB),
-                  ),
-                  style: GaugeAxisStyle(
-                    thickness: _controller.thickness,
-                    background: _controller.hasSurface
-                        ? _controller.surfaceColor
+                  duration: _controller.duration,
+                  curve: _controller.curve,
+                  value: _controller.value,
+                  axis: GaugeAxis(
+                    min: 0,
+                    max: 100,
+                    sweepDegrees: _controller.degree,
+                    pointer: _controller.hasPointer
+                        ? _controller.getPointer(_controller.pointerType)
                         : null,
-                    zoneSpacing: _controller.spacing,
-                    blendColors: false,
-                    cornerRadius: Radius.circular(_controller.surfaceRadius),
+                    progressBar: _controller.hasProgressBar
+                        ? _controller.getProgressBar(
+                            _controller.progressBarType,
+                          )
+                        : null,
+                    transformer: const GaugeAxisTransformer.colorFadeIn(
+                      interval: Interval(0.0, 0.3),
+                      background: Color(0xFFD9DEEB),
+                    ),
+                    style: GaugeAxisStyle(
+                      thickness: _controller.thickness,
+                      background: _controller.hasSurface
+                          ? _controller.surfaceColor
+                          : null,
+                      zoneSpacing: _controller.spacing,
+                      blendColors: false,
+                      cornerRadius: Radius.circular(_controller.surfaceRadius),
+                    ),
+                    zones: _controller.zones
+                        .map(
+                          (e) => e.copyWith(
+                            cornerRadius: Radius.circular(
+                              _controller.zonesRadius,
+                            ),
+                          ),
+                        )
+                        .toList(),
                   ),
-                  zones: _controller.zones
-                      .map((e) => e.copyWith(
-                          cornerRadius:
-                              Radius.circular(_controller.zonesRadius)))
-                      .toList(),
                 ),
               ),
             ),
-          ),
-        );
+          );
 
-        final examplesButton = Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-          child: SizedBox(
-            width: double.infinity,
-            height: 44,
-            child: FilledButton.tonalIcon(
-              icon: const Icon(Icons.collections_outlined, size: 18),
-              label: const Text('Browse examples'),
-              style: FilledButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                textStyle: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              onPressed: () => context.go('/examples'),
-            ),
-          ),
-        );
-
-        if (isMobile) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              const SidebarHeader(
-                title: 'gauge_indicator',
-                isSmall: true,
-              ),
-              Expanded(
-                child: gaugeWidget,
-              ),
-              SizedBox(
-                height: math.min(viewSize.height * 0.6, 400),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    border:
-                        const Border(top: BorderSide(color: Color(0xFFDDDDDD))),
+          final examplesButton = Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+            child: SizedBox(
+              width: double.infinity,
+              height: 44,
+              child: FilledButton.tonalIcon(
+                icon: const Icon(Icons.collections_outlined, size: 18),
+                label: const Text('Browse examples'),
+                style: FilledButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
+                  textStyle: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                onPressed: () => context.go('/examples'),
+              ),
+            ),
+          );
+
+          if (isMobile) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                const SidebarHeader(title: 'gauge_indicator', isSmall: true),
+                Expanded(child: gaugeWidget),
+                SizedBox(
+                  height: math.min(viewSize.height * 0.6, 400),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      border: const Border(
+                        top: BorderSide(color: Color(0xFFDDDDDD)),
+                      ),
+                    ),
+                    child: GaugeConfigPanel(
+                      controller: _controller,
+                      header: examplesButton,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ShowcaseSidebar(
+                  title: 'gauge_indicator',
                   child: GaugeConfigPanel(
                     controller: _controller,
                     header: examplesButton,
                   ),
                 ),
-              ),
-            ],
-          );
-        } else {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ShowcaseSidebar(
-                title: 'gauge_indicator',
-                child: GaugeConfigPanel(
-                  controller: _controller,
-                  header: examplesButton,
-                ),
-              ),
-              Expanded(child: gaugeWidget),
-            ],
-          );
-        }
-      }),
+                Expanded(child: gaugeWidget),
+              ],
+            );
+          }
+        },
+      ),
     );
   }
 }
@@ -193,17 +196,18 @@ class GaugeConfigPanel extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(8, 12, 8, 4),
                 child: ValueSlider(
-              label: "Value",
-              min: 0,
-              max: 100,
-              value: _controller.sliderValue,
-              onChanged: (val) {
-                _controller.sliderValue =
-                    double.parse(val.toStringAsFixed(2));
-              },
-              onChangeEnd: (newVal) {
-                _controller.value = newVal;
-              },
+                  label: "Value",
+                  min: 0,
+                  max: 100,
+                  value: _controller.sliderValue,
+                  onChanged: (val) {
+                    _controller.sliderValue = double.parse(
+                      val.toStringAsFixed(2),
+                    );
+                  },
+                  onChangeEnd: (newVal) {
+                    _controller.value = newVal;
+                  },
                 ),
               ),
             ),
@@ -247,8 +251,9 @@ class GaugeConfigPanel extends StatelessWidget {
                 max: 250,
                 value: _controller.gaugeRadius,
                 onChanged: (val) {
-                  _controller.gaugeRadius =
-                      double.parse(val.toStringAsFixed(2));
+                  _controller.gaugeRadius = double.parse(
+                    val.toStringAsFixed(2),
+                  );
                 },
               ),
               ValueSlider(
@@ -257,8 +262,9 @@ class GaugeConfigPanel extends StatelessWidget {
                 max: 500,
                 value: _controller.parentHeight,
                 onChanged: (val) {
-                  _controller.parentHeight =
-                      double.parse(val.toStringAsFixed(2));
+                  _controller.parentHeight = double.parse(
+                    val.toStringAsFixed(2),
+                  );
                 },
               ),
               ValueSlider(
@@ -267,8 +273,9 @@ class GaugeConfigPanel extends StatelessWidget {
                 max: 500,
                 value: _controller.parentWidth,
                 onChanged: (val) {
-                  _controller.parentWidth =
-                      double.parse(val.toStringAsFixed(2));
+                  _controller.parentWidth = double.parse(
+                    val.toStringAsFixed(2),
+                  );
                 },
               ),
             ],
@@ -282,8 +289,7 @@ class GaugeConfigPanel extends StatelessWidget {
                 max: 40,
                 value: _controller.thickness,
                 onChanged: (val) {
-                  _controller.thickness =
-                      double.parse(val.toStringAsFixed(2));
+                  _controller.thickness = double.parse(val.toStringAsFixed(2));
                 },
               ),
               ValueSlider(
@@ -301,8 +307,9 @@ class GaugeConfigPanel extends StatelessWidget {
                 max: 20,
                 value: _controller.zonesRadius,
                 onChanged: (val) {
-                  _controller.zonesRadius =
-                      double.parse(val.toStringAsFixed(2));
+                  _controller.zonesRadius = double.parse(
+                    val.toStringAsFixed(2),
+                  );
                 },
               ),
               ValueSlider(
@@ -311,8 +318,7 @@ class GaugeConfigPanel extends StatelessWidget {
                 max: 48,
                 value: _controller.fontSize,
                 onChanged: (val) {
-                  _controller.fontSize =
-                      double.parse(val.toStringAsFixed(2));
+                  _controller.fontSize = double.parse(val.toStringAsFixed(2));
                 },
               ),
             ],
@@ -322,8 +328,7 @@ class GaugeConfigPanel extends StatelessWidget {
             children: [
               SwitchListTile(
                 dense: true,
-                title: const Text('Enabled',
-                    style: TextStyle(fontSize: 13)),
+                title: const Text('Enabled', style: TextStyle(fontSize: 13)),
                 value: _controller.hasSurface,
                 onChanged: (selected) {
                   _controller.hasSurface = selected;
@@ -336,8 +341,9 @@ class GaugeConfigPanel extends StatelessWidget {
                   max: 20,
                   value: _controller.surfaceRadius,
                   onChanged: (val) {
-                    _controller.surfaceRadius =
-                        double.parse(val.toStringAsFixed(2));
+                    _controller.surfaceRadius = double.parse(
+                      val.toStringAsFixed(2),
+                    );
                   },
                 ),
                 ColorField(
@@ -358,7 +364,8 @@ class GaugeConfigPanel extends StatelessWidget {
               for (var i = 0; i < _controller.zones.length; i++)
                 ColorField(
                   key: ValueKey('zone-$i'),
-                  title: 'Zone ${i + 1}  ·  '
+                  title:
+                      'Zone ${i + 1}  ·  '
                       '${_controller.zones[i].from.toStringAsFixed(0)}'
                       '–${_controller.zones[i].to.toStringAsFixed(0)}',
                   color: _controller.zones[i].color,
@@ -375,9 +382,11 @@ class GaugeConfigPanel extends StatelessWidget {
                           ? _controller.addZone
                           : null,
                       icon: const Icon(Icons.add, size: 18),
-                      label: Text(_controller.canAddZone
-                          ? 'Add'
-                          : 'Max ${GaugeDataController.maxZones} zones'),
+                      label: Text(
+                        _controller.canAddZone
+                            ? 'Add'
+                            : 'Max ${GaugeDataController.maxZones} zones',
+                      ),
                     ),
                     const SizedBox(height: 8),
                     FilledButton.tonalIcon(
@@ -397,8 +406,7 @@ class GaugeConfigPanel extends StatelessWidget {
             children: [
               SwitchListTile(
                 dense: true,
-                title: const Text('Enabled',
-                    style: TextStyle(fontSize: 13)),
+                title: const Text('Enabled', style: TextStyle(fontSize: 13)),
                 value: _controller.hasProgressBar,
                 onChanged: (selected) {
                   _controller.hasProgressBar = selected;
@@ -440,8 +448,7 @@ class GaugeConfigPanel extends StatelessWidget {
             children: [
               SwitchListTile(
                 dense: true,
-                title: const Text('Enabled',
-                    style: TextStyle(fontSize: 13)),
+                title: const Text('Enabled', style: TextStyle(fontSize: 13)),
                 value: _controller.hasPointer,
                 onChanged: (selected) {
                   _controller.hasPointer = selected;
@@ -488,10 +495,8 @@ class GaugeConfigPanel extends StatelessWidget {
               child: FilledButton.icon(
                 icon: const Icon(Icons.code, size: 18),
                 label: const Text('Show code'),
-                onPressed: () => showCodeViewer(
-                  context,
-                  generateGaugeCode(_controller),
-                ),
+                onPressed: () =>
+                    showCodeViewer(context, generateGaugeCode(_controller)),
               ),
             ),
           ),

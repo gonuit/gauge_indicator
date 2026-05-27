@@ -68,9 +68,11 @@ class _ActiveZoneTransformer extends GaugeAxisTransformer {
     bool isInitial,
   ) {
     final updated = axis.zones
-        .map((z) => value >= z.from && value <= z.to
-            ? z
-            : z.copyWith(color: inactiveColor))
+        .map(
+          (z) => value >= z.from && value <= z.to
+              ? z
+              : z.copyWith(color: inactiveColor),
+        )
         .toList();
     return axis.copyWith(zones: updated);
   }
@@ -104,9 +106,7 @@ class _Gauge extends StatelessWidget {
           max: 100,
           sweepDegrees: 240,
           progressBar: null,
-          transformer: _ActiveZoneTransformer(
-            inactiveColor: Color(0xFFD9DEEB),
-          ),
+          transformer: _ActiveZoneTransformer(inactiveColor: Color(0xFFD9DEEB)),
           style: GaugeAxisStyle(
             background: Colors.transparent,
             thickness: 24,

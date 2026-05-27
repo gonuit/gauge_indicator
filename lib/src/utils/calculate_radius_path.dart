@@ -63,8 +63,7 @@ Path calculateRadiusArcPath(
           ? (emptyArcLength / totalCornerX).clamp(0.0, 1.0)
           : 1.0;
 
-  final scale =
-      emptyScale < inSegmentScale ? emptyScale : inSegmentScale;
+  final scale = emptyScale < inSegmentScale ? emptyScale : inSegmentScale;
   startCorner = Radius.elliptical(
     startCorner.x * scale,
     (startCorner.y * scale).clamp(0.0, halfThickness),
@@ -82,8 +81,7 @@ Path calculateRadiusArcPath(
 
   final startCornerAngle = getArcAngle(startCorner.x, centerRadius);
   final endCornerAngle = getArcAngle(endCorner.x, centerRadius);
-  final largeArcMinAngle =
-      180.0 + toDegrees(startCornerAngle + endCornerAngle);
+  final largeArcMinAngle = 180.0 + toDegrees(startCornerAngle + endCornerAngle);
 
   final axisStartAngle = centerAxisStartAngle + startCornerAngle;
   final axisEndAngle = centerAxisEndAngle - endCornerAngle;

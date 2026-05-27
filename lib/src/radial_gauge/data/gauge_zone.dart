@@ -82,8 +82,7 @@ class GaugeZone {
       );
 
   /// Linearly interpolates between two zones at fraction [t].
-  static GaugeZone lerp(GaugeZone begin, GaugeZone end, double t) =>
-      GaugeZone(
+  static GaugeZone lerp(GaugeZone begin, GaugeZone end, double t) => GaugeZone(
         from: lerpDouble(begin.from, end.from, t),
         to: lerpDouble(begin.to, end.to, t),
         color: Color.lerp(begin.color, end.color, t)!,
