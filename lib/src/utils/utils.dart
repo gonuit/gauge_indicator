@@ -9,6 +9,5 @@ export 'get_arc_angle.dart';
 export 'get_point_on_circle.dart';
 export 'get_sagitta.dart';
 export 'lerp_double.dart';
-export 'null_tween.dart';
 export 'rotate_over_origin.dart';
 export 'rounded_poly.dart';

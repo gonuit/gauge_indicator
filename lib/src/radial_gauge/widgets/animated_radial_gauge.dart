@@ -92,7 +92,7 @@ class _AnimatedRadialGaugeState
   bool _isInitialAnimation = true;
 
   Tween<double>? _valueTween;
-  Tween<double?>? _radiusTween;
+  Tween<double>? _radiusTween;
   GaugeAxisTween? _axisTween;
 
   @override
@@ -140,13 +140,14 @@ class _AnimatedRadialGaugeState
 
     _radiusTween = widget.radius == null
         // If the radius is not specified, its animation is disabled.
-        ? NullTween()
+        ? null
         : visitor(
                 _radiusTween,
                 widget.radius,
-                (dynamic value) => Tween<double?>(begin: value, end: value),
+                (dynamic value) =>
+                    Tween<double>(begin: value as double, end: value),
               )
-              as Tween<double?>;
+              as Tween<double>?;
   }
 
   @override
@@ -158,7 +159,7 @@ class _AnimatedRadialGaugeState
               .evaluate(animation)
               .clamp(widget.axis.min, widget.axis.max);
 
-          final radius = _radiusTween!.evaluate(animation);
+          final radius = _radiusTween?.evaluate(animation);
           final computedAxis = _axisTween!.evaluate(animation)!.flatten();
 
           final axis = widget.axis.transformer.transform(

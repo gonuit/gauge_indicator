@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
-import 'package:gauge_indicator/src/internal.dart';
+import 'package:gauge_indicator/src/radial_gauge/widgets/radial_gauge_render_box.dart';
 
 RadialGaugeRenderBox _renderBox(WidgetTester tester) =>
     tester.renderObject<RadialGaugeRenderBox>(find.byType(RadialGauge));
@@ -67,5 +67,35 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(_renderBox(tester).axis.zones, hasLength(1));
+  });
+
+  testWidgets('AnimatedRadialGauge accepts a radius after having none', (
+    tester,
+  ) async {
+    Widget build(double? radius) => Center(
+      child: SizedBox(
+        width: 200,
+        height: 200,
+        child: AnimatedRadialGauge(
+          duration: const Duration(milliseconds: 100),
+          value: 0.5,
+          radius: radius,
+        ),
+      ),
+    );
+
+    await tester.pumpWidget(build(null));
+    await tester.pumpAndSettle();
+    await tester.pumpWidget(build(50));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(_renderBox(tester).radius, 50);
+
+    await tester.pumpWidget(build(null));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(_renderBox(tester).radius, isNull);
   });
 }
