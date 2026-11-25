@@ -98,4 +98,37 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(_renderBox(tester).radius, isNull);
   });
+
+  testWidgets('RadialGauge accepts updates before its first layout', (
+    tester,
+  ) async {
+    final value = ValueNotifier<double>(0.2);
+    addTearDown(value.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Navigator(
+          pages: [
+            MaterialPage<void>(
+              child: ValueListenableBuilder<double>(
+                valueListenable: value,
+                builder: (context, value, _) => SizedBox(
+                  width: 200,
+                  child: RadialGauge(value: value, axis: const GaugeAxis()),
+                ),
+              ),
+            ),
+            const MaterialPage<void>(child: Scaffold(body: Text('top'))),
+          ],
+          onDidRemovePage: (_) {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    value.value = 0.7;
+    await tester.pump();
+
+    expect(tester.takeException(), isNull);
+  });
 }

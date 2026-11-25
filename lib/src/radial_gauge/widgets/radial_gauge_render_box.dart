@@ -26,7 +26,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
   set value(double value) {
     if (_value != value) {
       _value = value;
-      _axisDefinition.markNeedsRecalculation();
+      _axisDefinition?.markNeedsRecalculation();
       markNeedsPaint();
     }
   }
@@ -41,7 +41,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
           _axis.style.thickness != axis.style.thickness) {
         markNeedsLayout();
       } else {
-        _axisDefinition.markNeedsRecalculation();
+        _axisDefinition?.markNeedsRecalculation();
         markNeedsPaint();
       }
       _axis = axis;
@@ -105,7 +105,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
   }
 
   late RadialGaugeLayout _computedLayout;
-  late RadialGaugeAxisDefinition _axisDefinition;
+  RadialGaugeAxisDefinition? _axisDefinition;
 
   /// Creates a RenderBox that displays a radial gauge.
   RadialGaugeRenderBox({
@@ -175,7 +175,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     /// No space, nothing to paint.
     if (size.isEmpty) return;
 
-    if (_axisDefinition.needsRecalculation) {
+    if (_axisDefinition!.needsRecalculation) {
       _axisDefinition = RadialGaugeAxisDefinition.calculate(
         _computedLayout,
         axis,
@@ -184,7 +184,7 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
 
     final canvas = context.canvas;
     final layout = _computedLayout.shift(offset);
-    final axisDefinition = _axisDefinition.shift(offset);
+    final axisDefinition = _axisDefinition!.shift(offset);
 
     assert(() {
       if (debug) {
