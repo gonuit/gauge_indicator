@@ -149,8 +149,10 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
     );
 
     if (child != null) {
-      final innerCircleRadius =
-          (_computedLayout.radius - axis.style.thickness) / 2 * math.sqrt2;
+      final innerCircleRadius = math.max(
+        0.0,
+        (_computedLayout.radius - axis.style.thickness) / 2 * math.sqrt2,
+      );
       final circleRect = Rect.fromCircle(
         center: _computedLayout.circleRect.center,
         radius: innerCircleRadius,
