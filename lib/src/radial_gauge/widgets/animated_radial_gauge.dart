@@ -161,11 +161,12 @@ class _AnimatedRadialGaugeState
           final radius = _radiusTween!.evaluate(animation);
           final computedAxis = _axisTween!.evaluate(animation)!.flatten();
 
-          final axis = computedAxis.transform(
-            range: GaugeRange(widget.axis.min, widget.axis.max),
-            progress: controller.value,
-            value: value,
-            isInitial: _isInitialAnimation,
+          final axis = widget.axis.transformer.transform(
+            computedAxis,
+            GaugeRange(widget.axis.min, widget.axis.max),
+            controller.value,
+            value,
+            _isInitialAnimation,
           );
 
           return RadialGauge(

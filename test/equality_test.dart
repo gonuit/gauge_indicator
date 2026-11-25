@@ -668,4 +668,34 @@ void main() {
       );
     });
   });
+
+  group('GaugeAxis ==/hashCode', () {
+    test('identical instances are equal', () {
+      const a = GaugeAxis(min: 0, max: 100, origin: 50);
+      const b = GaugeAxis(min: 0, max: 100, origin: 50);
+      expect(a, equals(b));
+      expect(a.hashCode, equals(b.hashCode));
+    });
+
+    test('differs on min', () {
+      expect(
+        const GaugeAxis(min: 0, max: 100),
+        isNot(equals(const GaugeAxis(min: 10, max: 100))),
+      );
+    });
+
+    test('differs on max', () {
+      expect(
+        const GaugeAxis(min: 0, max: 100),
+        isNot(equals(const GaugeAxis(min: 0, max: 200))),
+      );
+    });
+
+    test('differs on origin', () {
+      expect(
+        const GaugeAxis(min: 0, max: 100),
+        isNot(equals(const GaugeAxis(min: 0, max: 100, origin: 50))),
+      );
+    });
+  });
 }

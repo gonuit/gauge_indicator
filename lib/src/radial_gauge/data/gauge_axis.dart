@@ -229,6 +229,9 @@ class GaugeAxis {
     if (identical(this, other)) return true;
     return other is GaugeAxis &&
         runtimeType == other.runtimeType &&
+        other.min == min &&
+        other.max == max &&
+        other.origin == origin &&
         other.pointer == pointer &&
         other.style == style &&
         listEquals(other.zones, zones) &&
@@ -238,6 +241,9 @@ class GaugeAxis {
 
   @override
   int get hashCode => Object.hash(
+    min,
+    max,
+    origin,
     pointer,
     style,
     Object.hashAll(zones),
