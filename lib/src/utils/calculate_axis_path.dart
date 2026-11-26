@@ -12,7 +12,7 @@ Path calculateAxisPath(
   final radius = rect.longestSide / 2;
 
   degrees = (degrees).clamp(10.0, 359.99);
-  final part = to - from;
+  final part = (to - from).abs();
   final useDegrees = (degrees * part).clamp(10.0, 359.99);
 
   /// We are shifting arc angles to center it horizontally.
