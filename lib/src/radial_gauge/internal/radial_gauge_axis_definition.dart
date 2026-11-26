@@ -164,6 +164,7 @@ class RadialGaugeAxisDefinition {
 
     final range = axis.max - axis.min;
     final styleThickness = axis.style.thickness;
+    final axisRadians = toRadians(axis.sweepDegrees);
 
     for (var i = 0; i < axis.zones.length; i++) {
       final zone = axis.zones[i];
@@ -222,8 +223,8 @@ class RadialGaugeAxisDefinition {
       );
 
       yield GaugeZoneDefinition(
-        startAngle: toRadians(startAngle) + trimStart,
-        sweepAngle: toRadians(sweepAngle) - trimEnd,
+        startAngle: toRadians(startAngle) + trimStart * axisRadians,
+        sweepAngle: toRadians(sweepAngle) - (trimStart + trimEnd) * axisRadians,
         color: zone.color,
         gradient: zone.gradient,
         border: zone.border,
