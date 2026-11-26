@@ -23,7 +23,7 @@ class GaugeAxisStyle {
   /// Width of the axis band in logical pixels.
   final double thickness;
 
-  /// Gap between adjacent zones, in fractional axis units.
+  /// Gap between adjacent zones, in logical pixels along the arc.
   final double zoneSpacing;
 
   /// How [zoneSpacing] adapts when a zone is too narrow to reserve the full
@@ -178,6 +178,7 @@ class GaugeAxis {
     this.progressBar = defaultProgressBar,
     this.style = const GaugeAxisStyle(),
   }) : origin = origin ?? min,
+       assert(min < max, 'min must be less than max.'),
        assert(
          sweepDegrees >= 10 && sweepDegrees <= 360,
          'sweepDegrees must be between 10 and 360, inclusive.',
@@ -209,7 +210,7 @@ class GaugeAxis {
   }) => GaugeAxis(
     min: min ?? this.min,
     max: max ?? this.max,
-    origin: origin ?? this.origin,
+    origin: origin ?? (this.origin == this.min ? null : this.origin),
     sweepDegrees: sweepDegrees ?? this.sweepDegrees,
     zones: zones ?? this.zones,
     style: style ?? this.style,

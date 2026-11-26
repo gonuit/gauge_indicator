@@ -30,4 +30,36 @@ void main() {
       );
     });
   });
+
+  group('GaugeAxis.copyWith', () {
+    test('a default origin follows a new min', () {
+      final axis = const GaugeAxis(min: 0, max: 100).copyWith(min: 10);
+      expect(axis.min, 10);
+      expect(axis.origin, 10);
+    });
+
+    test('keeps an explicitly set origin', () {
+      final axis = const GaugeAxis(
+        min: 0,
+        max: 100,
+        origin: 50,
+      ).copyWith(min: 10);
+      expect(axis.origin, 50);
+    });
+
+    test('replaces the origin when one is given', () {
+      final axis = const GaugeAxis(min: 0, max: 100).copyWith(origin: 25);
+      expect(axis.origin, 25);
+    });
+  });
+
+  group('GaugeAxis range', () {
+    test('asserts when min equals max', () {
+      expect(() => GaugeAxis(min: 1, max: 1), throwsAssertionError);
+    });
+
+    test('asserts when min is above max', () {
+      expect(() => GaugeAxis(min: 2, max: 1), throwsAssertionError);
+    });
+  });
 }
