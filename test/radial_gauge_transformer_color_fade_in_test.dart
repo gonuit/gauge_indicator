@@ -59,4 +59,20 @@ void main() {
       matchesGoldenFile('goldens/radial_gauge_color_fade_in_mid.png'),
     );
   });
+
+  test('colorFadeIn keeps the zone opacity at the end of the fade', () {
+    const axis = GaugeAxis(
+      zones: [GaugeZone(from: 0, to: 1, color: Color(0x40FF0000))],
+      transformer: GaugeAxisTransformer.colorFadeIn(interval: Interval(0, 1)),
+    );
+
+    final transformed = axis.transform(
+      range: const GaugeRange(0, 1),
+      progress: 1,
+      value: 1,
+      isInitial: true,
+    );
+
+    expect(transformed.zones.single.color, const Color(0x40FF0000));
+  });
 }

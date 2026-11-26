@@ -93,7 +93,7 @@ class _ColorFadeIn extends GaugeAxisTransformer {
           .map(
             (s) => s.copyWith(
               color: Color.alphaBlend(
-                s.color.withValues(alpha: value),
+                s.color.withValues(alpha: s.color.a * value),
                 background,
               ),
             ),
