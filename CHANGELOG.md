@@ -1,3 +1,18 @@
+## 0.7.0
+
+### Fixed
+- Changing only `GaugeAxis.min`, `max`, `origin`, or `transformer` now updates the gauge.
+- `AnimatedRadialGauge` no longer throws when `radius` changes from `null` to a value.
+- Updating a gauge that has not been laid out yet (for example on a page below the current route) no longer throws.
+- A gauge with a `child` no longer throws when it is smaller than its axis thickness or has no space.
+- `GaugeProgressBar.basic` now draws the full arc when the value is below `origin` and the span exceeds 180°.
+- `GaugeAxis.copyWith(min: ...)` keeps a default `origin` aligned with the new `min`.
+- `GaugeAxisTransformer.colorFadeIn` preserves the opacity of translucent zone colors.
+- Zone gradients now span exactly the visible zone when `zoneSpacing` is set.
+
+### Changed
+- `GaugeAxis` asserts that `min` is less than `max`.
+
 ## 0.6.0
 
 ### Removed
