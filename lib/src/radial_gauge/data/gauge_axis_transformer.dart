@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../utils/utils.dart';
 import 'data.dart';
@@ -76,7 +76,7 @@ class _ColorFadeIn extends GaugeAxisTransformer {
 
   const _ColorFadeIn({
     required this.interval,
-    this.background = Colors.transparent,
+    this.background = const Color(0x00000000),
   });
 
   @override

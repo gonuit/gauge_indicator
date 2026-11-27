@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// Rotates over [origin] by the given [rotation] in radians.
 Matrix4 rotateOverOrigin({

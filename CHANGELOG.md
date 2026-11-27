@@ -12,6 +12,7 @@
 
 ### Changed
 - `GaugeAxis` asserts that `min` is less than `max`.
+- The library no longer depends on `package:flutter/material.dart`.
 
 ## 0.6.0
 

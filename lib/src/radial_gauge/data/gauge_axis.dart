@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
 /// How [GaugeAxisStyle.zoneSpacing] adapts when a zone is too narrow to
@@ -158,7 +158,7 @@ class GaugeAxis {
     border: GaugePointerBorder(color: Color(0xFFf0f0f0), width: 2),
     borderRadius: 3,
     position: GaugePointerPosition.surface(offset: Offset(0, 8)),
-    color: Colors.black,
+    color: Color(0xFF000000),
   );
 
   /// Default progress bar used when no [progressBar] is specified.

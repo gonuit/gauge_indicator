@@ -1,6 +1,6 @@
 import 'dart:ui' as ui;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
 /// A [GaugeProgressBar] with flat ends.

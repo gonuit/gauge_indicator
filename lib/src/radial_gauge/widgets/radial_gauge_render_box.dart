@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gauge_indicator/src/internal.dart';
 import 'dart:math' as math;
@@ -192,15 +192,15 @@ class RadialGaugeRenderBox extends RenderShiftedBox {
       if (debug) {
         canvas.drawRect(
           layout.sourceRect,
-          Paint()..color = Colors.blue.withValues(alpha: 0.1),
+          Paint()..color = const Color(0xFF2196F3).withValues(alpha: 0.1),
         );
         canvas.drawRect(
           layout.targetRect,
-          Paint()..color = Colors.red.withValues(alpha: 0.1),
+          Paint()..color = const Color(0xFFF44336).withValues(alpha: 0.1),
         );
         canvas.drawRect(
           layout.circleRect,
-          Paint()..color = Colors.green.withValues(alpha: 0.1),
+          Paint()..color = const Color(0xFF4CAF50).withValues(alpha: 0.1),
         );
       }
       return true;

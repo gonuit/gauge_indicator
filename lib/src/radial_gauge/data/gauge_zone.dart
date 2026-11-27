@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gauge_indicator/src/internal.dart';
 
 /// A colored slice of the gauge axis spanning `[from, to]`.
