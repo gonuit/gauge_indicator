@@ -9,15 +9,9 @@ on:
 jobs:
   package:
     runs-on: ubuntu-latest
+    container: ghcr.io/cirruslabs/flutter:3.35.0
     steps:
       - uses: actions/checkout@v4
-
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          flutter-version: '3.35.0'
-          architecture: x64
-          cache: true
 
       - name: Install dependencies
         run: flutter pub get --no-example
